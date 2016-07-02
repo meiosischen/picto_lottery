@@ -24,9 +24,10 @@
 
     <select id="queryCouponById" resultType="com.picto.entity.Coupon">
         <include refid="queryCouponColumn" />
-        where id = #{id} and state = 1
+        where id = #{id}
     </select>
 
+    <!-- 根据openid查询有效的优惠券,已生效未兑换 -->
     <select id="queryAllCouponsByOpenid" resultType="com.picto.entity.Coupon">
         <include refid="queryCouponColumn" />
         where openid = #{openid} and state = 1 and expired_time >= #{date} order by expired_time
@@ -34,7 +35,7 @@
 
     <select id="queryCouponBySerialNumber" resultType="com.picto.entity.Coupon">
         <include refid="queryCouponColumn" />
-        where serial_number = #{serialNumber} and state = 1 limit 1
+        where serial_number = #{serialNumber} limit 1
     </select>
 
     <insert id="addCoupon" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Coupon">
