@@ -12,7 +12,7 @@
         from operation_record
     </sql>
 
-    <select id="queryMechantById" resultType="com.picto.entity.OperationRecord">
+    <select id="queryMerchantById" resultType="com.picto.entity.OperationRecord">
         <include refid="queryOperationRecordColumn" />
         where openid = #{openid} and type = #{type}
     </select>

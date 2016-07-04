@@ -42,7 +42,7 @@ public class CouponSettingController {
         List<Merchant> merchants = null;
         Merchant merchant = null;
         if (null != merchantId && 0 != merchantId.intValue()) {
-            merchant = merchantDao.queryMechantById(merchantId);
+            merchant = merchantDao.queryMerchantById(merchantId);
             merchants = new ArrayList<Merchant>(1);
             merchants.add(merchant);
             model.addAttribute("selectedMerchantId", merchant.getId());
@@ -82,7 +82,7 @@ public class CouponSettingController {
 
     @RequestMapping("toAddCouponType")
     public String toAddCouponType(@RequestParam("merchantId") Integer merchantId, Model model) {
-        Merchant merchant = merchantDao.queryMechantById(merchantId);
+        Merchant merchant = merchantDao.queryMerchantById(merchantId);
         model.addAttribute("merchant", merchant);
 
         List resetTimes = CouponResetTimeEnum.getDayAndNames();
@@ -124,7 +124,7 @@ public class CouponSettingController {
         CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
         model.addAttribute("couponType", couponType);
 
-        Merchant merchant = merchantDao.queryMechantById(couponType.getMerchantId());
+        Merchant merchant = merchantDao.queryMerchantById(couponType.getMerchantId());
         model.addAttribute("merchant", merchant);
 
         List resetTimes = CouponResetTimeEnum.getDayAndNames();

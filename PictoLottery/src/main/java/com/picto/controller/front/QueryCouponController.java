@@ -58,7 +58,7 @@ public class QueryCouponController {
         List<Coupon> coupons = null;
         Merchant queryMerchant = null;
         if (null != merchantId) {
-            queryMerchant = merchantDao.queryMechantById(merchantId);
+            queryMerchant = merchantDao.queryMerchantById(merchantId);
             coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId, openId, new Date());
         } else {
             coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
@@ -83,7 +83,7 @@ public class QueryCouponController {
                 : DateUtil.formatDate(coupon.getCreateTime(), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
         model.addAttribute("expireDateStr", expireDateStr);
 
-        Merchant merchant = merchantDao.queryMechantById(coupon.getMerchantId());
+        Merchant merchant = merchantDao.queryMerchantById(coupon.getMerchantId());
         model.addAttribute("merchant", merchant);
         if (null != isQuery) {
             model.addAttribute("isQuery", isQuery);

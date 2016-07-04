@@ -41,7 +41,7 @@ public class DiscountSettingController {
         List<Merchant> merchants = null;
         Merchant merchant = null;
         if (null != merchantId && 0 != merchantId.intValue()) {
-            merchant = merchantDao.queryMechantById(merchantId);
+            merchant = merchantDao.queryMerchantById(merchantId);
             merchants = new ArrayList<Merchant>(1);
             merchants.add(merchant);
             model.addAttribute("selectedMerchantId", merchant.getId());
@@ -66,7 +66,7 @@ public class DiscountSettingController {
 
     @RequestMapping("toAddDiscountProduct")
     public String toAddDiscountProduct(@RequestParam("merchantId") Integer merchantId, Model model){
-        Merchant merchant = merchantDao.queryMechantById(merchantId);
+        Merchant merchant = merchantDao.queryMerchantById(merchantId);
         model.addAttribute("merchant", merchant);
 
         return "operativeAdmin/addDiscountProduct";
@@ -123,11 +123,11 @@ public class DiscountSettingController {
                                  Model model) {
         CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
         Integer merchantId = couponType.getMerchantId();
-        Merchant selfMerchant = merchantDao.queryMechantById(merchantId);
+        Merchant selfMerchant = merchantDao.queryMerchantById(merchantId);
 
         model.addAttribute("couponType", couponType);
         model.addAttribute("isSelfMerchant", isSelfMerchant);
-        model.addAttribute("selfMerchantName", selfMerchant.getMechantName());
+        model.addAttribute("selfMerchantName", selfMerchant.getMerchantName());
 
         List<DiscountProduct> hadDiscounts = discountProductDao.queryDiscountByCouponTypeId(couponTypeId);
         model.addAttribute("hadDiscounts", hadDiscounts);
@@ -153,10 +153,10 @@ public class DiscountSettingController {
                 for (DiscountProduct dis : otherMerDiscounts) {
                     Merchant merchant = merchantMap.get(dis.getMerchantId());
                     if (null == merchant) {
-                        merchant = merchantDao.queryMechantById(dis.getMerchantId());
+                        merchant = merchantDao.queryMerchantById(dis.getMerchantId());
                         merchantMap.put(dis.getMerchantId(), merchant);
                     }
-                    merchantNames.add(merchant.getMechantName());
+                    merchantNames.add(merchant.getMerchantName());
                 }
                 model.addAttribute("merchantNames", merchantNames);
             }

@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
 		Account account = validateMerchantRegisterParam(request);
 		// 先创建商户信息
 		Merchant merchant = new Merchant();
-		merchant.setMechantName(account.getAccountName());
+		merchant.setMerchantName(account.getAccountName());
 		merchant.setCreateTime(new Date());
 		// TODO 商户默认状态
 		merchant.setState(1);

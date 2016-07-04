@@ -104,7 +104,7 @@
             <table cellspacing="0" cellpadding="5">
                 <tr>
                     <td width="20%">店铺名称</td>
-                    <td width="60%">${merchant.mechantName}</td>
+                    <td width="60%">${merchant.merchantName}</td>
                     <td width="20%"></td>
                 </tr>
                 <tr>

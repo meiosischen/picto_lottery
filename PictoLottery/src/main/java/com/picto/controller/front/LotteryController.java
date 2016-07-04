@@ -104,6 +104,12 @@ public class LotteryController {
 
             request.getSession().setAttribute("openid", openid);
             logger.info("openId=" + openid);
+            
+            //check merchant state
+            if(merchant.getState() == 0) {
+            	return "front/upgrade";
+            }
+            
             boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
             if (hadLottery && merchant.getIsValidateOpenid()) {
                 errorMsg = "今日已抽过奖，请明日再来";

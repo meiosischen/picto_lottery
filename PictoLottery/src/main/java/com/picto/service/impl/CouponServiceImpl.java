@@ -49,7 +49,7 @@ public class CouponServiceImpl implements CouponService {
         coupon.setIsShared(discountProduct.getIsShared());
         coupon.setUseMsg(discountProduct.getUseMsg());
         coupon.setLimitMsg(discountProduct.getLimitMsg());
-        coupon.setStoreName(StringUtil.isBlank(discountProduct.getStoreName()) ? merchant.getMechantName() : discountProduct.getStoreName());
+        coupon.setStoreName(StringUtil.isBlank(discountProduct.getStoreName()) ? merchant.getMerchantName() : discountProduct.getStoreName());
         coupon.setState(Constants.COUPON_STATE_EFFECTED);
         coupon.setCreateTime(new Date());
         couponDao.addCoupon(coupon);

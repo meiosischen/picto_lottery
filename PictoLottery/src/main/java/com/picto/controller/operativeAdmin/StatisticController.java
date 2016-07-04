@@ -36,7 +36,7 @@ public class StatisticController {
 
         List<Merchant> merchants = new ArrayList<Merchant>();
         if (null != selectMerchantId && selectMerchantId > 0) {
-            Merchant merchant = merchantDao.queryMechantById(selectMerchantId);
+            Merchant merchant = merchantDao.queryMerchantById(selectMerchantId);
             model.addAttribute("selectedMerchantId", selectMerchantId);
             merchants.add(merchant);
         } else {
@@ -48,7 +48,7 @@ public class StatisticController {
             for (Merchant merchant : merchants) {
                 StatisticData data = new StatisticData();
                 data.setMerchantId(merchant.getId());
-                data.setMerchantName(merchant.getMechantName());
+                data.setMerchantName(merchant.getMerchantName());
                 data.setBrand(merchant.getBrand());
                 data.setVolumn(merchant.getVolumn());
                 data.setPhone(merchant.getPhone());

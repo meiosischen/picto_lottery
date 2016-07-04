@@ -29,11 +29,10 @@ public class MerchantMngController {
 
         List<Merchant> merchants = null;
         if (null != merchantId && 0 != merchantId.intValue()) {
-            Merchant merchant = merchantDao.queryMechantById(merchantId);
+            Merchant merchant = merchantDao.queryMerchantById(merchantId);
             merchants = new ArrayList<Merchant>(1);
             merchants.add(merchant);
             model.addAttribute("selectedMerchantId", merchant.getId());
-
         } else {
             merchants = allMerchants;
             model.addAttribute("selectedMerchantId", null);
@@ -42,10 +41,10 @@ public class MerchantMngController {
         model.addAttribute("merchants", merchants);
         return "operativeAdmin/merchantMng";
     }
-
+    
     @RequestMapping("editMerchant")
     public String editMerchant(@RequestParam("merchantId") Integer merchantId, Model model) {
-        model.addAttribute("merchant", merchantDao.queryMechantById(merchantId));
+        model.addAttribute("merchant", merchantDao.queryMerchantById(merchantId));
         List list = CouponSaveTypeEnum.getCodeAndDesc();
         model.addAttribute("saveTypeCodes", (List<Integer>) list.get(0));
         model.addAttribute("saveTypeDescs", (List<String>) list.get(1));
@@ -60,3 +59,4 @@ public class MerchantMngController {
         return "redirect:/admin/getAllMerchant.do";
     }
 }
+

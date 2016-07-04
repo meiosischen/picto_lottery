@@ -37,8 +37,9 @@ public class StartLotteryController {
     public String startLottery(@RequestParam("merchantId") Integer merchantId, @RequestParam("code") String code,
                                Model model, HttpServletRequest request) {
         logger.info("进入买单先生页面merchantId=" + merchantId + ",code=" + code);
-        Merchant merchant = mechantDao.queryMechantById(merchantId);
-//        model.addAttribute("merchant", merchant);
+        Merchant merchant = mechantDao.queryMerchantById(merchantId);
+
+//      model.addAttribute("merchant", merchant);
         model.addAttribute("merchantId", merchantId);
         request.getSession().setAttribute("merchant", merchant);
         model.addAttribute("code", code);

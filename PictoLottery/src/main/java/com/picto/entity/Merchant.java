@@ -6,7 +6,7 @@ import com.picto.enums.CouponSaveTypeEnum;
  * Created by wujigang on 2016/5/22.
  */
 public class Merchant extends BaseEntity {
-    private String mechantName;
+    private String merchantName;
     private String brand;
     private Integer industryType;
     private String phone;
@@ -22,17 +22,17 @@ public class Merchant extends BaseEntity {
     private String bannerAdvert;
     private String queryAdvert;
     private Integer lotteryChannel;
-    private String mechantQrcode;
+    private String merchantQrcode;
     private Integer state;
     private Integer saveType;
     private Boolean isValidateOpenid;
 
-    public String getMechantName() {
-        return mechantName;
+    public String getMerchantName() {
+        return merchantName;
     }
 
-    public void setMechantName(String mechantName) {
-        this.mechantName = mechantName;
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public String getBrand() {
@@ -147,12 +147,12 @@ public class Merchant extends BaseEntity {
         this.lotteryChannel = lotteryChannel;
     }
 
-    public String getMechantQrcode() {
-        return mechantQrcode;
+    public String getMerchantQrcode() {
+        return merchantQrcode;
     }
 
-    public void setMechantQrcode(String mechantQrcode) {
-        this.mechantQrcode = mechantQrcode;
+    public void setMerchantQrcode(String merchantQrcode) {
+        this.merchantQrcode = merchantQrcode;
     }
 
     public Integer getState() {
@@ -194,7 +194,7 @@ public class Merchant extends BaseEntity {
     @Override
     public String toString() {
         return "Merchant{" +
-                "mechantName='" + mechantName + '\'' +
+                "merchantName='" + merchantName + '\'' +
                 ", brand='" + brand + '\'' +
                 ", industryType=" + industryType +
                 ", phone='" + phone + '\'' +
@@ -210,7 +210,7 @@ public class Merchant extends BaseEntity {
                 ", bannerAdvert='" + bannerAdvert + '\'' +
                 ", queryAdvert='" + queryAdvert + '\'' +
                 ", lotteryChannel=" + lotteryChannel +
-                ", mechantQrcode='" + mechantQrcode + '\'' +
+                ", merchantQrcode='" + merchantQrcode + '\'' +
                 ", state=" + state +
                 ", saveType=" + saveType +
                 ", isValidateOpenid=" + isValidateOpenid +

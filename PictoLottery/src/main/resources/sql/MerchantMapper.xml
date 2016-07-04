@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.picto.dao.MerchantDao">
-    <sql id="queryMechantColumn">
+    <sql id="queryMerchantColumn">
         select ID AS id,
-        merchant_name AS mechantName,
+        merchant_name AS merchantName,
         brand AS brand,
         industry_type AS industryType,
         phone AS phone,
@@ -19,7 +19,7 @@
         banner_advert AS bannerAdvert,
         query_advert AS queryAdvert,
         lottery_channel AS lotteryChannel,
-        mechant_qrcode AS mechantQrcode,
+        merchant_qrcode AS merchantQrcode,
         state AS state,
         create_time AS createTime,
         update_time AS updateTime,
@@ -28,26 +28,25 @@
         from merchant
     </sql>
 
-    <select id="queryMechantById" resultType="com.picto.entity.Merchant">
-        <include refid="queryMechantColumn" />
-        where id = #{id} and state = 1
+    <select id="queryMerchantById" resultType="com.picto.entity.Merchant">
+        <include refid="queryMerchantColumn" />
+        where id = #{id}
     </select>
 
     <insert id="addMerchant" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Merchant">
-        insert into merchant(merchant_name, brand, industry_type, phone, mobile, address, volumn, main_business, remark, lottery_link, lottery_qrcode, query_link, banner_advert, query_advert, lottery_channel, mechant_qrcode, state, create_time, update_time, save_type)
-        values(#{mechantName}, #{brand}, #{industryType}, #{phone}, #{mobile}, #{address}, #{volumn}, #{mainBusiness}, #{remark}, #{lotteryLink}, #{lotteryQrcode}, #{queryLink}, #{bannerAdvert}, #{queryAdvert}, #{lotteryChannel}, #{mechantQrcode}, #{state}, #{createTime}, #{updateTime}, #{saveType})
+        insert into merchant(merchant_name, brand, industry_type, phone, mobile, address, volumn, main_business, remark, lottery_link, lottery_qrcode, query_link, banner_advert, query_advert, lottery_channel, merchant_qrcode, state, create_time, update_time, save_type)
+        values(#{merchantName}, #{brand}, #{industryType}, #{phone}, #{mobile}, #{address}, #{volumn}, #{mainBusiness}, #{remark}, #{lotteryLink}, #{lotteryQrcode}, #{queryLink}, #{bannerAdvert}, #{queryAdvert}, #{lotteryChannel}, #{merchantQrcode}, #{state}, #{createTime}, #{updateTime}, #{saveType})
     </insert>
 
     <select id="queryAllMerchants" resultType="com.picto.entity.Merchant">
-        <include refid="queryMechantColumn" />
-        where state = 1
+        <include refid="queryMerchantColumn" />
     </select>
 
     <update id="updateMerchant">
         update merchant
         set update_time = #{updateTime}
-        <if test="mechantName != null">
-            , merchant_name = #{mechantName}
+        <if test="merchantName != null">
+            , merchant_name = #{merchantName}
          </if>
         <if test="brand != null">
             , brand = #{brand}
@@ -76,8 +75,8 @@
         <if test="queryAdvert != null">
             , query_advert = #{queryAdvert}
         </if>
-        <if test="mechantQrcode != null">
-            , mechant_qrcode = #{mechantQrcode}
+        <if test="merchantQrcode != null">
+            , merchant_qrcode = #{merchantQrcode}
         </if>
         <if test="saveType != null">
             , save_type = #{saveType}
@@ -88,6 +87,9 @@
         <if test="lotteryQrcode != null">
             , lottery_qrcode = #{lotteryQrcode}
         </if>
+        <if test="state != null">
+            , state = #{state}
+        </if>        
         where id = #{id}
     </update>
 </mapper>

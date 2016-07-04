@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Repository
 public interface MerchantDao {
-    Merchant queryMechantById(@Param("id") Integer id);
+    Merchant queryMerchantById(@Param("id") Integer id);
 
     List<Merchant> queryAllMerchants();
 

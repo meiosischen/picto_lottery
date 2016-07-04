@@ -77,10 +77,10 @@
                 <c:forEach items="${allMerchants}" var="merchant">
                     <c:choose>
                         <c:when test="${selectedMerchantId != null and selectedMerchantId == merchant.id}">
-                            <option value="${merchant.id}" selected="true">${merchant.mechantName}</option>
+                            <option value="${merchant.id}" selected="true">${merchant.merchantName}</option>
                         </c:when>
                         <c:otherwise>
-                            <option value="${merchant.id}">${merchant.mechantName}</option>
+                            <option value="${merchant.id}">${merchant.merchantName}</option>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>

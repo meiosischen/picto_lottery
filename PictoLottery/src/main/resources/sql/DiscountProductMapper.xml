@@ -3,7 +3,7 @@
 <mapper namespace="com.picto.dao.DiscountProductDao">
     <sql id="queryDiscountProductColumn">
         select ID AS id,
-        mechant_id AS merchantId,
+        merchant_id AS merchantId,
         name AS name,
         icon AS icon,
         discount AS discount,
@@ -28,7 +28,7 @@
 
     <select id="queryDiscountByCouponTypeId" resultType="com.picto.entity.DiscountProduct">
         select a.ID AS id,
-        a.mechant_id AS merchantId,
+        a.merchant_id AS merchantId,
         a.name AS name,
         a.icon AS icon,
         a.discount AS discount,
@@ -58,7 +58,7 @@
 
     <select id="queryDiscountByMerchantId" resultType="com.picto.entity.DiscountProduct">
         <include refid="queryDiscountProductColumn" />
-        where mechant_id = #{merchantId} and state = 1
+        where merchant_id = #{merchantId} and state = 1
     </select>
 
     <select id="queryAllDiscounts" resultType="com.picto.entity.DiscountProduct">
@@ -67,7 +67,7 @@
     </select>
 
     <insert id="add" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.DiscountProduct">
-        insert into discount_product(mechant_id, name, icon, discount, is_shared, use_msg, limit_msg, validity, store_name, state, create_time, update_time, is_sendout)
+        insert into discount_product(merchant_id, name, icon, discount, is_shared, use_msg, limit_msg, validity, store_name, state, create_time, update_time, is_sendout)
         values(#{merchantId}, #{name}, #{icon}, #{discount}, #{isShared}, #{useMsg}, #{limitMsg}, #{validity}, #{storeName}, #{state}, #{createTime}, #{updateTime}, #{isSendout})
     </insert>
 
@@ -91,7 +91,7 @@
 
     <select id="querySendoutDisOtherMerchant" resultType="com.picto.entity.DiscountProduct">
         <include refid="queryDiscountProductColumn" />
-        where is_sendout = 1 and mechant_id &lt;&gt; #{merchantId} and state = 1
+        where is_sendout = 1 and merchant_id &lt;&gt; #{merchantId} and state = 1
     </select>
 
     <insert id="addCouponTypeDiscountRel" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.CouponTypeDiscountRel">

@@ -60,7 +60,7 @@
 </head>
 <body>
     <div id="middleText1">${errorMsg}</div>
-    <div id="qrcode"><img src="${merchant.mechantQrcode}" /></div>
+    <div id="qrcode"><img src="${merchant.merchantQrcode}" /></div>
     <div id="bottomText1">如何查询已有优惠？</div>
     <div id="bottomText2">长按上图「识别二维码」</div>
 </body>

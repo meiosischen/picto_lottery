@@ -99,7 +99,7 @@
             <table id="merchantTab" cellpadding="10">
                 <tr>
                     <td width="15%">用户名</td>
-                    <td width="70%">${merchant.mechantName}</td>
+                    <td width="70%">${merchant.merchantName}</td>
                     <td width="15%"></td>
                 </tr>
                 <tr>
@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <td>店铺名称</td>
-                    <td><input id="merchantName" type="text" name="mechantName" value="${merchant.mechantName}" /></td>
+                    <td><input id="merchantName" type="text" name="merchantName" value="${merchant.merchantName}" /></td>
                     <td><span class="message"> *不多于20个汉字</span></td>
                 </tr>
                 <tr>
@@ -143,10 +143,10 @@
                 <tr>
                     <td>存奖二维码</td>
                     <td class="qrcode">
-                        <img id="mechantQrcodeImg" src="${merchant.mechantQrcode}" />
-                        <input id="mechantQrcode" type="hidden" name="mechantQrcode" value="${merchant.mechantQrcode}" />
-                        <input id="mechantQrcodeFile" type="file" name="file"/>
-                        <input type="button" value="上传" onclick="uploadImg('mechantQrcodeFile', 'mechantQrcodeImg', 'mechantQrcode')" />
+                        <img id="merchantQrcodeImg" src="${merchant.merchantQrcode}" />
+                        <input id="merchantQrcode" type="hidden" name="merchantQrcode" value="${merchant.merchantQrcode}" />
+                        <input id="merchantQrcodeFile" type="file" name="file"/>
+                        <input type="button" value="上传" onclick="uploadImg('merchantQrcodeFile', 'merchantQrcodeImg', 'merchantQrcode')" />
                     </td>
                     <td></td>
                 </tr>
@@ -199,6 +199,15 @@
                     <td>主营业务</td>
                     <td><input id="mainBusiness" type="text" name="mainBusiness" value="${merchant.mainBusiness}" /></td>
                     <td><span class="message">*不多于10个汉字</span></td>
+                </tr>
+                <tr>
+                    <td>状态</td>
+                    <td>
+                    	<span>
+                    		<input type="radio" name="state" value="1" ${merchant.state == 1 ? "checked" : ""} />运营中
+                   	 		<input type="radio" name="state" value="0" ${merchant.state == 0 ? "checked" : ""} />维护中
+                    	</span>
+                    </td>
                 </tr>
                 <tr>
                     <td>备注</td>

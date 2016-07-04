@@ -34,10 +34,10 @@
                 <c:forEach items="${allMerchants}" var="merchant">
                     <c:choose>
                         <c:when test="${selectedMerchantId != null and selectedMerchantId == merchant.id}">
-                            <option value="${merchant.id}" selected="true">${merchant.mechantName}</option>
+                            <option value="${merchant.id}" selected="true">${merchant.merchantName}</option>
                         </c:when>
                         <c:otherwise>
-                            <option value="${merchant.id}">${merchant.mechantName}</option>
+                            <option value="${merchant.id}">${merchant.merchantName}</option>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
@@ -65,7 +65,7 @@
             </thead>
             <c:forEach items="${merchants}" var="merchant">
                 <tr ondblclick="editMerchant('${merchant.id}')">
-                    <td>${merchant.mechantName}</td>
+                    <td>${merchant.merchantName}</td>
                     <td>${merchant.brand}</td>
                     <td>${merchant.getCouponSaveTypeDesc()}</td>
                     <td><img src="${merchant.lotteryQrcode}" /></td>
