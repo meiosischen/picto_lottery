@@ -28,6 +28,7 @@ package com.picto.controller.front;
 import com.picto.constants.Constants;
 import com.picto.dao.CouponTypeDao;
 import com.picto.dao.DiscountProductDao;
+import com.picto.dao.MerchantDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.*;
 import com.picto.enums.CouponTypeEnum;
@@ -38,6 +39,7 @@ import com.picto.util.DateUtil;
 import com.picto.util.ListUtil;
 import com.picto.util.StringUtil;
 import com.picto.util.WechatUtil;
+
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +73,8 @@ public class LotteryController {
     private CouponService couponService;
     @Autowired
     private CouponTypeDao couponTypeDao;
+    @Autowired
+    private MerchantDao couponMerchantDao;
     @Autowired
     private OperationRecordDao operationRecordDao;
     @Autowired
@@ -169,6 +174,11 @@ public class LotteryController {
                 logger.info("奖项id=" + luckyCouponTypeId + "有一个优惠产品name=" + discountProduct.getName());
                 Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
                 model.addAttribute("coupon", coupon);
+                
+                //获取优惠券商家信息（可能本店，也可能是外放店铺）
+                Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
+                model.addAttribute("couponMerchant", couponMerchant);
+                
                 String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                         : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
                 model.addAttribute("expireDateStr", expireDateStr);

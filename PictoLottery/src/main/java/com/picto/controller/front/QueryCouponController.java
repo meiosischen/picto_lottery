@@ -33,7 +33,9 @@ public class QueryCouponController {
     @Autowired
     private CouponService couponService;
     @Autowired
-    private MerchantDao merchantDao;
+    private MerchantDao merchantDao;			//当前商家
+    @Autowired
+    private MerchantDao couponMerchantDao;    	//优惠券商家，有外放，优惠券不一定是当前商家，该变量在view coupon中用到
     @Value("${environment}")
     private String environment;
 
@@ -45,7 +47,7 @@ public class QueryCouponController {
         String openId = "";
         if (Constants.ENV_DEV.equals(environment)) {
             openId = "TEST555511118888";
-        }else if (code != null) {
+        } else if (code != null) {
             openId = WechatUtil.getOpenIdByCode(code);
         }
 
@@ -63,6 +65,8 @@ public class QueryCouponController {
         } else {
             coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
         }
+        
+        
         model.addAttribute("coupons", coupons);
         model.addAttribute("queryMerchant", queryMerchant);
         if (null != isQuery) {
@@ -77,14 +81,18 @@ public class QueryCouponController {
     public String viewCoupon(@RequestParam("couponId") Integer couponId,
                              @RequestParam(value = "isQuery", required = false) Integer isQuery, Model model) {
         logger.info("查看优惠券couponId=" + couponId + ", isQuery=" + isQuery);
+        
         Coupon coupon = couponService.queryCouponById(couponId);
-        model.addAttribute("coupon", coupon);
+        model.addAttribute("coupon", coupon);      
+        
+        //获取优惠券商家信息
+        Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
+        model.addAttribute("couponMerchant", couponMerchant);        
+        
         String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                 : DateUtil.formatDate(coupon.getCreateTime(), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
         model.addAttribute("expireDateStr", expireDateStr);
 
-        Merchant merchant = merchantDao.queryMerchantById(coupon.getMerchantId());
-        model.addAttribute("merchant", merchant);
         if (null != isQuery) {
             model.addAttribute("isQuery", isQuery);
         }

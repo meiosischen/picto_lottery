@@ -12,7 +12,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>${merchant.brand}</title>
+    <title>${couponMerchant.brand}</title>
     <meta name = "format-detection" content = "telephone=no">
     <link rel="stylesheet" href="/css/front/couponInfo.css" />
     <script src="/js/jquery-2.2.4.min.js"></script>
@@ -61,10 +61,10 @@
     <div id="top">
         <div id="merchantInfo">
             <div id="location">
-                <img src="/images/location.png" /><span>${merchant.address}</span>
+                <img src="/images/location.png" /><span>${couponMerchant.address}</span>
             </div>
             <div id="phone">
-                <img src="/images/phone.png" /><a href="tel:${merchant.phone}"><span>${merchant.phone}</span></a>
+                <img src="/images/phone.png" /><a href="tel:${couponMerchant.phone}"><span>${couponMerchant.phone}</span></a>
             </div>
         </div>
         <div id="exchangeText">
@@ -100,10 +100,10 @@
     <div id="bannerAdvert">
         <c:choose>
             <c:when test="${isQuery == 1}">
-                <img src="${merchant.queryAdvert}" />
+                <img src="${couponMerchant.queryAdvert}" />
             </c:when>
             <c:otherwise>
-                <img src="${merchant.bannerAdvert}" />
+                <img src="${couponMerchant.bannerAdvert}" />
             </c:otherwise>
         </c:choose>
     </div>
