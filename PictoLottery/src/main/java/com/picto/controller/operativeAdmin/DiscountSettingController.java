@@ -76,6 +76,14 @@ public class DiscountSettingController {
     public String addDiscountProduct(DiscountProduct discountProduct) {
         discountProduct.setState(1);
         discountProduct.setCreateTime(new Date());
+        
+        //设置店铺名称
+        if(StringUtil.isBlank(discountProduct.getStoreName())) {
+        	String storeName = merchantDao.queryMerchantById(discountProduct.getMerchantId())
+        								  .getMerchantName();
+        	discountProduct.setStoreName(storeName);
+        }
+        
         discountProductDao.add(discountProduct);
         return "redirect:/admin/getAllDiscounts.do?merchantId=" + discountProduct.getMerchantId();
     }
