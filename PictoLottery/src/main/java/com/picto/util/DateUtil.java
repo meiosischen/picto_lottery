@@ -17,6 +17,12 @@ public class DateUtil {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+    
+    public static Date getTodayTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        return cal.getTime();
+    }
 
     public static Date addHours(Date date, Integer hours) {
         Calendar calendar = Calendar.getInstance();
@@ -72,4 +78,26 @@ public class DateUtil {
         calendar.add(Calendar.DAY_OF_MONTH, days);
         return calendar.getTime();
     }
+    
+    /**
+     * 获取N天后的日期时间
+     * @param current
+     * @param months
+     * @param isZero
+     * @return
+     */    
+    public static Date addDays(Date date, Integer days, boolean isZero) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, days);
+        
+        if (isZero) {
+        	cal.set(Calendar.HOUR_OF_DAY, 0);
+        	cal.set(Calendar.MINUTE, 0);
+        	cal.set(Calendar.SECOND, 0);
+        	cal.set(Calendar.MILLISECOND, 0);
+        }
+        
+        return cal.getTime();
+    }    
 }
