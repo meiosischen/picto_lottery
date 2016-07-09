@@ -8,10 +8,14 @@ import com.picto.entity.*;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
 import com.picto.util.StringUtil;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -69,20 +73,28 @@ public class CouponServiceImpl implements CouponService {
     public Coupon queryCouponById(Integer selectedCouponId) {
         return couponDao.queryCouponById(selectedCouponId);
     }
-
+    
     public String exchange(Integer couponId) {
         Coupon coupon = couponDao.queryCouponById(couponId);
         if (null == coupon) {
             return "优惠券不存在";
         }
+
         if (coupon.getExpiredTime().compareTo(new Date()) < 0) {
             return "优惠券已过期";
         }
+
         //不可重用的优惠只能兑换一次
         if (!coupon.getIsShared() && Constants.COUPON_STATE_EXCHANGED == coupon.getState().intValue()) {
             return "优惠券已兑换过";
         }
-
+        
+        //次日使用优惠券检查
+        if (!coupon.getIsImediate()
+        		&& !this.nonImmediateValidator(coupon.getCreateTime())) {
+        	return "优惠券次日生效";
+        }
+        
         //更新优惠券状态
         coupon.setState(Constants.COUPON_STATE_EXCHANGED);
         coupon.setUpdateTime(new Date());
@@ -137,4 +149,11 @@ public class CouponServiceImpl implements CouponService {
 
         return serialNumber;
     }
+
+    private boolean nonImmediateValidator(Date createdDT) {
+    	Date couponValidDay = DateUtil.addDays(createdDT, 1, false);
+    	Date today = DateUtil.getTodayTime();
+    	
+    	return today.after(couponValidDay);
+    }    
 }
