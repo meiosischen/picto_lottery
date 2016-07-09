@@ -169,15 +169,19 @@ public class LotteryController {
                 logger.info("奖项下[id=" + luckyCouponTypeId + "]没有优惠产品");
                 return "front/thanks";
             } else if (discountProducts.size() == 1) {
+            	logger.info("What the mother fuck!!!!");
+            	
                 //生成优惠券并跳转到优惠券信息页
                 DiscountProduct discountProduct = discountProducts.get(0);
                 logger.info("奖项id=" + luckyCouponTypeId + "有一个优惠产品name=" + discountProduct.getName());
                 Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
                 model.addAttribute("coupon", coupon);
+                logger.info("coupon.merchant_id = " + coupon.getMerchantId() + ", coupon.merchant_name = " + coupon.getStoreName());
                 
                 //获取优惠券商家信息（可能本店，也可能是外放店铺）
                 Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
                 model.addAttribute("couponMerchant", couponMerchant);
+                logger.info("couponMerchant.merchant_id = " + couponMerchant.getId() + ", couponMerchant.merchant_name = " + couponMerchant.getMerchantName());
                 
                 String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                         : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
