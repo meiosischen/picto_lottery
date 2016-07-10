@@ -86,7 +86,7 @@ public class LotteryController {
     @RequestMapping("lottery")
     public String lottery(@RequestParam("code") String code, Model model, HttpServletRequest request)
             throws IOException, JSONException {
-        logger.info("校验抽奖");
+        logger.info("Verify lottery action");
         Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
         logger.info("merchantId=" + merchant.getId() + ",code=" + code);
 
@@ -121,10 +121,10 @@ public class LotteryController {
             } else {
                 success = true;//校验成功,开始抽奖
 
-                logger.info("开始抽奖openid=" + openid);
+                logger.info("Began lottery action: openid=" + openid);
                 //生成中奖的奖项
                 CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId());
-                logger.info("抽到奖项couponType=" + couponType);
+                logger.info("Got coupon: couponType=" + couponType);
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
@@ -155,8 +155,9 @@ public class LotteryController {
     @RequestMapping("lotteryFinish")
     public String lotteryFinish(@RequestParam("luckyCouponTypeId") String luckyCouponTypeId, @RequestParam("openid") String openid,
         Model model, HttpServletRequest request) {
-        logger.info("抽奖完毕,生成奖项luckyCouponTypeId=" + luckyCouponTypeId + ",openid=" + openid);
+        logger.info("Lottery finished and generate result: luckyCouponTypeId=" + luckyCouponTypeId + ",openid=" + openid);
         if (StringUtil.isBlank(luckyCouponTypeId)) {
+        	logger.info("No lucky and go to thanks page");
             return "front/thanks";
         } else {
             Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
@@ -166,14 +167,12 @@ public class LotteryController {
             CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
             //奖项下有多个优惠，提供优惠选择
             if (ListUtil.isEmptyList(discountProducts)) {
-                logger.info("奖项下[id=" + luckyCouponTypeId + "]没有优惠产品");
+                logger.info("No discount product under coupon [id=" + luckyCouponTypeId + "]");
                 return "front/thanks";
-            } else if (discountProducts.size() == 1) {
-            	logger.info("What the mother fuck!!!!");
-            	
+            } else if (discountProducts.size() == 1) {            	
                 //生成优惠券并跳转到优惠券信息页
                 DiscountProduct discountProduct = discountProducts.get(0);
-                logger.info("奖项id=" + luckyCouponTypeId + "有一个优惠产品name=" + discountProduct.getName());
+                logger.info("Coupon [id=" + luckyCouponTypeId + "has one discount product [name=" + discountProduct.getName() + "]");
                 Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
                 model.addAttribute("coupon", coupon);
                 logger.info("coupon.merchant_id = " + coupon.getMerchantId() + ", coupon.merchant_name = " + coupon.getStoreName());
@@ -189,7 +188,7 @@ public class LotteryController {
                 return "front/couponInfo";
             } else {
                 //奖项下有多个优惠产品，提供选择页面
-                logger.info("奖项id=" + luckyCouponTypeId + "有多个优惠产品");
+                logger.info("Mutilple discount products under coupon [id=" + luckyCouponTypeId + "]");
                 model.addAttribute("disproducts", discountProducts);
                 model.addAttribute("couponTypeName", couponType.getName());
                 model.addAttribute("openid", openid);
@@ -202,7 +201,7 @@ public class LotteryController {
     @RequestMapping("/exchangeCoupon")
     @ResponseBody
     public Map<String, Object> exchangeCoupon(HttpServletRequest request) {
-        logger.info("兑换优惠券");
+        logger.info("Exchange coupon");
         Map<String, Object> retMap = new HashMap<String, Object>();
         String couponIdStr = request.getParameter("couponId");
         logger.info("couponId=" + couponIdStr);
