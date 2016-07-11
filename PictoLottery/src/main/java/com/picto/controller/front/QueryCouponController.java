@@ -9,6 +9,7 @@ import com.picto.util.DateUtil;
 import com.picto.util.ListUtil;
 import com.picto.util.StringUtil;
 import com.picto.util.WechatUtil;
+
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +92,8 @@ public class QueryCouponController {
         model.addAttribute("couponMerchant", couponMerchant);        
         
         String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                : DateUtil.formatDate(coupon.getCreateTime(), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+        
         model.addAttribute("expireDateStr", expireDateStr);
 
         if (null != isQuery) {
