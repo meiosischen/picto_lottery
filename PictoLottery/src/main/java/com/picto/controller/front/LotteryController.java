@@ -157,7 +157,6 @@ public class LotteryController {
         Model model, HttpServletRequest request) {
         logger.info("Lottery finished and generate result: luckyCouponTypeId=" + luckyCouponTypeId + ",openid=" + openid);
         if (StringUtil.isBlank(luckyCouponTypeId)) {
-        	logger.info("No lucky and go to thanks page");
             return "front/thanks";
         } else {
             Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
@@ -175,12 +174,10 @@ public class LotteryController {
                 logger.info("Coupon [id=" + luckyCouponTypeId + "has one discount product [name=" + discountProduct.getName() + "]");
                 Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
                 model.addAttribute("coupon", coupon);
-                logger.info("coupon.merchant_id = " + coupon.getMerchantId() + ", coupon.merchant_name = " + coupon.getStoreName());
                 
                 //获取优惠券商家信息（可能本店，也可能是外放店铺）
                 Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
                 model.addAttribute("couponMerchant", couponMerchant);
-                logger.info("couponMerchant.merchant_id = " + couponMerchant.getId() + ", couponMerchant.merchant_name = " + couponMerchant.getMerchantName());
                 
                 String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                         : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
