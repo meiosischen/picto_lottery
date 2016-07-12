@@ -182,6 +182,10 @@ public class LotteryController {
                 String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                         : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
                 model.addAttribute("expireDateStr", expireDateStr);
+                
+                //set advert query or banner (see couponInfo.jsp)
+                model.addAttribute("isQuery", coupon.getIsShared());
+                
                 return "front/couponInfo";
             } else {
                 //奖项下有多个优惠产品，提供选择页面
