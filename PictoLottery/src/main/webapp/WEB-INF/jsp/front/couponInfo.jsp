@@ -99,7 +99,7 @@
     </div>
     <div id="bannerAdvert">
         <c:choose>
-            <c:when test="${isQuery == true}">
+            <c:when test="${isQuery == 1}">
                 <img src="${couponMerchant.queryAdvert}" />
             </c:when>
             <c:otherwise>

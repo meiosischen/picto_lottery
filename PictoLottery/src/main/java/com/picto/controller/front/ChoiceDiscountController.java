@@ -1,11 +1,13 @@
 package com.picto.controller.front;
 
 import com.picto.dao.DiscountProductDao;
+import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.DiscountProduct;
 import com.picto.entity.Merchant;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class ChoiceDiscountController {
     private DiscountProductDao discountProductDao;
     @Autowired
     private CouponService couponService;
+    @Autowired
+    private MerchantDao couponMerchantDao;    
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
@@ -38,9 +42,18 @@ public class ChoiceDiscountController {
         DiscountProduct discountProduct = discountProductDao.queryDiscountById(selectedDiscountProductId);
         Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
         model.addAttribute("coupon", coupon);
+
+        //获取优惠券商家信息（可能本店，也可能是外放店铺）
+        Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
+        model.addAttribute("couponMerchant", couponMerchant);
+        
         String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
                 : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
         model.addAttribute("expireDateStr", expireDateStr);
+        
+        //set advert query or banner (see couponInfo.jsp)
+        model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
+        
         return "front/couponInfo";
     }
 }

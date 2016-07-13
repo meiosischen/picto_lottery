@@ -184,7 +184,7 @@ public class LotteryController {
                 model.addAttribute("expireDateStr", expireDateStr);
                 
                 //set advert query or banner (see couponInfo.jsp)
-                model.addAttribute("isQuery", coupon.getIsShared());
+                model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
                 
                 return "front/couponInfo";
             } else {
@@ -205,7 +205,7 @@ public class LotteryController {
         logger.info("Exchange coupon");
         Map<String, Object> retMap = new HashMap<String, Object>();
         String couponIdStr = request.getParameter("couponId");
-        logger.info("couponId=" + couponIdStr);
+        logger.info("couponId [" + couponIdStr + "]");
         String msg = couponService.exchange(Integer.valueOf(couponIdStr));
         if (!StringUtil.isBlank(msg)) {
             retMap.put("errorMsg", msg);

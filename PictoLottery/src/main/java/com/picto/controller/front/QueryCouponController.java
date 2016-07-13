@@ -74,7 +74,7 @@ public class QueryCouponController {
         if (null != isQuery) {
             model.addAttribute("isQueury", isQuery);
         }
-        logger.info("查询商家 " + queryMerchant);
+        logger.info("Query merchant [" + queryMerchant + "]");
 
         return "front/couponList";
     }
@@ -82,7 +82,7 @@ public class QueryCouponController {
     @RequestMapping("viewCoupon")
     public String viewCoupon(@RequestParam("couponId") Integer couponId,
                              @RequestParam(value = "isQuery", required = false) Integer isQuery, Model model) {
-        logger.info("查看优惠券couponId=" + couponId + ", isQuery=" + isQuery);
+        logger.info("Query Coupon [ couponId=" + couponId + ", isQuery=" + isQuery + "]");
         
         Coupon coupon = couponService.queryCouponById(couponId);
         model.addAttribute("coupon", coupon);      

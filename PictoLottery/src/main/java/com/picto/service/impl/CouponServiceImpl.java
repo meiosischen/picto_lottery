@@ -55,8 +55,7 @@ public class CouponServiceImpl implements CouponService {
         coupon.setLimitMsg(discountProduct.getLimitMsg());
         coupon.setStoreName(StringUtil.isBlank(discountProduct.getStoreName()) ? merchant.getMerchantName() : discountProduct.getStoreName());
         coupon.setState(Constants.COUPON_STATE_EFFECTED);
-        coupon.setCreateTime(new Date());
-        coupon.setIsShared(!merchant.getId().equals(discountProduct.getMerchantId()));        
+        coupon.setCreateTime(new Date());    
         couponDao.addCoupon(coupon);
 
         //更新抽奖记录的优惠券号
