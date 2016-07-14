@@ -80,12 +80,13 @@ public class CouponServiceImpl implements CouponService {
             return "优惠券不存在";
         }
 
-        if (coupon.getExpiredTime().compareTo(new Date()) < 0) {
+        if (coupon.getExpiredTime().before(new Date())) {
             return "优惠券已过期";
         }
 
         //不可重用的优惠只能兑换一次
-        if (!coupon.getIsShared() && Constants.COUPON_STATE_EXCHANGED == coupon.getState().intValue()) {
+        boolean isShared = coupon.getIsShared() == null ? false : coupon.getIsShared();
+        if (!isShared && Constants.COUPON_STATE_EXCHANGED == coupon.getState().intValue()) {
             return "优惠券已兑换过";
         }
         
