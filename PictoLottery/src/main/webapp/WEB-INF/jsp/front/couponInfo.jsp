@@ -27,6 +27,7 @@
         });
         function toggleExchangeInfo(){
             $("#wrapper").toggle();
+            $("#info2").html("点击后，本券将失效！");
         }
         function exchange() {
             var couponId = '${coupon.id}';
@@ -41,15 +42,11 @@
                         $("#exchangeBtn").hide();
                         $("#exchangeText").html("<span style=\"border:solid 2px white;padding: 2px;margin-top:15%;display:block;\">已兑换</span>");
                     } else {
-                        $("#errorMsg").html(data.errorMsg);
-                        $("#curtainText").hide();
-                        $("#curtain").css("background-image", "none");
+                        $("#info2").html(data.errorMsg);
                     }
                 },
                 error: function(){
-                    $("#errorMsg").html("系统错误");
-                    $("#curtainText").hide();
-                    $("#curtain").css("background-image", "none");
+                	$("#info2").html(data.errorMsg);
                 }
             });
         }
@@ -123,13 +120,13 @@
         </div>
         <div id="bottom2">
             优惠码：${coupon.serialNumber} <br />
-            <img src="${merchant.merchantQrcode}" />
+            <img src="${couponMerchant.merchantQrcode}" />
         </div>
     </div>
 </div>
 <div id="wrapper">
     <div id="exchangeInfo">
-        <div id="info1" onclick="exchange()"><img src="/images/exchangeBtn.png" /></div>
+        <div style="margin-right: 5px;" id="info1" onclick="exchange()"><img src="/images/exchangeBtn.png" /></div>
         <div id="info2" onclick="exchange()">点击后，本券将失效！</div>
         <div id="info3" onclick="toggleExchangeInfo()"><img src="/images/closeButton.png" /></div>
         <div style="clear:both;"></div>
