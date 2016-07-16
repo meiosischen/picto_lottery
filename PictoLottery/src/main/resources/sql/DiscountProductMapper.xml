@@ -107,4 +107,9 @@
         <include refid="queryRelAllColumn" />
         where id = #{relId}
     </select>
+    
+    <select id="queryRelByCouponTypeAndDiscount" resultType="com.picto.entity.CouponTypeDiscountRel">
+        <include refid="queryRelAllColumn" />
+        where coupon_type_id=#{ctId} and discount_product_id=#{dpId}
+    </select>
 </mapper>

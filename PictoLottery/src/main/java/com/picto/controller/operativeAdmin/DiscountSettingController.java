@@ -33,7 +33,8 @@ public class DiscountSettingController {
     private CouponSettingService couponSettingService;
     @Autowired
     private CouponTypeDao couponTypeDao;
-
+    
+    
     @RequestMapping("getAllDiscounts")
     public String getAllDiscounts(@RequestParam(value = "merchantId", required = false) Integer merchantId, Model model) {
         List<Merchant> allMerchants = merchantDao.queryAllMerchants();
@@ -174,8 +175,15 @@ public class DiscountSettingController {
     }
 
     @RequestMapping("bindDiscount")
-    public String bindDiscount(@RequestParam("discountProductId") Integer discountProductId, @RequestParam("couponTypeId") Integer couponTypeId) {
-        CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
+    public String bindDiscount(@RequestParam("discountProductId") Integer discountProductId, @RequestParam("couponTypeId") Integer couponTypeId) {    	
+    	CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
+    	
+    	//avoid duplicated bind
+    	CouponTypeDiscountRel relQuery = discountProductDao.queryRelByCouponTypeAndDiscount(couponTypeId, discountProductId);
+    	if(relQuery != null){
+    		return "redirect:/admin/getAllCouponTypes.do?merchantId=" + couponType.getMerchantId();
+    	}    	
+    	
         CouponTypeDiscountRel rel = new CouponTypeDiscountRel();
         rel.setCouponTypeId(couponTypeId);
         rel.setDiscountProductId(discountProductId);
