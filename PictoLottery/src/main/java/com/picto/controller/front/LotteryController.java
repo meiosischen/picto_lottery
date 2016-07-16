@@ -91,7 +91,7 @@ public class LotteryController {
         if(merchant == null) {
         	logger.error("merchant is null, ignore the request");
             model.addAttribute("errorMsg", "merchant is empty");
-            return "front/startLotteryError";
+            return null;
         }
         logger.info("merchantId=" + merchant.getId() + ",code=" + code);
 
@@ -165,7 +165,11 @@ public class LotteryController {
             return "front/thanks";
         } else {
             Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
-
+            if(merchant == null) {
+            	logger.error("merchant is null, ignore the request");
+                model.addAttribute("errorMsg", "merchant is empty");
+                return null;
+            }
             List<DiscountProduct> discountProducts = discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
             Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
             CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
@@ -189,11 +193,6 @@ public class LotteryController {
                 model.addAttribute("expireDateStr", expireDateStr);
                 
                 //set advert query or banner (see couponInfo.jsp)
-                if(merchant == null) {
-                	logger.error("merchant is null, ignore the request");
-                    model.addAttribute("errorMsg", "merchant is empty");
-                    return "front/startLotteryError";
-                }
                 model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
                 
                 return "front/couponInfo";
