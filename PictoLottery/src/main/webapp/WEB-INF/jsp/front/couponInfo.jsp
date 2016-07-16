@@ -105,8 +105,6 @@
         </c:choose>
     </div>
 
-
-
     <div id="bottom">
         <div id="bottom1">
             <div id="expireDate">有效期：${expireDateStr}</div>

@@ -152,7 +152,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private boolean nonImmediateValidator(Date createdDT) {
-    	Date couponValidDay = DateUtil.addDays(createdDT, 1, false);
+    	Date couponValidDay = DateUtil.addDays(createdDT, 1, true);
     	Date today = DateUtil.getTodayTime();
     	
     	return today.after(couponValidDay);
