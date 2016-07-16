@@ -140,6 +140,7 @@
                         <td width="10%">奖项名称</td>
                         <td width="10%">奖项图标</td>
                         <td width="10%">奖项数量</td>
+                        <td width="10%">剩余数量</td>
                         <td width="10%">奖项占比</td>
                         <td width="5%">重置时间</td>
                         <td width="10%">奖项类型</td>
@@ -155,6 +156,7 @@
                             <td>${couponType.name}</td>
                             <td><img src="${couponType.icon}" /></td>
                             <td>${couponType.totalNum}</td>
+                            <td>${couponType.restNum}</td>
                             <td>${couponType.percent}%</td>
                             <td>${couponType.resetInterval}</td>
                             <td>${couponType.typeName}</td>
