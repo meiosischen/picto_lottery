@@ -52,6 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -87,7 +88,12 @@ public class LotteryController {
     public String lottery(@RequestParam("code") String code, Model model, HttpServletRequest request)
             throws IOException, JSONException {
         logger.info("Verify lottery action");
-        Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
+        HttpSession session = request.getSession(false);
+        Merchant merchant = null;
+        if (session != null) {
+        	merchant  = (Merchant) session.getAttribute("merchant");
+        }
+
         if(merchant == null) {
         	logger.error("merchant is null, ignore the request");
             model.addAttribute("errorMsg", "merchant is empty");
