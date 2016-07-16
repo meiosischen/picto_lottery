@@ -69,9 +69,11 @@
                 $("#r3 img").attr("src", showIcons[2]);
             }, 10200);
 
-            setTimeout(function(){
-                window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}' + "&openid=${openid}");
-            }, 13000);
+            if (window.location.pathname.search("lotteryFinish") < 0) {
+                setTimeout(function(){
+                    window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}' + "&openid=${openid}");
+                }, 13000);
+            }
 
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
