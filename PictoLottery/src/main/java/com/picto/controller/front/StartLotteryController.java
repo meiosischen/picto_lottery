@@ -29,7 +29,7 @@ public class StartLotteryController {
     @RequestMapping(value = "/startLottery", method = RequestMethod.GET)
     public String startLottery(@RequestParam("merchantId") Integer merchantId, @RequestParam("code") String code,
                                Model model, HttpServletRequest request) {
-        logger.info("进入买单先生页面merchantId=" + merchantId + ",code=" + code);
+        logger.info("Enter into MR.Prize merchantId=" + merchantId + ",code=" + code);
         Merchant merchant = merchantDao.queryMerchantById(merchantId);
 
 //      model.addAttribute("merchant", merchant);
