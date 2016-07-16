@@ -88,7 +88,7 @@ public class LotteryController {
             throws IOException, JSONException {
         logger.info("Verify lottery action");
         Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
-        logger.info("merchantId=" + merchant.getId() + ",code=" + code);
+        logger.info("merchantId=" + (merchant.getId() == null ? "0" : merchant.getId()) + ",code=" + code);
 
         String openid = null;
         boolean success = false;
@@ -184,7 +184,7 @@ public class LotteryController {
                 model.addAttribute("expireDateStr", expireDateStr);
                 
                 //set advert query or banner (see couponInfo.jsp)
-                model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
+                model.addAttribute("isQuery", merchant.getId() == null ? 0 : (merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1));
                 
                 return "front/couponInfo";
             } else {
