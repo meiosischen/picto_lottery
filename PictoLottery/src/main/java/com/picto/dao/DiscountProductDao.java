@@ -35,4 +35,6 @@ public interface DiscountProductDao {
     void deleteRel(@Param("relId") Integer relId);
 
     CouponTypeDiscountRel queryRelByRelId(@Param("relId") Integer relId);
+    
+    CouponTypeDiscountRel queryRelByCouponTypeAndDiscount(@Param("ctId") Integer ctId, @Param("dpId") Integer dpId);
 }
