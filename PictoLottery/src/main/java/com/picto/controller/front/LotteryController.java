@@ -90,13 +90,13 @@ public class LotteryController {
             throws IOException, JSONException {
         logger.info("Verify lottery action");
         logger.info("IP [" + HttpsUtil.getIpAddr(request) + "]");
-        logger.info("Session ID [" + request.getSession().getId() + "]");        
         
         HttpSession session = request.getSession(false);
         if(session == null) {
         	logger.info("Session is not created");
         	return "front/startLottery";
         }
+        logger.info("Session ID [" + request.getSession().getId() + "]");
 
         Merchant merchant  = (Merchant) session.getAttribute("merchant");        
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
@@ -135,7 +135,7 @@ public class LotteryController {
                 logger.info("Began lottery action: openid=" + openid);
                 //生成中奖的奖项
                 CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId());
-                logger.info("Got coupon: couponType=" + couponType);
+                logger.info("Got coupon: couponType ID [" + couponType.getId() + "], name [" + couponType.getName() + "]");
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
