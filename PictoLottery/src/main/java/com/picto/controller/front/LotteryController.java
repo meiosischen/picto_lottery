@@ -36,6 +36,7 @@ import com.picto.service.CouponService;
 import com.picto.service.LotteryService;
 import com.picto.service.StartLotteryService;
 import com.picto.util.DateUtil;
+import com.picto.util.HttpsUtil;
 import com.picto.util.ListUtil;
 import com.picto.util.StringUtil;
 import com.picto.util.WechatUtil;
@@ -87,13 +88,16 @@ public class LotteryController {
     public String lottery(@RequestParam("code") String code, Model model, HttpServletRequest request)
             throws IOException, JSONException {
         logger.info("Verify lottery action");
+        logger.info("IP [" + HttpsUtil.getIpAddr(request) + "]");
+        logger.info("Session ID [" + request.getSession().getId() + "]");        
+        
         Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
         if(merchant == null) {
         	logger.error("merchant is null, ignore the request");
-            model.addAttribute("errorMsg", "merchant is empty");
             return null;
         }
-        logger.info("merchantId=" + merchant.getId() + ",code=" + code);
+        
+        logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
 
         String openid = null;
         boolean success = false;
@@ -113,7 +117,7 @@ public class LotteryController {
             }
 
             request.getSession().setAttribute("openid", openid);
-            logger.info("openId=" + openid);
+            logger.info("openId [" + openid + "]");
             
             //check merchant state
             if(merchant.getState() == 0) {
@@ -165,11 +169,13 @@ public class LotteryController {
             return "front/thanks";
         } else {
             Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
+            
+            //same issue as in "lottery"
             if(merchant == null) {
             	logger.error("merchant is null, ignore the request");
-                model.addAttribute("errorMsg", "merchant is empty");
                 return null;
             }
+            
             List<DiscountProduct> discountProducts = discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
             Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
             CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
