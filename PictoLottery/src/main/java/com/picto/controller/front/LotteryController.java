@@ -91,12 +91,13 @@ public class LotteryController {
         logger.info("Verify lottery action");
         logger.info("IP [" + HttpsUtil.getIpAddr(request) + "]");
         
+        //request.getSession can cause 2-3 times self calling!!!!!
         HttpSession session = request.getSession(false);
         if(session == null) {
         	logger.info("Session is not created");
         	return "front/startLottery";
         }
-        logger.info("Session ID [" + request.getSession().getId() + "]");
+        logger.info("Session ID [" + request.getSession(false).getId() + "]");
 
         Merchant merchant  = (Merchant) session.getAttribute("merchant");        
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
@@ -114,11 +115,11 @@ public class LotteryController {
                 openid = WechatUtil.getOpenIdByCode(code);
                 //防止页面返回键时获取不到openid而报错
                 if (null == openid) {
-                    openid = (String) request.getSession().getAttribute("openid");
+                    openid = (String) request.getSession(false).getAttribute("openid");
                 }
             }
 
-            request.getSession().setAttribute("openid", openid);
+            request.getSession(false).setAttribute("openid", openid);
             logger.info("openId [" + openid + "]");
             
             //check merchant state
@@ -176,7 +177,7 @@ public class LotteryController {
             	return "front/startLottery";
             }        	
         	
-            Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
+            Merchant merchant = (Merchant) request.getSession(false).getAttribute("merchant");
             
             List<DiscountProduct> discountProducts = discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
             Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
