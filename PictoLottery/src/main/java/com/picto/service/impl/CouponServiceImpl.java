@@ -38,7 +38,7 @@ public class CouponServiceImpl implements CouponService {
     private OperationRecordDao operationRecordDao;
 
     public Coupon genCoupon(Integer couponTypeId, DiscountProduct discountProduct, String openid, Merchant merchant) {
-        logger.info("开始生成优惠券couponTypeId=" + couponTypeId + ",discountProductId=" + discountProduct.getId() + ",openid=" + openid);
+        logger.info("Began to generate coupon: couponTypeId [" + couponTypeId + "], discountProductId [" + discountProduct.getId() + "], openid [" + openid + "]");
         CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
         Coupon coupon = new Coupon();
         coupon.setMerchantId(discountProduct.getMerchantId());
