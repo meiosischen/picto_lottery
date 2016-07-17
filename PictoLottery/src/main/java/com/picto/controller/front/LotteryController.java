@@ -53,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -91,12 +92,13 @@ public class LotteryController {
         logger.info("IP [" + HttpsUtil.getIpAddr(request) + "]");
         logger.info("Session ID [" + request.getSession().getId() + "]");        
         
-        Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
-        if(merchant == null) {
-        	logger.error("merchant is null, ignore the request");
-            return null;
+        HttpSession session = request.getSession(false);
+        if(session == null) {
+        	logger.info("Session is not created");
+        	return "front/startLottery";
         }
-        
+
+        Merchant merchant  = (Merchant) session.getAttribute("merchant");        
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
 
         String openid = null;
@@ -168,13 +170,13 @@ public class LotteryController {
         if (StringUtil.isBlank(luckyCouponTypeId)) {
             return "front/thanks";
         } else {
+            HttpSession session = request.getSession(false);
+            if(session == null) {
+            	logger.info("Session is not created");
+            	return "front/startLottery";
+            }        	
+        	
             Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
-            
-            //same issue as in "lottery"
-            if(merchant == null) {
-            	logger.error("merchant is null, ignore the request");
-                return null;
-            }
             
             List<DiscountProduct> discountProducts = discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
             Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
