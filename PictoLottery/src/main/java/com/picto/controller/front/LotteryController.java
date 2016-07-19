@@ -99,9 +99,15 @@ public class LotteryController {
         }
         logger.info("Session ID [" + request.getSession(false).getId() + "]");
 
-        Merchant merchant  = (Merchant) session.getAttribute("merchant");        
-        logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
+        Merchant merchant  = (Merchant) session.getAttribute("merchant");
 
+        if(merchant == null) {
+        	logger.info("Illegal visit - merchant [null]");
+        	return "redirect:/queryCoupon.do?code=" + code;
+        }
+        
+        logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
+        
         String openid = null;
         boolean success = false;
         String errorMsg = null;
@@ -136,10 +142,11 @@ public class LotteryController {
                 logger.info("Began lottery action: openid=" + openid);
                 //生成中奖的奖项
                 CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId());
-                logger.info("Got coupon: couponType ID [" + couponType.getId() + "], name [" + couponType.getName() + "]");
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
+                	logger.info("Got coupon: couponType ID [" + couponType.getId() + "], name [" + couponType.getName() + "]");
+                	
                     String luckyIcon = couponType.getIcon();
                     model.addAttribute("luckyCouponIcon", luckyIcon);
                     showIcons = luckyIcon + "," + luckyIcon + "," + luckyIcon;
