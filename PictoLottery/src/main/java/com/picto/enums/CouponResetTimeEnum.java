@@ -9,7 +9,9 @@ import java.util.List;
 public enum CouponResetTimeEnum {
     ONEDAY(1, "1天"),
     THIRDDAY(3, "3天"),
-    SEVENDAY(7, "7天");
+    SEVENDAY(7, "7天"),
+    FIFTEENDAY(15, "15天"),
+    THIRTYDAY(30, "30天");
 
     private Integer day;
     private String name;
