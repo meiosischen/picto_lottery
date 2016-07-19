@@ -77,8 +77,8 @@
     </script>
 </head>
 <body>
-    <div id="title"><img src="/images/thanks_title.png" /></div>
-    <div id="middleText2">系统升级...</div>
+    <div id="middleText1">系统升级中~</div>
+    <div id="middleText2">敬请期待...</div>
     <div id="qrcode"><img src="${merchant.merchantQrcode}" /></div>
 </body>
 </html>
