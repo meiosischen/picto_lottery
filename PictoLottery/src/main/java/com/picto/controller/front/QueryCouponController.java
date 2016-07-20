@@ -46,29 +46,38 @@ public class QueryCouponController {
                               @RequestParam(value = "merchantId", required = false) Integer merchantId,
                               @RequestParam(value = "isQuery", required = false) Integer isQuery,
                               Model model, HttpServletRequest request) throws IOException, JSONException {
-        String openId = "";
+        
+    	Merchant queryMerchant = merchantDao.queryMerchantById(merchantId);
+    	logger.info("merchantId [" + queryMerchant.getId() + "], code [" + code + "]");
+    	
+    	String openId = "";
         if (Constants.ENV_DEV.equals(environment)) {
             openId = "TEST555511118888";
         } else if (code != null) {
-            openId = WechatUtil.getOpenIdByCode(code);
+            //开发环境
+            if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
+                openId = "TEST555511118888";
+            } else {
+            	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
+                openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
+                //防止页面返回键时获取不到openid而报错
+                if (null == openId) {
+                	String errorMsg = "请从微信公众号进入";
+                    model.addAttribute("errorMsg", errorMsg);
+                    model.addAttribute("merchant", queryMerchant);
+                    return "front/startLotteryError";                	
+                }
+            }
+            logger.info("openId [" + openId + "]");
         }
-
-        if (StringUtil.isBlank(openId)) {
-            openId = (String) request.getSession().getAttribute("openid");
-        }
-        request.getSession().setAttribute("openid", openId);
-        logger.info("merchantId=" + merchantId + ",openId=" + openId);
 
         List<Coupon> coupons = null;
-        Merchant queryMerchant = null;
         if (null != merchantId) {
-            queryMerchant = merchantDao.queryMerchantById(merchantId);
             coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId, openId, new Date());
         } else {
             coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
         }
-        
-        
+
         model.addAttribute("coupons", coupons);
         model.addAttribute("queryMerchant", queryMerchant);
         if (null != isQuery) {

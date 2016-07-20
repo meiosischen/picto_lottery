@@ -103,7 +103,9 @@ public class LotteryController {
 
         if(merchant == null) {
         	logger.info("Illegal visit - merchant [null]");
-        	return "redirect:/queryCoupon.do?code=" + code;
+        	//return "redirect:/queryCoupon.do?code=" + code;
+            model.addAttribute("errorMsg", "该网页已过期，请返回重试");
+            return "front/startLotteryError";
         }
         
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
@@ -118,14 +120,17 @@ public class LotteryController {
             if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
                 openid = "TEST555511118888";
             } else {
-                openid = WechatUtil.getOpenIdByCode(code);
+            	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
+                openid = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
                 //防止页面返回键时获取不到openid而报错
                 if (null == openid) {
-                    openid = (String) request.getSession(false).getAttribute("openid");
+                	errorMsg = "请从微信公众号进入";
+                    model.addAttribute("errorMsg", errorMsg);
+                    model.addAttribute("merchant", merchant);
+                    return "front/startLotteryError";                	
                 }
             }
 
-            request.getSession(false).setAttribute("openid", openid);
             logger.info("openId [" + openid + "]");
             
             //check merchant state
