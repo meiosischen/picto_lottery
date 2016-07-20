@@ -48,21 +48,17 @@ public class QueryCouponController {
                               Model model, HttpServletRequest request) throws IOException, JSONException {
     	
     	String openId = "";
-        if (Constants.ENV_DEV.equals(environment)) {
+        if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
             openId = "TEST555511118888";
         } else if (code != null) {
             //开发环境
-            if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
-                openId = "TEST555511118888";
-            } else {
-            	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
-                openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
-                //防止页面返回键时获取不到openid而报错
-                if (null == openId) {
-                	String errorMsg = "请从微信公众号进入";
-                    model.addAttribute("errorMsg", errorMsg);
-                    return "front/startLotteryError";                	
-                }
+        	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
+            openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
+            //防止页面返回键时获取不到openid而报错
+            if (null == openId) {
+            	String errorMsg = "请从微信公众号进入";
+                model.addAttribute("errorMsg", errorMsg);
+                return "front/startLotteryError";                	
             }
             logger.info("openId [" + openId + "]");
         }
