@@ -46,9 +46,6 @@ public class QueryCouponController {
                               @RequestParam(value = "merchantId", required = false) Integer merchantId,
                               @RequestParam(value = "isQuery", required = false) Integer isQuery,
                               Model model, HttpServletRequest request) throws IOException, JSONException {
-        
-    	Merchant queryMerchant = merchantDao.queryMerchantById(merchantId);
-    	logger.info("merchantId [" + queryMerchant.getId() + "], code [" + code + "]");
     	
     	String openId = "";
         if (Constants.ENV_DEV.equals(environment)) {
@@ -64,26 +61,28 @@ public class QueryCouponController {
                 if (null == openId) {
                 	String errorMsg = "请从微信公众号进入";
                     model.addAttribute("errorMsg", errorMsg);
-                    model.addAttribute("merchant", queryMerchant);
                     return "front/startLotteryError";                	
                 }
             }
             logger.info("openId [" + openId + "]");
         }
 
+        Merchant queryMerchant = null;
         List<Coupon> coupons = null;
         if (null != merchantId) {
+        	queryMerchant = merchantDao.queryMerchantById(merchantId);
+        	logger.info("merchantId [" + queryMerchant.getId() + "]");
+        	model.addAttribute("queryMerchant", queryMerchant);
+        	
             coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId, openId, new Date());
         } else {
             coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
         }
 
         model.addAttribute("coupons", coupons);
-        model.addAttribute("queryMerchant", queryMerchant);
         if (null != isQuery) {
             model.addAttribute("isQueury", isQuery);
         }
-        logger.info("Query merchant [" + queryMerchant + "]");
 
         return "front/couponList";
     }
