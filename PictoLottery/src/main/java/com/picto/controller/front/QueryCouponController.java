@@ -43,7 +43,7 @@ public class QueryCouponController {
 
     @RequestMapping("queryCoupon")
     public String queryCoupon(@RequestParam(value = "code", required = false) String code,
-                              @RequestParam(value = "merchantId", required = false) Integer merchantId,
+                              @RequestParam(value = "merchantId", required = true) Integer merchantId,
                               @RequestParam(value = "isQuery", required = false) Integer isQuery,
                               Model model, HttpServletRequest request) throws IOException, JSONException {
     	
@@ -69,14 +69,22 @@ public class QueryCouponController {
 
         Merchant queryMerchant = null;
         List<Coupon> coupons = null;
-        if (null != merchantId) {
+        if(merchantId == 0) {
+        	//come from Mr.Prize
+        	coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
+        } else {
         	queryMerchant = merchantDao.queryMerchantById(merchantId);
+        	
+        	if(queryMerchant == null) {
+            	String errorMsg = "该商铺不存在";
+                model.addAttribute("errorMsg", errorMsg);
+                return "front/startLotteryError";  
+        	}
+        	
         	logger.info("merchantId [" + queryMerchant.getId() + "]");
         	model.addAttribute("queryMerchant", queryMerchant);
         	
             coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId, openId, new Date());
-        } else {
-            coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
         }
 
         model.addAttribute("coupons", coupons);
