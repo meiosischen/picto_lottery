@@ -52,7 +52,7 @@ public class WechatController {
 
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="
                 + redirectUrl + "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
-        logger.info("跳转到 " + url);
+        logger.info("Redirect to " + url);
         return "redirect:" + url;
     }
 
