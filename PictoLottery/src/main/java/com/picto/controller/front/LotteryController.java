@@ -110,7 +110,7 @@ public class LotteryController {
         
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
         
-        String openid = null;
+        String openId = null;
         boolean success = false;
         String errorMsg = null;
         if (!StringUtils.hasLength(code)) {
@@ -118,12 +118,15 @@ public class LotteryController {
         } else {
             //开发环境
             if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
-                openid = "TEST555511118888";
+            	openId = "TEST555511118888";
             } else {
             	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
-                openid = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
-                //防止页面返回键时获取不到openid而报错
-                if (null == openid) {
+            	if(weChatOpenId != null) {
+            		openId = weChatOpenId;
+            		request.getSession(false).setAttribute("openid", openId);
+            	} else {
+            		//防止页面返回键时获取不到openid而报错
+            		logger.info("openId is null");
                 	errorMsg = "请从微信公众号进入";
                     model.addAttribute("errorMsg", errorMsg);
                     model.addAttribute("merchant", merchant);
@@ -131,22 +134,22 @@ public class LotteryController {
                 }
             }
 
-            logger.info("openId [" + openid + "]");
+            logger.info("openId [" + openId + "]");
             
             //check merchant state
             if(merchant.getState() == 0) {
             	return "front/upgrade";
             }
             
-            boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
+            boolean hadLottery = startLotteryService.judgeHadLottery(openId, merchant.getId());
             if (hadLottery && merchant.getIsValidateOpenid()) {
                 errorMsg = "今日已抽过奖，请明日再来";
             } else {
                 success = true;//校验成功,开始抽奖
 
-                logger.info("Began lottery action: openid=" + openid);
+                logger.info("Began lottery action: openid=" + openId);
                 //生成中奖的奖项
-                CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId());
+                CouponType couponType = lotteryService.lotyCouponType(openId, merchant.getId());
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
@@ -156,7 +159,7 @@ public class LotteryController {
                     model.addAttribute("luckyCouponIcon", luckyIcon);
                     showIcons = luckyIcon + "," + luckyIcon + "," + luckyIcon;
                     model.addAttribute("luckyCouponTypeId", couponType.getId());
-                    model.addAttribute("openid",openid);
+                    model.addAttribute("openid",openId);
                 } else {
                     //谢谢惠顾生成显示的奖项图标
                     showIcons = lotteryService.getUnluckyShowIcons(merchant.getId());
