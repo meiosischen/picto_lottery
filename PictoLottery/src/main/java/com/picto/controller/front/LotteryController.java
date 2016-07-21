@@ -128,11 +128,11 @@ public class LotteryController {
             	
             	if(weChatOpenId != null) {
             		openId = weChatOpenId;
-            		session.setAttribute("openid", openId);
+            		session.setAttribute("openId", openId);
             		logger.info("Set openId [" + weChatOpenId + "] to session");
             		
             	} else {
-            		//防止页面返回键时获取不到openid而报错
+            		//防止页面返回键时获取不到openId而报错
             		logger.info("Got openId [null]");
                 	errorMsg = "请从微信公众号进入";
                     model.addAttribute("errorMsg", errorMsg);
@@ -154,7 +154,7 @@ public class LotteryController {
             } else {
                 success = true;//校验成功,开始抽奖
 
-                logger.info("Began lottery action: openid=" + openId);
+                logger.info("Began lottery action: openId=" + openId);
                 //生成中奖的奖项
                 CouponType couponType = lotteryService.lotyCouponType(openId, merchant.getId());
 
@@ -166,7 +166,7 @@ public class LotteryController {
                     model.addAttribute("luckyCouponIcon", luckyIcon);
                     showIcons = luckyIcon + "," + luckyIcon + "," + luckyIcon;
                     model.addAttribute("luckyCouponTypeId", couponType.getId());
-                    model.addAttribute("openid",openId);
+                    model.addAttribute("openId",openId);
                 } else {
                     //谢谢惠顾生成显示的奖项图标
                     showIcons = lotteryService.getUnluckyShowIcons(merchant.getId());
@@ -187,9 +187,9 @@ public class LotteryController {
     }
 
     @RequestMapping("lotteryFinish")
-    public String lotteryFinish(@RequestParam("luckyCouponTypeId") String luckyCouponTypeId, @RequestParam("openid") String openid,
+    public String lotteryFinish(@RequestParam("luckyCouponTypeId") String luckyCouponTypeId, @RequestParam("openId") String openId,
         Model model, HttpServletRequest request) {
-        logger.info("Lottery finished and generate result: luckyCouponTypeId=" + luckyCouponTypeId + ",openid=" + openid);
+        logger.info("Lottery finished and generate result: luckyCouponTypeId=" + luckyCouponTypeId + ",openId=" + openId);
         if (StringUtil.isBlank(luckyCouponTypeId)) {
             return "front/thanks";
         } else {
@@ -212,7 +212,7 @@ public class LotteryController {
                 //生成优惠券并跳转到优惠券信息页
                 DiscountProduct discountProduct = discountProducts.get(0);
                 logger.info("Coupon [id=" + luckyCouponTypeId + "has one discount product [name=" + discountProduct.getName() + "]");
-                Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
+                Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openId, merchant);
                 model.addAttribute("coupon", coupon);
                 
                 //获取优惠券商家信息（可能本店，也可能是外放店铺）
@@ -232,7 +232,7 @@ public class LotteryController {
                 logger.info("Mutilple discount products under coupon [id=" + luckyCouponTypeId + "]");
                 model.addAttribute("disproducts", discountProducts);
                 model.addAttribute("couponTypeName", couponType.getName());
-                model.addAttribute("openid", openid);
+                model.addAttribute("openId", openId);
                 model.addAttribute("couponTypeId", couponTypeId);
                 return "front/toChoiceDiscount";
             }
