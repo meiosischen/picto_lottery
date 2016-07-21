@@ -17,9 +17,9 @@ public class CouponUtil {
         if (hours < 0) {
             return "已过期";
         } else if (hours < 24) {
-            return hours + "小时后过期";
+            return hours + "小时过期";
         } else {
-            return hours / 24 + "天后过期";
+            return hours / 24 + "天过期";
         }
     }
 
