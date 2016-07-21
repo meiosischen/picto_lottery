@@ -28,7 +28,7 @@
 
         function choiceDiscount(discountProductId){
             window.location.replace("/choiceDiscount.do?selectedDiscountProductId=" + discountProductId
-                    + "&couponTypeId=" + ${couponTypeId} + "&openid=" + '${openid}');
+                    + "&couponTypeId=" + ${couponTypeId} + "&openId=" + '${openId}');
         }
     </script>
 </head>

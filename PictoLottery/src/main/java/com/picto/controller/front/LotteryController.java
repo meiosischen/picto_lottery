@@ -189,7 +189,7 @@ public class LotteryController {
     @RequestMapping("lotteryFinish")
     public String lotteryFinish(@RequestParam("luckyCouponTypeId") String luckyCouponTypeId, @RequestParam("openId") String openId,
         Model model, HttpServletRequest request) {
-        logger.info("Lottery finished and generate result: luckyCouponTypeId=" + luckyCouponTypeId + ",openId=" + openId);
+        logger.info("Lottery finished and generate result: luckyCouponTypeId [" + luckyCouponTypeId + "], openId [" + openId + "]");
         if (StringUtil.isBlank(luckyCouponTypeId)) {
             return "front/thanks";
         } else {
@@ -206,7 +206,7 @@ public class LotteryController {
             CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
             //奖项下有多个优惠，提供优惠选择
             if (ListUtil.isEmptyList(discountProducts)) {
-                logger.info("No discount product under coupon [id=" + luckyCouponTypeId + "]");
+                logger.info("No discount product under couponId [" + luckyCouponTypeId + "]");
                 return "front/thanks";
             } else if (discountProducts.size() == 1) {            	
                 //生成优惠券并跳转到优惠券信息页

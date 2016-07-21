@@ -37,8 +37,8 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private OperationRecordDao operationRecordDao;
 
-    public Coupon genCoupon(Integer couponTypeId, DiscountProduct discountProduct, String openid, Merchant merchant) {
-        logger.info("Began to generate coupon: couponTypeId [" + couponTypeId + "], discountProductId [" + discountProduct.getId() + "], openid [" + openid + "]");
+    public Coupon genCoupon(Integer couponTypeId, DiscountProduct discountProduct, String openId, Merchant merchant) {
+        logger.info("Began to generate coupon: couponTypeId [" + couponTypeId + "], discountProductId [" + discountProduct.getId() + "], openId [" + openId + "]");
         CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
         Coupon coupon = new Coupon();
         coupon.setMerchantId(discountProduct.getMerchantId());
@@ -47,7 +47,7 @@ public class CouponServiceImpl implements CouponService {
         coupon.setDiscountProductId(discountProduct.getId());
         coupon.setExpiredTime(DateUtil.addHours(new Date(), discountProduct.getValidity()));
         coupon.setIcon(discountProduct.getIcon());
-        coupon.setOpenid(openid);
+        coupon.setOpenid(openId);
         coupon.setIsImediate(couponType.getIsImmediate());
         coupon.setDiscount(discountProduct.getDiscount());
         coupon.setIsShared(discountProduct.getIsShared());

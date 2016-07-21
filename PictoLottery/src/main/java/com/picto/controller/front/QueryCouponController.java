@@ -53,8 +53,8 @@ public class QueryCouponController {
         } else if (code != null) {
             //开发环境
         	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
-            openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
-            //防止页面返回键时获取不到openid而报错
+            openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openId") : weChatOpenId;
+            //防止页面返回键时获取不到openId而报错
             if (null == openId) {
             	String errorMsg = "请从微信公众号进入";
                 model.addAttribute("errorMsg", errorMsg);

@@ -28,7 +28,7 @@ public class LotteryServiceImpl implements LotteryService {
     private OperationRecordDao operationRecordDao;
 
     @Transactional
-    public CouponType lotyCouponType(String openid, Integer merchantId) {
+    public CouponType lotyCouponType(String openId, Integer merchantId) {
         //查询所有的奖项
         List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
         if (ListUtil.isEmptyList(couponTypes)) {
@@ -56,7 +56,7 @@ public class LotteryServiceImpl implements LotteryService {
         //生成抽奖记录
         Date current = new Date();
         OperationRecord operationRecord = new OperationRecord();
-        operationRecord.setOpenid(openid);
+        operationRecord.setOpenid(openId);
         operationRecord.setMerchantId(merchantId);
         operationRecord.setType(Constants.OPERATION_TYPE_LOTTERY);
         operationRecord.setOperationTime(current);
