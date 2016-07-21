@@ -110,7 +110,7 @@ public class LotteryController {
         
         logger.info("merchantId [" + merchant.getId() + "], code [" + code + "]");
         
-        String openId = null;
+        String openId = (String) session.getAttribute("openId");
         boolean success = false;
         String errorMsg = null;
         if (!StringUtils.hasLength(code)) {
@@ -119,11 +119,11 @@ public class LotteryController {
             //开发环境
             if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
             	openId = "TEST555511118888";
-            } else {
+            } else if(openId == null) {
             	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
             	if(weChatOpenId != null) {
             		openId = weChatOpenId;
-            		request.getSession(false).setAttribute("openid", openId);
+            		session.setAttribute("openid", openId);
             	} else {
             		//防止页面返回键时获取不到openid而报错
             		logger.info("openId is null");
@@ -132,9 +132,9 @@ public class LotteryController {
                     model.addAttribute("merchant", merchant);
                     return "front/startLotteryError";                	
                 }
+            } else {
+            	logger.info("openId [" + openId + "]");
             }
-
-            logger.info("openId [" + openId + "]");
             
             //check merchant state
             if(merchant.getState() == 0) {
