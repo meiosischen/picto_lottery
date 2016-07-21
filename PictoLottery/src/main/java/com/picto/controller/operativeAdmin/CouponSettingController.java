@@ -10,7 +10,9 @@ import com.picto.enums.CouponResetTimeEnum;
 import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponSettingService;
 import com.picto.util.CouponUtil;
+import com.picto.util.DateUtil;
 import com.picto.util.ListUtil;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -145,12 +147,22 @@ public class CouponSettingController {
         couponType.setTotalNum(cType.getTotalNum());
         couponType.setRestNum(cType.getTotalNum());
         couponType.setIcon(cType.getIcon());
-        couponType.setResetInterval(cType.getResetInterval());
         couponType.setType(cType.getType());
         couponType.setIsImmediate(CouponUtil.getBooleanValue(cType.getIsImmediate()));
         couponType.setUpdateTime(new Date());
+        
+        couponType.setResetInterval(cType.getResetInterval());
+        if(couponType.getResetInterval() != cType.getResetInterval()) {
+        	logger.info("Reset last reset time");
+        	
+        	//reset time is set at five oclock in the morning (see cron task)
+        	Date fiveOclock = DateUtil.addHours(DateUtil.getToday(), 5);
+        	Date now = DateUtil.getTodayTime();
+        	Date resetTime = now.before(fiveOclock) ? fiveOclock : DateUtil.addHours(DateUtil.addDays(DateUtil.getToday(), 1), 5);
+        	couponType.setLastResetTime(resetTime);
+        }
+        
         couponTypeDao.updateCouponType(couponType);
-
         return "redirect:/admin/getAllCouponTypes.do?merchantId=" + couponType.getMerchantId();
     }
 
