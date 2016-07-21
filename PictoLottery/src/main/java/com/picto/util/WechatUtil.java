@@ -33,7 +33,7 @@ public class WechatUtil {
                 + APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
         String message = HttpsUtil.get(url, charset);
         JSONObject accessTokenJson = new JSONObject(message);
-        return getStringFromJson(accessTokenJson, "openId");
+        return getStringFromJson(accessTokenJson, "openid");
     }
 
     public static String getStringFromJson(JSONObject json, String key) throws JSONException {
