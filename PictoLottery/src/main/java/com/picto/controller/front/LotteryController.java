@@ -115,25 +115,32 @@ public class LotteryController {
         String errorMsg = null;
         if (!StringUtils.hasLength(code)) {
             errorMsg = "请从微信公众号进入";
+            logger.info("Got code [null]");
         } else {
             //开发环境
             if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
             	openId = "TEST555511118888";
+            	logger.info("Dev environment - set openId [" + openId + "]");
             } else if(openId == null) {
+            	
             	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
+            	logger.info("Got openId [" + weChatOpenId + "] from WeChat");
+            	
             	if(weChatOpenId != null) {
             		openId = weChatOpenId;
             		session.setAttribute("openid", openId);
+            		logger.info("Set openId [" + weChatOpenId + "] to session");
+            		
             	} else {
             		//防止页面返回键时获取不到openid而报错
-            		logger.info("openId is null");
+            		logger.info("Got openId [null]");
                 	errorMsg = "请从微信公众号进入";
                     model.addAttribute("errorMsg", errorMsg);
                     model.addAttribute("merchant", merchant);
                     return "front/startLotteryError";                	
                 }
             } else {
-            	logger.info("openId [" + openId + "]");
+            	logger.info("Got openId [" + openId + "] from session");
             }
             
             //check merchant state
