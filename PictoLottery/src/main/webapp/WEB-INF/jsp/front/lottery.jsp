@@ -70,7 +70,7 @@
             }, 10200);
 
             setTimeout(function(){
-                window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}' + "&openId=${openId}");
+                window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}' + "&openid=${openid}");
             }, 13000);
 
             //隐藏公众号右上角菜单

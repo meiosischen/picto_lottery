@@ -33,14 +33,14 @@ public class ChoiceDiscountController {
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
-        @RequestParam("couponTypeId") Integer couponTypeId, @RequestParam("openId") String openId, Model model, HttpServletRequest request) {
+        @RequestParam("couponTypeId") Integer couponTypeId, @RequestParam("openid") String openid, Model model, HttpServletRequest request) {
         logger.info("Choose discount product: selectedDiscountProductId [" + selectedDiscountProductId + "] ,couponTypeId [" + couponTypeId
-                + "], openId [" + openId + "]");
+                + "], openid [" + openid + "]");
         Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
 
         //根据选择的优惠产品生成优惠券并跳转到优惠券信息页
         DiscountProduct discountProduct = discountProductDao.queryDiscountById(selectedDiscountProductId);
-        Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openId, merchant);
+        Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
         model.addAttribute("coupon", coupon);
 
         //获取优惠券商家信息（可能本店，也可能是外放店铺）
