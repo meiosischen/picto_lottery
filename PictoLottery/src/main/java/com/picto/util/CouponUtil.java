@@ -1,6 +1,5 @@
 package com.picto.util;
 
-import com.picto.constants.Constants;
 import com.picto.entity.Coupon;
 
 import java.util.Date;
@@ -10,10 +9,7 @@ import java.util.Date;
  */
 public class CouponUtil {
     public static String getExpiredStr(Coupon coupon) {
-        if (coupon.getIsImediate()) {
-            return "已生效";
-        }
-        int hours = hoursBetween(new Date(), coupon.getExpiredTime());
+    	int hours = hoursBetween(new Date(), coupon.getExpiredTime());
         if (hours < 0) {
             return "已过期";
         } else if (hours < 24) {
