@@ -150,9 +150,11 @@ public class LotteryController {
             
             boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
             if (hadLottery && merchant.getIsValidateOpenid()) {
-                errorMsg = "今日已抽过奖，请明日再来";
+            	logger.info("Openid [" + openid + "] has already had lottery of merchant [" + merchant.getId() + "]");
+                //errorMsg = "今日已抽过奖，请明日再来";
+                return "front/dupLottery";
             } else {
-                success = true;//校验成功,开始抽奖
+                success = true; //校验成功,开始抽奖
 
                 logger.info("Began lottery action: openid=" + openid);
                 //生成中奖的奖项
@@ -160,7 +162,7 @@ public class LotteryController {
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
-                	logger.info("Got coupon: couponType ID [" + couponType.getId() + "], name [" + couponType.getName() + "]");
+                	logger.info("Got coupon: couponType id [" + couponType.getId() + "], name [" + couponType.getName() + "]");
                 	
                     String luckyIcon = couponType.getIcon();
                     model.addAttribute("luckyCouponIcon", luckyIcon);
@@ -173,7 +175,7 @@ public class LotteryController {
                 }
 
                 model.addAttribute("showIcons", showIcons);
-                logger.info("showIcons=" + showIcons);
+                logger.info("showIcons [" + showIcons + "]");
             }
         }
 
@@ -218,9 +220,9 @@ public class LotteryController {
                 //获取优惠券商家信息（可能本店，也可能是外放店铺）
                 Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
                 model.addAttribute("couponMerchant", couponMerchant);
-                
-                String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                        : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+                              
+                String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getCreateTime(), "MM/dd") + " - " + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd")
+                        : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + " - " + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");     
                 model.addAttribute("expireDateStr", expireDateStr);
                 
                 //set advert query or banner (see couponInfo.jsp)
