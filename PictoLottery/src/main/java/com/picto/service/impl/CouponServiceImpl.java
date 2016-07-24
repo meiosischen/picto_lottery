@@ -13,9 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -156,5 +153,5 @@ public class CouponServiceImpl implements CouponService {
     	Date today = DateUtil.getTodayTime();
     	
     	return today.after(couponValidDay);
-    }    
+    }
 }
