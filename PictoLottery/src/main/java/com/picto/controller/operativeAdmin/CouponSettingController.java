@@ -103,6 +103,10 @@ public class CouponSettingController {
         if (couponType.getIsImmediate() == null) {
             couponType.setIsImmediate(false);
         }
+        
+        if(couponType.getTotalNum() == null) {
+        	couponType.setTotalNum(0);
+        }
         couponType.setRestNum(couponType.getTotalNum());
         couponType.setCreateTime(new Date());
         couponType.setState(1);
