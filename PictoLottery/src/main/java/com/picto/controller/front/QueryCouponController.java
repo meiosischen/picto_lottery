@@ -103,8 +103,8 @@ public class QueryCouponController {
         Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
         model.addAttribute("couponMerchant", couponMerchant);        
         
-        String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+        String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/mm/dd")
+                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "mm/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "mm/dd");
         
         model.addAttribute("expireDateStr", expireDateStr);
 
