@@ -12,6 +12,14 @@ public interface Constants {
     
     int COUPON_STATE_EFFECTED = 1;
     int COUPON_STATE_EXCHANGED = 2;
+    
+    /* *
+     * 1. do lottery with total number
+     * 2. do lottery with rest number
+     * Default: 1
+     * 
+     * */
+    int LOTTERY_ALGO = 2;
 
     String CHARSET = "UTF-8";
 }

@@ -32,15 +32,32 @@ public class LotteryServiceImpl implements LotteryService {
     @Autowired
     private OperationRecordDao operationRecordDao;
 
-    @Transactional
-    public CouponType lotyCouponType(String openid, Integer merchantId) {
-        //查询所有的奖项
-        List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
-        if (ListUtil.isEmptyList(couponTypes)) {
-        	logger.error("No coupon exists in merchant id[" + merchantId + "]");
-            return null;
+    
+    private CouponType doLotteryWithRestNum(List<CouponType> couponTypes) {
+    	logger.info("do lottery with rest number");
+    	
+        int totalNums = 0;
+        for (CouponType couponType : couponTypes) {
+            totalNums += couponType.getRestNum();
         }
-
+        int[] indexArr = new int[totalNums];
+        int start = 0;
+        for (int i = 0; i < couponTypes.size(); i++) {
+            int couponTypeTotalNum = couponTypes.get(i).getRestNum();
+            for (int j = 0; j < couponTypeTotalNum; j++) {
+                indexArr[j + start] = i;
+            }
+            start += couponTypeTotalNum;
+        }
+        
+        //随机抽取一个奖项id
+        Random random = new Random();
+        return couponTypes.get(indexArr[random.nextInt(totalNums)]);
+    }
+    
+    private CouponType doLotteryWithTotalNum(List<CouponType> couponTypes) {
+    	logger.info("do lottery with total number");
+    	
         int totalNums = 0;
         for (CouponType couponType : couponTypes) {
             totalNums += couponType.getTotalNum();
@@ -54,10 +71,28 @@ public class LotteryServiceImpl implements LotteryService {
             }
             start += couponTypeTotalNum;
         }
-
+        
         //随机抽取一个奖项id
         Random random = new Random();
-        CouponType luckyCouponType = couponTypes.get(indexArr[random.nextInt(totalNums)]);
+        return couponTypes.get(indexArr[random.nextInt(totalNums)]);
+    }
+    
+    @Transactional
+    public CouponType lotyCouponType(String openid, Integer merchantId) {
+        //查询所有的奖项
+        List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
+        if (ListUtil.isEmptyList(couponTypes)) {
+        	logger.error("No coupon exists in merchant id[" + merchantId + "]");
+            return null;
+        }
+        
+        CouponType luckyCouponType;
+        switch(Constants.LOTTERY_ALGO) {
+        	case 1:	luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
+        	case 2: luckyCouponType = this.doLotteryWithRestNum(couponTypes);
+        	
+        	default: luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
+        }
 
         //生成抽奖记录
         Date current = new Date();
