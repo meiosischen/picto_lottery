@@ -21,6 +21,9 @@ public interface OperationRecordDao {
 
     OperationRecord queryLatestOperToday(@Param("openid") String openid, @Param("type") int operationTypeLottery,
                                          @Param("today") Date today);
+    
+    OperationRecord queryLatestOperTodayByMerchant(@Param("merchantId") Integer merchantId, @Param("openid") String openid, 
+    												@Param("type") int operationTypeLottery, @Param("today") Date today);
 
     void updateSerialNumber(@Param("id") Integer id, @Param("serialNumber") String serialNumber);
 

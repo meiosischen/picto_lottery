@@ -27,6 +27,12 @@
         where openid = #{openid} and type = #{type} and operation_time &gt;= #{today}
         order by operation_time desc limit 1
     </select>
+    
+    <select id="queryLatestOperTodayByMerchant" resultType="com.picto.entity.OperationRecord">
+        <include refid="queryOperationRecordColumn" />
+        where merchant_id = #{merchantId} and openid = #{openid} and type = #{type} and operation_time &gt;= #{today}
+        order by operation_time desc limit 1
+    </select>    
 
     <insert id="addOperationRecord" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.OperationRecord">
         insert into operation_record(openid, merchant_id,

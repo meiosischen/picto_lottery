@@ -148,8 +148,9 @@ public class LotteryController {
             	return "front/upgrade";
             }
             
-            boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
-            if (hadLottery && merchant.getIsValidateOpenid()) {
+            //boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
+            boolean isOverLimit = startLotteryService.isOverDailyLimit(openid, merchant.getId());
+            if (isOverLimit && merchant.getIsValidateOpenid()) {
             	logger.info("Openid [" + openid + "] has already had lottery of merchant [" + merchant.getId() + "]");
                 //errorMsg = "今日已抽过奖，请明日再来";
                 return "front/dupLottery";

@@ -23,9 +23,27 @@ public class StartLotteryServiceImpl implements StartLotteryService {
     public boolean judgeHadLottery(String openid, Integer merchantId) {
         List<OperationRecord> operationRecords = operationRecordDao.queryOperationRecordsToday(merchantId,
                 openid, Constants.OPERATION_TYPE_LOTTERY, DateUtil.getToday());
+        
         if (ListUtil.isEmptyList(operationRecords)) {
             return false;
         }
+        
         return true;
+    }
+    
+    public boolean isOverDailyLimit(String openid, Integer merchantId) {
+    	List<OperationRecord> operationRecords = operationRecordDao.queryOperationRecordsToday(merchantId,
+                openid, Constants.OPERATION_TYPE_LOTTERY, DateUtil.getToday());
+        
+        if(operationRecords.size() >= Constants.OPERATION_LOTTERY_LIMIT) {
+        	return false;
+        }
+        
+        return true;
+    }
+    
+    public OperationRecord latestLotteryToday(String openid, Integer merchantId) {
+    	return operationRecordDao.queryLatestOperTodayByMerchant(merchantId, openid, 
+    			Constants.OPERATION_TYPE_LOTTERY, DateUtil.getToday());
     }
 }
