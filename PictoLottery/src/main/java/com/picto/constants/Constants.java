@@ -6,9 +6,19 @@ package com.picto.constants;
 public interface Constants {
     int OPERATION_TYPE_LOTTERY = 1;//抽奖
     int OPERATION_TYPE_EXCHANGED = 2;//兑换
+    
+    /* *
+     * 
+     * daily lottery limitation
+     * 1: 1 time/day
+     * 2: 2 times/day
+     * n: n times/day
+     * 
+     * */
+    int OPERATION_LOTTERY_LIMIT = 2;
 
-    //String ENV_DEV = "dev";//测试环境
-    String ENV_DEV = "production";//测试环境
+    String ENV_DEV = "test";//测试环境
+    //String ENV_DEV = "prod";//测试环境
     
     int COUPON_STATE_EFFECTED = 1;
     int COUPON_STATE_EXCHANGED = 2;
