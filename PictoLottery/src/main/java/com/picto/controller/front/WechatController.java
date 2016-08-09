@@ -2,7 +2,9 @@ package com.picto.controller.front;
 
 import com.picto.constants.Constants;
 import com.picto.util.WechatUtil;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.net.URLDecoder;
 import java.util.Map;
 
@@ -19,7 +22,9 @@ import java.util.Map;
 @Controller
 public class WechatController {
     private static final Logger logger = Logger.getLogger(WechatController.class);
-    private static final String APP_ID = "wx8f4239ff75ca1770";
+    
+    @Value("${picto.wechat.appid}")
+    private String APP_ID;
 
     @RequestMapping("welcome")
     public String welcomeToMrPrize(@RequestParam("merchantId") Integer merchantId) {
