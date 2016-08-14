@@ -1,0 +1,46 @@
+h1 {
+    width:90%;
+    margin : 1% auto;
+    text-align:center;
+    color:blue;
+}
+
+div#choiceMerchant {
+    width:20%;
+    margin : 0 auto;
+    text-align:left;
+}
+
+div#merchantInfo {
+    width:90%;
+    margin:1% auto 0 auto;
+}
+
+div#refresh {
+    height: 5%;
+}
+div#refresh img{ height: 100%;}
+
+table#merchants {
+    width:100%;
+    border:solid 1px black;
+    margin-top:2%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: center;
+}
+table#merchants thead{
+    background: #7D7777;
+    color: white;
+    border: solid 2px black;
+}
+table#merchants img{
+    width:80%;
+}
+table#merchants tr{
+    border:solid 1px gray;
+}
+table#merchants tr:hover{background:gray;}
+#merchants tbody tr td img{
+    max-height:15%;
+}

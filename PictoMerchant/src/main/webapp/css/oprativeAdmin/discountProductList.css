@@ -1,0 +1,74 @@
+h1 {
+    width:90%;
+    margin : 1% auto;
+    text-align:center;
+    color:blue;
+}
+
+div#choiceMerchant {
+    width:20%;
+    margin : 0 auto;
+    text-align:left;
+}
+
+div#merchantInfo {
+    width:90%;
+    margin:1% auto 0 auto;
+}
+
+div#main {
+    width:90%;
+    margin:2% auto 0 auto;
+}
+
+div#tools {
+    float:left;
+    clear:none;
+}
+div#tools img{
+    width:10%
+}
+
+div#typeOrDiscount {
+    float:right;
+    clear:none;
+    width:20%
+}
+div#typeOrDiscount div{
+    float:left;
+    margin:0 3%;
+    font-size:1.5em;
+}
+
+div#discountProducts {
+    width:100%;
+    border:solid 1px black;
+    margin-top:2%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: center;
+}
+div#discountProducts table{
+    width:100%;
+    text-align:center;
+}
+
+#discountProducts thead{
+    background: #7D7777;
+    color: white;
+    border: solid 2px black;
+    font-size:1.3em;
+    text-align:center;
+}
+#discountProducts img{
+    width:50%;
+}
+
+#discountProducts table tr td{
+    border-bottom:solid 1px gray;
+}
+#discountProducts table tr:hover{background:gray;}
+input[name='discountProductId']{
+    height: 20px;
+    width: 100%;
+}

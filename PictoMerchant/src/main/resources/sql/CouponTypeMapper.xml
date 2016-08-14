@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.picto.dao.CouponTypeDao">
+    <sql id="queryCouponTypeColumn">
+        select ID AS id,
+        merchant_id AS merchantId,
+        name AS name,
+        icon AS icon,
+        total_num AS totalNum,
+        rest_num AS restNum,
+        is_immediate AS isImmediate,
+        reset_interval AS resetInterval,
+        last_reset_time AS lastResetTime,
+        version AS version,
+        state AS state,
+        create_time AS createTime,
+        update_time AS updateTime,
+        type AS type
+        from coupon_type
+    </sql>
+
+    <sql id="queryRelsColumn">
+        select ID AS id,
+        coupon_type_id AS couponTypeId,
+        discount_product_id AS discountProductId
+        from coupon_type_discount_rel
+    </sql>
+
+    <select id="queryAllCouponTypes" resultType="com.picto.entity.CouponType">
+        <include refid="queryCouponTypeColumn" />
+        where state = 1
+    </select>
+
+    <select id="queryCouponTypeById" resultType="com.picto.entity.CouponType">
+        <include refid="queryCouponTypeColumn" />
+        where id = #{id} and state = 1
+    </select>
+
+    <select id="queryCouponTypeByMerchantId" resultType="com.picto.entity.CouponType">
+        <include refid="queryCouponTypeColumn" />
+        where merchant_id = #{merchantId} and state = 1
+    </select>
+
+    <update id="updateCouponTypeRestNum">
+        update coupon_type set rest_num = #{restNum},
+            version = version + 1,
+            <if test="lastResetTime != null">
+                last_reset_time = #{lastResetTime},
+            </if>
+            update_time = #{updateTime}
+        where id = #{id} and version = #{version}
+    </update>
+
+    <update id="updateCouponType">
+        update coupon_type
+        set name = #{name},
+            icon = #{icon},
+            total_num = #{totalNum},
+            rest_num = #{restNum},
+            is_immediate = #{isImmediate},
+            reset_interval = #{resetInterval},
+            type = #{type},
+            version = version + 1,
+            update_time = #{updateTime}
+        where id = #{id} and version = #{version}
+    </update>
+
+    <insert id="addCouponType" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.CouponType">
+        insert into coupon_type(merchant_id, name, icon, total_num, rest_num, is_immediate, reset_interval, type, version, state, create_time)
+        values(#{merchantId}, #{name}, #{icon}, #{totalNum}, #{restNum}, #{isImmediate}, #{resetInterval}, #{type}, #{version}, #{state}, #{createTime})
+    </insert>
+
+    <delete id="deleteRelByCouponTypeId">
+        delete from coupon_type_discount_rel where coupon_type_id = #{couponTypeId}
+    </delete>
+
+    <delete id="deleteById">
+        delete from coupon_type where id = #{id}
+    </delete>
+
+    <select id="queryAllCouponTypesByMerchantId" resultType="com.picto.entity.CouponType">
+        <include refid="queryCouponTypeColumn" />
+        where merchant_id = #{merchantId} and state = 1
+    </select>
+</mapper>

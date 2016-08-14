@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.picto.dao.AccountDao">
+    <sql id="queryAccountColumn">
+        select ID AS id,
+        merchant_id AS merchantId,
+        account_name AS accountName,
+        state AS state,
+        last_login_time AS lastLoginTime,
+        create_time AS createTime,
+        update_time AS updateTime
+        from account
+    </sql>
+
+    <select id="queryAccountById" resultType="com.picto.entity.Account">
+        <include refid="queryAccountColumn" />
+        where id = #{id}
+    </select>
+
+    <select id="queryAccountByAccountName" resultType="com.picto.entity.Account">
+        <include refid="queryAccountColumn" />
+        where account_name = #{accountName}
+    </select>
+
+    <insert id="addAccount" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Account">
+        insert into account(merchant_id, account_name, account_pwd, state, last_login_time, create_time, update_time)
+        values(#{merchantId}, #{accountName}, #{accountPwd}, #{state}, #{lastLoginTime}, #{createTime}, #{updateTime})
+    </insert>
+
+</mapper>

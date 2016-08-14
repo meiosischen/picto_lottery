@@ -1,0 +1,51 @@
+h1 {
+    width:90%;
+    margin : 1% auto;
+    text-align:center;
+    color:blue;
+}
+
+div#choiceMerchant {
+    width:20%;
+    margin : 0 auto;
+    text-align:left;
+}
+
+div#merchantInfo {
+    width:90%;
+    margin:1% auto 0 auto;
+}
+
+div#main {
+    width:90%;
+    margin:2% auto 0 auto;
+}
+div#top {height:5%;}
+div#top img{ height:100%;}
+div#statisticDatas {
+    width:100%;
+    border:solid 1px black;
+    margin-top:2%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: center;
+}
+div#statisticDatas table{
+    width:100%;
+    text-align:center;
+}
+
+#statisticDatas thead{
+    background: #7D7777;
+    color: white;
+    border: solid 2px black;
+    font-size:1.3em;
+    text-align:center;
+}
+#statisticDatas img{
+    width:50%;
+}
+
+#statisticDatas table tr td{
+    border-bottom:solid 1px gray;
+}

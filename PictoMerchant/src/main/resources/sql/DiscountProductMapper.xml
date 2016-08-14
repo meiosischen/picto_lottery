@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.picto.dao.DiscountProductDao">
+    <sql id="queryDiscountProductColumn">
+        select ID AS id,
+        merchant_id AS merchantId,
+        name AS name,
+        icon AS icon,
+        discount AS discount,
+        is_shared AS isShared,
+        use_msg AS useMsg,
+        limit_msg AS limitMsg,
+        validity AS validity,
+        store_name AS storeName,
+        state AS state,
+        create_time AS createTime,
+        update_time AS updateTime,
+        is_sendout AS isSendout
+        from discount_product
+    </sql>
+
+    <sql id="queryRelAllColumn">
+        select id AS id,
+        coupon_type_id AS couponTypeId,
+        discount_product_id AS discountProductId
+        from coupon_type_discount_rel
+    </sql>
+
+    <select id="queryDiscountByCouponTypeId" resultType="com.picto.entity.DiscountProduct">
+        select a.ID AS id,
+        a.merchant_id AS merchantId,
+        a.name AS name,
+        a.icon AS icon,
+        a.discount AS discount,
+        a.is_shared AS isShared,
+        a.use_msg AS useMsg,
+        a.limit_msg AS limitMsg,
+        a.validity AS validity,
+        a.store_name AS storeName,
+        a.state AS state,
+        a.create_time AS createTime,
+        a.update_time AS updateTime,
+        a.is_sendout AS isSendout,
+        b.id AS relId
+        from discount_product AS a JOIN coupon_type_discount_rel AS b
+        where a.id = b.discount_product_id and b.coupon_type_id = #{couponTypeId} and a.state = 1
+    </select>
+
+
+    <select id="queryDiscountById" resultType="com.picto.entity.DiscountProduct">
+        <include refid="queryDiscountProductColumn" />
+        where id = #{id} and state = 1
+    </select>
+
+    <delete id="deleteById">
+        delete from discount_product where id = #{id}
+    </delete>
+
+    <select id="queryDiscountByMerchantId" resultType="com.picto.entity.DiscountProduct">
+        <include refid="queryDiscountProductColumn" />
+        where merchant_id = #{merchantId} and state = 1
+    </select>
+
+    <select id="queryAllDiscounts" resultType="com.picto.entity.DiscountProduct">
+        <include refid="queryDiscountProductColumn" />
+        where state = 1
+    </select>
+
+    <insert id="add" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.DiscountProduct">
+        insert into discount_product(merchant_id, name, icon, discount, is_shared, use_msg, limit_msg, validity, store_name, state, create_time, update_time, is_sendout)
+        values(#{merchantId}, #{name}, #{icon}, #{discount}, #{isShared}, #{useMsg}, #{limitMsg}, #{validity}, #{storeName}, #{state}, #{createTime}, #{updateTime}, #{isSendout})
+    </insert>
+
+    <delete id="deleteRelByDiscountId">
+        delete from coupon_type_discount_rel where discount_product_id = #{discountProductId}
+    </delete>
+
+    <update id="updateDiscount" parameterType="com.picto.entity.DiscountProduct">
+        update discount_product
+        set name = #{name},
+        discount = #{discount},
+        icon = #{icon},
+        use_msg = #{useMsg},
+        limit_msg = #{limitMsg},
+        validity = #{validity},
+        is_shared = #{isShared},
+        is_sendout = #{isSendout},
+        update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+    <select id="querySendoutDisOtherMerchant" resultType="com.picto.entity.DiscountProduct">
+        <include refid="queryDiscountProductColumn" />
+        where is_sendout = 1 and merchant_id &lt;&gt; #{merchantId} and state = 1
+    </select>
+
+    <insert id="addCouponTypeDiscountRel" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.CouponTypeDiscountRel">
+        insert into coupon_type_discount_rel(coupon_type_id, discount_product_id)
+        values(#{couponTypeId}, #{discountProductId})
+    </insert>
+
+    <delete id="deleteRel">
+        delete from coupon_type_discount_rel where id = #{relId}
+    </delete>
+
+    <select id="queryRelByRelId" resultType="com.picto.entity.CouponTypeDiscountRel">
+        <include refid="queryRelAllColumn" />
+        where id = #{relId}
+    </select>
+    
+    <select id="queryRelByCouponTypeAndDiscount" resultType="com.picto.entity.CouponTypeDiscountRel">
+        <include refid="queryRelAllColumn" />
+        where coupon_type_id=#{ctId} and discount_product_id=#{dpId}
+    </select>
+</mapper>

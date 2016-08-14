@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.picto.dao.CouponDao">
+    <sql id="queryCouponColumn">
+        select ID AS id,
+        discount_product_id AS discountProductId,
+        merchant_id AS merchantId,
+        name AS name,
+        serial_number AS serialNumber,
+        icon AS icon,
+        openid AS openid,
+        is_immediate AS isImmediate,
+        discount AS discount,
+        is_shared AS isShared,
+        use_msg AS useMsg,
+        limit_msg AS limitMsg,
+        expired_time AS expiredTime,
+        store_name AS storeName,
+        state AS state,
+        create_time AS createTime,
+        update_time AS updateTime
+        from coupon
+    </sql>
+
+    <select id="queryCouponById" resultType="com.picto.entity.Coupon">
+        <include refid="queryCouponColumn" />
+        where id = #{id}
+    </select>
+
+    <!-- 根据openid查询有效的优惠券,已生效未兑换 -->
+    <select id="queryAllCouponsByOpenid" resultType="com.picto.entity.Coupon">
+        <include refid="queryCouponColumn" />
+        where openid = #{openid} and state = 1 and expired_time >= #{date} order by expired_time
+    </select>
+
+    <select id="queryCouponBySerialNumber" resultType="com.picto.entity.Coupon">
+        <include refid="queryCouponColumn" />
+        where serial_number = #{serialNumber} limit 1
+    </select>
+
+    <insert id="addCoupon" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Coupon">
+        insert into coupon(discount_product_id, merchant_id, name, serial_number, icon, openid, is_immediate, discount, is_shared, use_msg, limit_msg, expired_time, store_name, state, create_time)
+        values(#{discountProductId}, #{merchantId}, #{name}, #{serialNumber},#{icon}, #{openid}, #{isImmediate}, #{discount}, #{isShared}, #{useMsg}, #{limitMsg}, #{expiredTime}, #{storeName}, #{state}, #{createTime})
+    </insert>
+
+    <update id="updateCouponExchanged" parameterType="com.picto.entity.Coupon">
+        update coupon
+        set state = #{state},
+        update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+    <select id="queryAllCouponsByOpenidAndMerId" resultType="com.picto.entity.Coupon">
+        <include refid="queryCouponColumn" />
+        where merchant_id = #{merchantId} and openid = #{openId} and state = 1 and expired_time >= #{date} order by expired_time
+    </select>
+</mapper>

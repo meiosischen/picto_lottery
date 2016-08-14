@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/images/background.jpg);
+    background-size: 100% 100%;
+    color: white;
+    font-family: "Microsoft YaHei" ! important;
+}
+div#logo {
+    width: 100%;
+    height: 4%;
+}
+#logo img { width: 100%; height : 100%;}
+div#main {
+    border: 3px solid white;
+    width: 100%;
+}
+
+.left {
+    float: left;
+    clear: none;
+    text-align: center;
+    width: 30%;
+    margin: 3% 0 5% 5%;
+    font-size: 2em;
+    height:10%;
+}
+.left img{
+    width:100%;
+    height:80%;
+    border:solid 5px white;
+}
+
+.couponDiv {
+    border-bottom: dashed 3px white;
+    width: 90%;
+    margin: 0 auto;
+}
+
+div#right {
+    float: left;
+    clear: none;
+    width: 60%;
+    text-align: center;
+    font-size: 2.5em;
+    margin-top: 3%;
+}
+
+div#useMsg {
+}
+
+div#name {
+    color: #FFE59B;
+}
+
+div#discount {
+    color: #FD3657;
+}
+div#discount span{
+    font-size:0.7em;
+    border:solid 2px white;
+}
+div#queryAdvert {
+    position: fixed;
+    bottom: 5px;
+    width: 100%;
+    text-align:center;
+}
+div#queryAdvert img{width:99.5%}

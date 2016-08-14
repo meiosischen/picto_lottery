@@ -1,0 +1,202 @@
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/images/background.jpg);
+    background-size: 100% 100%;
+    color: white;
+    font-family: "Microsoft YaHei" ! important;
+}
+
+div#logo {
+    width: 100%;
+    height: 4%;
+}
+#logo img { width: 100%; height : 100%;}
+
+div#top {
+    width: 99%;
+    background-image: url(/images/couponInfoBackground.jpg);
+    background-size: 100% 100%;
+    height: 9%;
+}
+
+div#merchantInfo {
+    float: left;
+    clear: none;
+    font-size: 2.3em;
+    width:60%;
+    height: 9%;
+}
+div#merchantInfo img{
+    width: 5%;
+    margin-right: 2%;
+}
+
+div#location {
+    margin: 3% 0 0 3%;
+}
+
+div#phone {
+    margin-left: 3%;
+}
+#phone a{
+    text-decoration: underline;
+    color: white;
+}
+#phone a span{color:white;}
+
+div#exchangeBtn {
+    float: right;
+    width: 10%;
+    height: 80%;
+}
+div#exchangeBtn img{
+    width:90%;
+    margin-top:20%;
+}
+
+div#exchangeText {
+    float: right;
+    font-size: 2em;
+    margin: 3% 3% 0 0;
+}
+
+div#main {
+    border: 3px solid white;
+    width: 100%;
+    height: 96%;
+}
+
+div#couponLeft {
+    float: left;
+    clear: none;
+    margin: 0 5% 0 10%;
+    width: 30%;
+    text-align: center;
+    font-size: 3em;
+}
+div#couponLeft img {
+    width: 100%;
+    border: solid 2px white;
+}
+#storeName{
+    font-size: 0.8em;
+    white-space: nowrap;
+    margin-top: 2%;
+    display: block;
+}
+
+div#couponInfo {
+    height: 25%;
+    margin-top: 10%;
+}
+
+div#couponRight {
+    width: 50%;
+    float: left;
+    font-size: 4em;
+    color: #FFE59B;
+    margin-top: 3%;
+    text-align: center;
+}
+#name{
+    font-size: 0.8em;
+    font-weight: bold;
+}
+#discount{
+    color: #FD3657;
+    font-size: 1.1em;
+    margin: 3% auto;
+    font-weight: bold;
+}
+#useMsg{
+    color: white;
+    font-size: 0.6em;
+}
+
+div#bannerAdvert {
+    width: 100%;
+}
+div#bannerAdvert img{
+    width: 100%;
+}
+
+div#bottom1 {
+    float: left;
+    clear: none;
+    width: 60%;
+    text-align: left;
+    font-size: 2.5em;
+    margin: 5% 0 0 5%;
+}
+#expireDate{
+    color: #FD3657;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 3%;
+}
+#limigMsg0, #limigMsg1, #limigMsg2 {
+    font-size: 0.8em;
+}
+
+div#msg1 {
+    margin: 5% 0 -3% 0;
+}
+
+div#msg2 {
+}
+
+div#bottom2 {
+    float: left;
+    clear: none;
+    width: 33%;
+    margin: 6% 0 0 2%;
+    font-size: 2em;
+}
+div#bottom2 img{ width: 90%; margin-top: 3%; max-height: 20%;}
+
+#wrapper{
+    display:none;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+}
+div#exchangeInfo {
+    position: absolute;
+    top: 51%;
+    background: black;
+    border: solid 2px white;
+    border-radius: 50px;
+    width: 50%;
+    left: 25%;
+    font-size: 2em;
+    height: 10%;
+}
+
+div#info1 {
+    float: left;
+    clear: none;
+    width: 16%;
+    margin: 8% 0 0 5%;
+}
+div#info1 img{width:100%;}
+
+div#info2 {
+    float: left;
+    clear: none;
+    margin-top: 11%;
+}
+
+div#info3 {
+    float: right;
+    clear: none;
+    width: 10%;
+    margin: -3% -2%;
+}
+div#info3 img{width:100%;}
+#msg1,#msg2 {
+    color: #eacf89;
+}

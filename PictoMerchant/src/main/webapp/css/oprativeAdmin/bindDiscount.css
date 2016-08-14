@@ -1,0 +1,51 @@
+h1 {
+    width:90%;
+    margin : 1% auto;
+    text-align:center;
+    color:blue;
+}
+
+div#top, div#main {
+    width: 90%;
+    margin: 3% auto;
+}
+
+div#topTitle, div#mainTitle {
+    color:blue;
+    font-size: 1.5em;
+}
+
+div#hadDiscounts, div#choiceDiscounts {
+    margin-top: 1%;
+}
+div#hadDiscounts table, div#choiceDiscounts table{
+    width:100%;
+    text-align:center;
+    border-collapse: collapse;
+    border:solid 1px black;
+}
+div#hadDiscounts table thead, div#choiceDiscounts table thead{
+    background: #7D7777;
+    color: white;
+    border: solid 2px black;
+    font-size:1.3em;
+    text-align:center;
+}
+div#hadDiscounts table tr td, div#choiceDiscounts table tr td{
+    border-bottom:solid 1px gray;
+}
+div#choiceDiscounts tr:hover{background:gray;}
+input[name='discountProductId']{
+    height: 20px;
+    width: 100%;
+}
+#bottom{
+    text-align: center;
+    margin-top: 2%;
+}
+#bottom input{
+    background-image: url(/images/create.png);
+    background-size: 100% 100%;
+    width: 6%;
+    height: 5%;
+}

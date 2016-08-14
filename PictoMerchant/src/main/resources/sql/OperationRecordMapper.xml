@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.picto.dao.OperationRecordDao">
+    <sql id="queryOperationRecordColumn">
+        select ID AS id,
+        openid AS openid,
+        merchant_id AS merchantId,
+        serial_number AS serialNumber,
+        type AS type,
+        operation_time AS operationTime,
+        create_time AS createTime
+        from operation_record
+    </sql>
+
+    <select id="queryMerchantById" resultType="com.picto.entity.OperationRecord">
+        <include refid="queryOperationRecordColumn" />
+        where openid = #{openid} and type = #{type}
+    </select>
+
+    <select id="queryOperationRecordsToday" resultType="com.picto.entity.OperationRecord">
+        <include refid="queryOperationRecordColumn" />
+        where merchant_id = #{merchantId} and openid = #{openid} and type = #{type} and operation_time &gt;= #{today}
+    </select>
+
+    <select id="queryLatestOperToday" resultType="com.picto.entity.OperationRecord">
+        <include refid="queryOperationRecordColumn" />
+        where openid = #{openid} and type = #{type} and operation_time &gt;= #{today}
+        order by operation_time desc limit 1
+    </select>
+
+    <insert id="addOperationRecord" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.OperationRecord">
+        insert into operation_record(openid, merchant_id,
+          <if test="serialNumber != null">
+            serial_number,
+          </if>
+        type, operation_time, create_time)
+        values(#{openid}, #{merchantId},
+          <if test="serialNumber != null">
+              #{serialNumber},
+          </if>
+        #{type}, #{operationTime}, #{createTime})
+    </insert>
+
+    <update id="updateSerialNumber">
+        update operation_record
+        set serial_number = #{serialNumber}
+        where id = #{id}
+    </update>
+
+    <select id="queryAllOpersByTime" resultType="com.picto.entity.OperationRecord">
+        <include refid="queryOperationRecordColumn" />
+        where merchant_id = #{merchantId} and type = #{type} and operation_time &gt;= #{startTime} and operation_time &lt;= #{endTime}
+    </select>
+</mapper>

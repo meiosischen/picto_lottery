@@ -1,0 +1,9 @@
+1.修改tomcat的server.xml,在</Host>前面添加
+    <Context path="/upload" docBase="/data/resource/upload/"/>
+2.修改tomcat的 conf/web.xml,把listings值改成true
+    <init-param>
+        <param-name>listings</param-name>
+        <param-value>true</param-value>
+    </init-param>
+3.拷贝config.properties到/data/resource/picto_lottery
+

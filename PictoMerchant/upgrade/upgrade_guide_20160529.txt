@@ -1,0 +1,9 @@
+1.执行upgrade_20160529.sql
+2.修改config.properties中以下两项
+#环境
+environment=test
+#是否校验openid
+validateOpenid=true
+3.微信公众号菜单设置
+    抽奖链接    http://www.mr-prize.com/welcome.do?merchantId=1
+    查询链接    http://www.mr-prize.com/toQuery.do

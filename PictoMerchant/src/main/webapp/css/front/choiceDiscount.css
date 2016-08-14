@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/images/background.jpg);
+    background-size: 100% 100%;
+    color: white;
+    font-family: "Microsoft YaHei" ! important;
+}
+
+div#logo {
+    width: 100%;
+    height: 4%;
+}
+#logo img { width: 100%; height : 100%;}
+div#main {
+    border: 3px solid white;
+    width: 100%;
+    height: 96%;
+}
+div#top {
+    width: 99%;
+    background-image: url(/images/couponInfoBackground.jpg);
+    background-size: 100% 100%;
+    height: 11%;
+    text-align:center;
+    font-size:3em
+}
+
+div#name {
+    margin-top: 2%;
+    color: #800f10;
+    width: 35%;
+    margin: 2% auto;
+    background: white;
+    padding: 1% 0;
+    font-weight:bold;
+}
+
+div#message {
+    padding-top: 3%;
+}
+
+.productDiv {
+    background-image: url(/images/choiceDiscountProductBack.png);
+    background-size: 100% 100%;
+    width: 100%;
+    height: 18%;
+}
+
+div#discountProducts {
+    width: 90%;
+    margin: 10% auto;
+}
+
+.productIcon {
+    float: left;
+    clear: none;
+    width: 42%;
+    border: solid 1px white;
+    margin: 0.5%;
+    height: 96%;
+}
+.productIcon img{width:100%; height:100%;}
+
+.productInfo {
+    float: left;
+    clear: none;
+    margin-top: 3%;
+    text-align: center;
+    width: 56%;
+    font-size: 3em;
+    color: white;
+    font-weight: bold;
+}
+
+.use {font-size: 0.8em;margin-top: 2%;}
+
+.productName {
+    color: #FFE59B;
+    font-size: 1.2em;
+}
+.productDiscount{
+    font-size: 1.2em;
+}
+
+.vsDiv {
+    width: 100%;
+    height: 5%;
+    text-align: center;
+    padding: 5% 0;
+}
+.vsDiv img{
+    width: 20%;
+    height: 100%;
+}
+
+div#banner {
+    bottom: 3px;
+    left: 3px;
+    position: fixed;
+    width: 99.5%;
+}
+div#banner img{width:100%;}
