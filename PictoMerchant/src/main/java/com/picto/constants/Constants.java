@@ -14,4 +14,8 @@ public interface Constants {
     int COUPON_STATE_EXCHANGED = 2;
 
     String CHARSET = "UTF-8";
+    
+    String SESSION_VERICODE = "sessionVericode";
+    
+    String SESSION_ACCOUNT = "sessionAccount";
 }

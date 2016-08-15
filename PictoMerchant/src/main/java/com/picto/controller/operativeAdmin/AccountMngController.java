@@ -13,7 +13,7 @@ public class AccountMngController {
 	
 	@Autowired
 	private AccountService accountService;
-
+	
 	/**
 	 * 商户注册（页面）
 	 * @return
@@ -32,4 +32,5 @@ public class AccountMngController {
 		accountService.merchantRegister(request);
 		return "redirect:/admin/getAllCouponTypes.do";
 	}
+	
 }

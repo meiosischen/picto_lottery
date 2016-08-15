@@ -22,9 +22,31 @@
         where account_name = #{accountName}
     </select>
 
+    <select id="queryAccountByNamePwd" resultType="com.picto.entity.Account">
+        <include refid="queryAccountColumn" />
+        where account_name = #{accountName} and account_pwd = #{accountPwd}
+    </select>
+
     <insert id="addAccount" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Account">
         insert into account(merchant_id, account_name, account_pwd, state, last_login_time, create_time, update_time)
         values(#{merchantId}, #{accountName}, #{accountPwd}, #{state}, #{lastLoginTime}, #{createTime}, #{updateTime})
     </insert>
 
+    <update id="updateAccount">
+        update account
+        set update_time = #{updateTime}
+        <if test="accountPwd != null">
+            , account_pwd = #{accountPwd}
+        </if>
+        <if test="merchantId != null">
+            , merchant_id = #{merchantId}
+        </if>
+        <if test="state != null">
+            , state = #{state}
+        </if>
+        <if test="lastLoginTime != null">
+            , last_login_time = #{lastLoginTime}
+        </if>
+        where id = #{id}
+    </update>
 </mapper>

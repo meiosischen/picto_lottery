@@ -12,4 +12,8 @@ public interface AccountDao {
     Account queryAccountByAccountName(@Param("accountName") String accountName);
 
     void addAccount(Account account);
+    
+    Account queryAccountByNamePwd(@Param("accountName")String accountName, @Param("accountPwd")String accountPwd);
+    
+    void updateAccount(Account account);
 }

@@ -54,4 +54,26 @@
         <include refid="queryCouponColumn" />
         where merchant_id = #{merchantId} and openid = #{openId} and state = 1 and expired_time >= #{date} order by expired_time
     </select>
+    
+    <select id="queryExchangedCouponsByDiscountProductIdAndTime" resultType="com.picto.entity.Coupon">
+        <include refid="queryCouponColumn" /> c
+        where merchant_id = #{merchantId} and c.discount_product_id = #{discountProductId}
+        <if test="state != null">
+            and c.state = #{state}
+	        <if test="startTime != null">
+	            and c.update_time &gt;= #{startTime}
+	        </if>
+	        <if test="endTime != null">
+	            and c.update_time &lt;= #{endTime}
+	        </if>
+        </if>
+        <if test="state == null">
+	        <if test="startTime != null">
+	            and c.create_time &gt;= #{startTime}
+	        </if>
+	        <if test="endTime != null">
+	            and c.create_time &lt;= #{endTime}
+	        </if>
+        </if>
+    </select>
 </mapper>
