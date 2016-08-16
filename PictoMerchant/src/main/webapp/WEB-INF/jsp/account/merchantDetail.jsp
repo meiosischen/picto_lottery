@@ -68,7 +68,7 @@
 					</thead>
 					<c:forEach var="result" items="${results}">
 						<tr>
-							<td>${result[0].name}<c:if test="${result[0].isSendout}">(外发)</c:if></td>
+							<td>${result[0].name} <c:if test="${result[0].isSendout}">(外发)</c:if></td>
 							<td>${result[1]}</td>
 							<td>${result[2]}</td>
 						</tr>
