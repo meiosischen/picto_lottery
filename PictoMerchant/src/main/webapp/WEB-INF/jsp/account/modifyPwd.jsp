@@ -19,7 +19,7 @@
 	.login_table dt{ float:left; clear:left; width:70px; height:40px; text-align:right; line-height:40px }
 	.login_table dd{ float:left; clear:right; height:40px; line-height:40px; margin-left:20px; }
 	.login_butt { text-align:center; margin:20px 0 20px }
-	.login_butt input{ width:128px; height:40px; background:url('../../images/account/submit.png') no-repeat; border:0; text-indent:-9999px }
+	.login_butt input{ width:128px; height:40px; background:url('<%=request.getContextPath()%>/images/account/submit.png') no-repeat; border:0; text-indent:-9999px }
 	</style>
 	<script>		
 		// 刷新校验码
