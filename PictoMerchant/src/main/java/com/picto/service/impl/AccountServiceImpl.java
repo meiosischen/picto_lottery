@@ -250,7 +250,7 @@ public class AccountServiceImpl implements AccountService {
 		String newPwd = request.getParameter("newPwd");
 		if(StringUtils.isBlank(newPwd))
 			throw new RuntimeException("新密码为空");
-		String confirmPwd = request.getParameter("newPwd");
+		String confirmPwd = request.getParameter("confirmPwd");
 		if(StringUtils.isBlank(newPwd))
 			throw new RuntimeException("新密码为空");
 		if(!newPwd.equals(confirmPwd))
