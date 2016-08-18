@@ -34,7 +34,7 @@
 
 <div class="login_form">
 	<h1 class="login_head">修改密码</h1>
-	<form action="<%=request.getContextPath()%>/doModifyPwd.do" method="post">
+	<form action="<%=request.getContextPath()%>/account/doModifyPwd.do" method="post">
 		<dl class="login_table">
 			<dt>原密码：</dt>
 			<dd><input type="password" name="accountPwd" /></dd>

@@ -2,9 +2,7 @@ package com.picto.controller.front;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,9 +18,7 @@ import com.picto.dao.MerchantDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.Account;
 import com.picto.entity.Coupon;
-import com.picto.entity.CouponType;
 import com.picto.entity.DiscountProduct;
-import com.picto.entity.OperationRecord;
 import com.picto.service.AccountService;
 import com.picto.util.DateUtil;
 
@@ -88,7 +84,7 @@ public class AccountController {
 		if(null == account)
 			return "redirect:/login.do";
 		accountService.modifyPwd(request);
-		return "redirect:account/merchantDetail.do";
+		return "redirect:/account/merchantDetail.do";
 	}
 	
 	/**
@@ -129,16 +125,16 @@ public class AccountController {
 	}
 	
 	/**
-	 * 登录
+	 * 上月报表
 	 * @return
 	 */
 	@RequestMapping("account/couponStatistic")
 	public String couponStatistic(HttpServletRequest request){
 		Account account = getSessionAccount(request);
 		if(null == account)
-			return "redirect:/login.do";
+			throw new RuntimeException("尚未登录");
 		accountService.couponStatistic(request);
-		return "redirect:/success";
+		return "success";
 	}
 
 	/**

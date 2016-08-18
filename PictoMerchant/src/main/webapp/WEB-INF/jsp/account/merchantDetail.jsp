@@ -33,6 +33,19 @@
 					jQuery(".xbox").slideToggle("slow");
 				}
 			);
+			jQuery("#bill").click(
+				function(){
+					jQuery.ajax({
+						url:"<%=request.getContextPath()%>/account/couponStatistic.do",
+						success:function(data){
+							alert("下载成功");
+						},
+						error:function(data){
+							alert("下载失败");
+						}
+					});
+				}
+			);
 		});
 	</script>
 </head>
@@ -44,7 +57,7 @@
 		<div id="edit">操作</div>
 		<div class="xbox">
 			<span><a href="<%=request.getContextPath()%>/account/modifyPwd.do">修改密码</a></span>
-			<span><a href="<%=request.getContextPath()%>/account/couponStatistic.do">上月报表</a></span>
+			<span><a href="javascript:;;" id="bill">上月报表</a></span>
 		</div>
 	</div>
 	<h1 class="login_head">数据统计</h1>

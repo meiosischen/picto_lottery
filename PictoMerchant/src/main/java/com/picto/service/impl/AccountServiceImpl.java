@@ -1,6 +1,7 @@
 package com.picto.service.impl;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -286,6 +287,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	public void couponStatistic(HttpServletRequest request) {
+//		String path = "D:/DOCS/bill";
 		String path = "/data/files";
 		Account account = (Account) request.getSession().getAttribute(Constants.SESSION_ACCOUNT);
 		Integer merchantId = account.getMerchantId();
@@ -296,7 +298,7 @@ public class AccountServiceImpl implements AccountService {
         Date currMonthFirstTime = DateUtil.getMonthFirstTime(current, -1);
         Date currMonthEndTime = DateUtil.getMonthLastTime(current, -1);
         
-        String[] title = new String[]{"序号", "优惠码", "是否外发优惠", "派发时间", "兑换时间"};
+        String[] title = new String[]{"序号", "优惠产品名称", "优惠码", "是否外发优惠", "派发时间", "兑换时间"};
     	Merchant merchant = merchantDao.queryMerchantById(merchantId);
 		List<String[]> result = new ArrayList<String[]>();
 		result.add(title);
@@ -306,15 +308,16 @@ public class AccountServiceImpl implements AccountService {
 		for(DiscountProduct product: products){
     		List<Coupon> coupons = couponDao.queryExchangedCouponsByDiscountProductIdAndTime(merchant.getId(), product.getId(), null, currMonthFirstTime, currMonthEndTime);
     		for(Coupon coupon : coupons){
-    			String[] cp = new String[5];
+    			String[] cp = new String[6];
 	    		cp[0] = "" + i++;
-	    		cp[1] = coupon.getSerialNumber();
-    			cp[2] = null != product.getIsSendout() && product.getIsSendout() ?"是":"否";
+	    		cp[1] = coupon.getName();
+	    		cp[2] = coupon.getSerialNumber();
+    			cp[3] = null != product.getIsSendout() && product.getIsSendout() ?"是":"否";
     			if(null != coupon.getCreateTime())
-    			cp[3] = DateUtil.formatDate(coupon.getCreateTime(), "yyyyMMdd HH:mm:ss");
+    			cp[4] = DateUtil.formatDate(coupon.getCreateTime(), "yyyyMMdd HH:mm:ss");
     			
-    			if(null != coupon.getState() && Constants.COUPON_STATE_EXCHANGED == coupon.getState().intValue())
-    				cp[4] = coupon.getUpdateTime() + "";
+    			if(null != coupon.getState() && Constants.COUPON_STATE_EXCHANGED == coupon.getState().intValue() && null != coupon.getCreateTime())
+    				cp[5] = DateUtil.formatDate(coupon.getUpdateTime(), "yyyyMMdd HH:mm:ss");
     			
     			result.add(cp);
     		}
