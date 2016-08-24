@@ -22,6 +22,7 @@ public class Coupon extends BaseEntity {
     private Date expiredTime;
     private String storeName;
     private Integer state;
+    private Integer couponTypeId;
 
     public Integer getDiscountProductId() {
         return discountProductId;
@@ -138,4 +139,12 @@ public class Coupon extends BaseEntity {
     public String getExpiredStr() {
         return CouponUtil.getExpiredStr(this);
     }
+
+	public Integer getCouponTypeId() {
+		return couponTypeId;
+	}
+
+	public void setCouponTypeId(Integer couponTypeId) {
+		this.couponTypeId = couponTypeId;
+	}
 }

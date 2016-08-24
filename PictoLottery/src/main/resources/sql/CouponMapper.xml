@@ -5,6 +5,7 @@
         select ID AS id,
         discount_product_id AS discountProductId,
         merchant_id AS merchantId,
+        coupon_type_id AS couponTypeId,
         name AS name,
         serial_number AS serialNumber,
         icon AS icon,
@@ -39,8 +40,8 @@
     </select>
 
     <insert id="addCoupon" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Coupon">
-        insert into coupon(discount_product_id, merchant_id, name, serial_number, icon, openid, is_immediate, discount, is_shared, use_msg, limit_msg, expired_time, store_name, state, create_time)
-        values(#{discountProductId}, #{merchantId}, #{name}, #{serialNumber},#{icon}, #{openid}, #{isImmediate}, #{discount}, #{isShared}, #{useMsg}, #{limitMsg}, #{expiredTime}, #{storeName}, #{state}, #{createTime})
+        insert into coupon(discount_product_id, merchant_id, name, serial_number, icon, openid, is_immediate, discount, is_shared, use_msg, limit_msg, expired_time, store_name, state, coupon_type_id, create_time)
+        values(#{discountProductId}, #{merchantId}, #{name}, #{serialNumber},#{icon}, #{openid}, #{isImmediate}, #{discount}, #{isShared}, #{useMsg}, #{limitMsg}, #{expiredTime}, #{storeName}, #{state}, #{couponTypeId}, #{createTime})
     </insert>
 
     <update id="updateCouponExchanged" parameterType="com.picto.entity.Coupon">
