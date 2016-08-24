@@ -1,6 +1,10 @@
 package com.picto.dao;
 
+import com.picto.entity.CouponTypeDiscountRel;
 import com.picto.entity.OperationRecord;
+import com.picto.entity.OperationRecordCouponRel;
+import com.picto.entity.OperationRecordCouponTypeRel;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +21,7 @@ public interface OperationRecordDao {
     List<OperationRecord> queryOperationRecordsToday(@Param("merchantId") Integer merchantId, @Param("openid") String openid,
         @Param("type") Integer type, @Param("today") Date today);
 
-    void addOperationRecord(OperationRecord operationRecord);
+    int addOperationRecord(OperationRecord operationRecord);
 
     OperationRecord queryLatestOperToday(@Param("openid") String openid, @Param("type") int operationTypeLottery,
                                          @Param("today") Date today);
@@ -29,4 +33,12 @@ public interface OperationRecordDao {
 
     List<OperationRecord> queryAllOpersByTime(@Param("type") Integer type, @Param("merchantId") Integer merchantId,
                                               @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    
+    void addOperationRecordCouponTypeRel(OperationRecordCouponTypeRel operationRecordCouponTypeRel);
+    
+    OperationRecordCouponTypeRel queryOrCtRelByOrId(@Param("orId") Integer orId);
+    
+    void addOperationRecordCouponRel(OperationRecordCouponRel orcRel);
+    
+    OperationRecordCouponRel queryOrCRelByOrId(@Param("orId") Integer orId);
 }

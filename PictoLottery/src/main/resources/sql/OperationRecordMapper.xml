@@ -32,9 +32,9 @@
         <include refid="queryOperationRecordColumn" />
         where merchant_id = #{merchantId} and openid = #{openid} and type = #{type} and operation_time &gt;= #{today}
         order by operation_time desc limit 1
-    </select>    
+    </select>
 
-    <insert id="addOperationRecord" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.OperationRecord">
+    <insert id="addOperationRecord" parameterType="com.picto.entity.OperationRecord">        
         insert into operation_record(openid, merchant_id,
           <if test="serialNumber != null">
             serial_number,
@@ -45,6 +45,9 @@
               #{serialNumber},
           </if>
         #{type}, #{operationTime}, #{createTime})
+        <selectKey resultType="int" keyProperty="id" order="AFTER" >
+	      select LAST_INSERT_ID() AS id
+	    </selectKey>
     </insert>
 
     <update id="updateSerialNumber">
@@ -57,4 +60,38 @@
         <include refid="queryOperationRecordColumn" />
         where merchant_id = #{merchantId} and type = #{type} and operation_time &gt;= #{startTime} and operation_time &lt;= #{endTime}
     </select>
+    
+    <insert id="addOperationRecordCouponTypeRel" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.OperationRecordCouponTypeRel">
+        insert into operation_record_coupon_type_rel(operation_record_id, coupon_type_id)
+        values(#{operationRecordId}, #{couponTypeId})
+    </insert>
+    
+    <insert id="addOperationRecordCouponRel" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.OperationRecordCouponRel">
+        insert into operation_record_coupon_rel(operation_record_id, coupon_id)
+        values(#{operationRecordId}, #{couponId})      
+    </insert>
+    
+    <sql id="queryOrCtRelAllColumn">
+        select id AS id,
+        operation_record_id AS operationRecordId,
+        coupon_type_id AS couponTypeId
+        from operation_record_coupon_type_rel
+    </sql>    
+    
+    <select id="queryOrCtRelByOrId" resultType="com.picto.entity.OperationRecordCouponTypeRel">
+        <include refid="queryOrCtRelAllColumn" />
+        where operation_record_id=#{orId}
+    </select>
+    
+    <sql id="queryOrCRelAllColumn">
+        select id AS id,
+        operation_record_id AS operationRecordId,
+        coupon_id AS couponId
+        from operation_record_coupon_rel
+    </sql>    
+    
+    <select id="queryOrCRelByOrId" resultType="com.picto.entity.OperationRecordCouponRel">
+        <include refid="queryOrCRelAllColumn" />
+        where operation_record_id=#{orId}
+    </select>    
 </mapper>
