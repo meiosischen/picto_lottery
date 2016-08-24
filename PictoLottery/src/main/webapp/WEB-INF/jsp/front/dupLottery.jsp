@@ -77,7 +77,7 @@
     </script>
 </head>
 <body>
-    <div id="middleText1">一天只能抽一次哦~</div>
+    <div id="middleText1">一天只能抽两次哦~</div>
     <div id="middleText2">换部手机试试？</div>
     <div id="qrcode"><img src="${merchant.merchantQrcode}" /></div>
     <div id="bottomText1">如何查询已有优惠？</div>

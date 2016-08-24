@@ -28,7 +28,7 @@ public class WechatController {
 
     @RequestMapping("welcome")
     public String welcomeToMrPrize(@RequestParam("merchantId") Integer merchantId) {
-        String redirectUrl = "http%3a%2f%2fwww.mr-prize.com%2fstartLottery.do%3fmerchantId%3d" + merchantId;
+        String redirectUrl = "http%3a%2f%2ftest.mr-prize.com%2fstartLottery.do%3fmerchantId%3d" + merchantId;
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="
                 + redirectUrl + "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
@@ -39,7 +39,7 @@ public class WechatController {
     @RequestMapping("toQuery")
     public String toQuery(@RequestParam(value = "merchantId", required = false) Integer merchantId,
                           @RequestParam(value = "isQuery", required = false) Integer isQuery) {
-        String redirectUrl = "http%3a%2f%2fwww.mr-prize.com%2fqueryCoupon.do";
+        String redirectUrl = "http%3a%2f%2ftest.mr-prize.com%2fqueryCoupon.do";
 
         //TODO 可以直接写正常的url地址,通过URLEncoder.encode()编码
         int num = 0;
