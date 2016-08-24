@@ -56,6 +56,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,11 +156,19 @@ public class LotteryController {
                 //errorMsg = "今日已抽过奖，请明日再来";
                 return "front/dupLottery";
             } else {
-                success = true; //校验成功,开始抽奖
+            	success = true; //校验成功,开始抽奖
 
                 logger.info("Began lottery action: openid=" + openid);
+                
+                CouponType latestCouponTypeToday = startLotteryService.latestCouponTypeToday(openid, merchant.getId());
+                
+                List<CouponType> filteredCts = new ArrayList<CouponType>();;
+                if(latestCouponTypeToday != null) {
+	                filteredCts.add(couponTypeDao.queryCouponTypeById(latestCouponTypeToday.getId()));
+                }
+                
                 //生成中奖的奖项
-                CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId());
+                CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId(), filteredCts);
 
                 String showIcons = null;
                 if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
@@ -207,7 +216,7 @@ public class LotteryController {
             List<DiscountProduct> discountProducts = discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
             Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
             CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
-            //奖项下有多个优惠，提供优惠选择
+
             if (ListUtil.isEmptyList(discountProducts)) {
                 logger.info("No discount product under coupon [id=" + luckyCouponTypeId + "]");
                 return "front/thanks";

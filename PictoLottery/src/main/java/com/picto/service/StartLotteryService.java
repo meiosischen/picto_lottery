@@ -1,5 +1,7 @@
 package com.picto.service;
 
+import com.picto.entity.Coupon;
+import com.picto.entity.CouponType;
 import com.picto.entity.OperationRecord;
 
 /**
@@ -17,6 +19,8 @@ public interface StartLotteryService {
     
     public boolean isOverDailyLimit(String openid, Integer merchantId);
     
-    public OperationRecord latestLotteryToday(String openid, Integer merchantId);
+    public Coupon latestCouponToday(String openid, Integer merchantId);
+    
+    public CouponType latestCouponTypeToday(String openid, Integer merchantId);
 
 }

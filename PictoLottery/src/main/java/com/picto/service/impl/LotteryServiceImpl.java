@@ -6,6 +6,7 @@ import com.picto.dao.CouponTypeDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.CouponType;
 import com.picto.entity.OperationRecord;
+import com.picto.entity.OperationRecordCouponTypeRel;
 import com.picto.enums.CouponTypeEnum;
 import com.picto.service.LotteryService;
 import com.picto.util.ListUtil;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -29,6 +31,7 @@ public class LotteryServiceImpl implements LotteryService {
 	
     @Autowired
     private CouponTypeDao couponTypeDao;
+    
     @Autowired
     private OperationRecordDao operationRecordDao;
 
@@ -78,9 +81,19 @@ public class LotteryServiceImpl implements LotteryService {
     }
     
     @Transactional
-    public CouponType lotyCouponType(String openid, Integer merchantId) {
+    public CouponType lotyCouponType(String openid, Integer merchantId, List<CouponType> filterCouponTypes) {
         //查询所有的奖项
-        List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
+    	List<CouponType> couponTypes;
+    	if(filterCouponTypes == null || filterCouponTypes.size() == 0) {
+    		couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
+    	} else {
+    		String filterIdstr = filterCouponTypes.get(0).getId().toString();
+    		for(int i = 1; i < filterCouponTypes.size(); i++) {
+    			filterIdstr += ", " + filterCouponTypes.get(i).getId().toString();
+    		}
+    		couponTypes = couponTypeDao.queryAllCouponTypesByMerchantIdWithCtFilter(merchantId, filterIdstr);
+    	}
+
         if (ListUtil.isEmptyList(couponTypes)) {
         	logger.error("No coupon exists in merchant id[" + merchantId + "]");
             return null;
@@ -94,15 +107,8 @@ public class LotteryServiceImpl implements LotteryService {
         	default: luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
         }
 
-        //生成抽奖记录
-        Date current = new Date();
-        OperationRecord operationRecord = new OperationRecord();
-        operationRecord.setOpenid(openid);
-        operationRecord.setMerchantId(merchantId);
-        operationRecord.setType(Constants.OPERATION_TYPE_LOTTERY);
-        operationRecord.setOperationTime(current);
-        operationRecord.setCreateTime(current);
-        operationRecordDao.addOperationRecord(operationRecord);
+        //Is it necessary to generate operation records with couponType here?
+        this.saveOperRec(openid, merchantId, luckyCouponType.getId());
 
         if (CouponTypeEnum.THANKS.getCode().equals(luckyCouponType.getType())) {
         	//是谢谢惠顾或
@@ -122,9 +128,9 @@ public class LotteryServiceImpl implements LotteryService {
         } else if(luckyCouponType.getRestNum() <= 0) {
         	//者剩余数量=0
         	logger.debug("Generated coupon type [" + luckyCouponType.getName() + "], but remaining number is [0]");
-        	for(CouponType ct : couponTypes) {
-        		if(CouponTypeEnum.THANKS.getCode().equals(ct.getType())) {
-        			return ct;
+        	for(CouponType couponType : couponTypes) {
+        		if(CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
+        			return couponType;
         		}
         	}
         	
@@ -178,5 +184,26 @@ public class LotteryServiceImpl implements LotteryService {
         }
 
         return icons[0] + "," + icons[1] + "," + icons[2];
+    }
+    
+    @Transactional
+    public void saveOperRec(String openid, int merchantId, int ct_id) {
+        Date current = new Date();
+        OperationRecord operationRecord = new OperationRecord();
+        
+        operationRecord.setOpenid(openid);
+        operationRecord.setMerchantId(merchantId);
+        operationRecord.setType(Constants.OPERATION_TYPE_LOTTERY);
+        operationRecord.setOperationTime(current);
+        operationRecord.setCreateTime(current);
+        
+        operationRecordDao.addOperationRecord(operationRecord);
+        int orId = operationRecord.getId();
+        
+        OperationRecordCouponTypeRel orCtRel = new OperationRecordCouponTypeRel();
+
+        orCtRel.setCouponTypeId(ct_id);
+        orCtRel.setOperationRecordId(orId);
+        operationRecordDao.addOperationRecordCouponTypeRel(orCtRel);
     }
 }

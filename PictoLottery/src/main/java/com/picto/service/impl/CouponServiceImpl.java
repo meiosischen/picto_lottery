@@ -12,6 +12,7 @@ import com.picto.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,7 @@ public class CouponServiceImpl implements CouponService {
         CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
         Coupon coupon = new Coupon();
         coupon.setMerchantId(discountProduct.getMerchantId());
+        coupon.setCouponTypeId(couponTypeId);
         coupon.setName(discountProduct.getName());
         coupon.setSerialNumber(genCouponSerialNumber(discountProduct.getMerchantId()));
         coupon.setDiscountProductId(discountProduct.getId());
@@ -93,20 +95,7 @@ public class CouponServiceImpl implements CouponService {
         	return "优惠券次日生效";
         }
         
-        //更新优惠券状态
-        coupon.setState(Constants.COUPON_STATE_EXCHANGED);
-        coupon.setUpdateTime(new Date());
-        couponDao.updateCouponExchanged(coupon);
-
-        //生成兑换记录
-        OperationRecord operationRecord = new OperationRecord();
-        operationRecord.setOpenid(coupon.getOpenid());
-        operationRecord.setMerchantId(coupon.getMerchantId());
-        operationRecord.setSerialNumber(coupon.getSerialNumber());
-        operationRecord.setType(Constants.OPERATION_TYPE_EXCHANGED);
-        operationRecord.setOperationTime(new Date());
-        operationRecord.setCreateTime(new Date());
-        operationRecordDao.addOperationRecord(operationRecord);
+        this.saveExchangeRec(coupon);
 
         return null;
     }
@@ -153,5 +142,31 @@ public class CouponServiceImpl implements CouponService {
     	Date today = DateUtil.getTodayTime();
     	
     	return today.after(couponValidDay);
+    }
+    
+    @Transactional
+    private void saveExchangeRec(Coupon c) {
+        //更新优惠券状态
+        c.setState(Constants.COUPON_STATE_EXCHANGED);
+        c.setUpdateTime(new Date());
+        couponDao.updateCouponExchanged(c);
+
+        //生成兑换记录
+        OperationRecord operationRecord = new OperationRecord();
+        operationRecord.setOpenid(c.getOpenid());
+        operationRecord.setMerchantId(c.getMerchantId());
+        operationRecord.setSerialNumber(c.getSerialNumber());
+        operationRecord.setType(Constants.OPERATION_TYPE_EXCHANGED);
+        operationRecord.setOperationTime(new Date());
+        operationRecord.setCreateTime(new Date());
+        operationRecordDao.addOperationRecord(operationRecord);
+        
+        int orId = operationRecord.getId();
+        
+        OperationRecordCouponRel orCRel = new OperationRecordCouponRel();
+
+        orCRel.setCouponId(c.getId());
+        orCRel.setOperationRecordId(orId);
+        operationRecordDao.addOperationRecordCouponRel(orCRel);        
     }
 }

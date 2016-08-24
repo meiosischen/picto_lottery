@@ -1,5 +1,7 @@
 package com.picto.service;
 
+import java.util.List;
+
 import com.picto.entity.CouponType;
 
 /**
@@ -12,7 +14,7 @@ public interface LotteryService {
      * @param merchantId
      * @return
      */
-    CouponType lotyCouponType(String openid, Integer merchantId);
+    CouponType lotyCouponType(String openid, Integer merchantId, List<CouponType> filterCouponTypes);
 
     /**
      * 生成未中奖显示的奖项图标
