@@ -5,6 +5,7 @@ import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.DiscountProduct;
 import com.picto.entity.Merchant;
+import com.picto.enums.CouponSaveTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
 
@@ -53,6 +54,9 @@ public class ChoiceDiscountController {
         
         //set advert query or banner (see couponInfo.jsp)
         model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
+        
+        //set exchange allowed or not
+        model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
         
         return "front/couponInfo";
     }
