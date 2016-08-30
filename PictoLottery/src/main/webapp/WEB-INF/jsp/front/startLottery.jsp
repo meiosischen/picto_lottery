@@ -37,6 +37,15 @@
             position: relative;
             top: 40%;
         }
+        div#bottomText1 {
+            font-size: 3em;
+            text-align: right;
+            width: 70%;
+            color: #F5F5F5;
+            margin-top: 1%;
+            position: relative;
+            top: 55%;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -53,6 +62,9 @@
         <div id="curtainText">
             <img src="/images/curtain_Text.png" style="width:100%" onclick="startLottery()" />
         </div>
+        <c:if test="${errorMsg == null}">
+        	<div id="bottomText1">每天2次抽奖机会~</div>
+        </c:if>
         <div id="errorMsg">${errorMsg}</div>
     </div>
 </body>

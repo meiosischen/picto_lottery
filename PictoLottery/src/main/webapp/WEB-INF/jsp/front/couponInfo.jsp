@@ -64,22 +64,24 @@
                 <img src="/images/phone.png" /><a href="tel:${couponMerchant.phone}"><span>${couponMerchant.phone}</span></a>
             </div>
         </div>
-        <div id="exchangeText">
-            <c:choose>
-                <c:when test="${coupon.state == 2}">
-                    <span style="border:solid 2px white;padding: 2px;margin-top:15%;display:block;">已兑换</span>
-                </c:when>
-                <c:otherwise>
-                    <div>兑换时</div>
-                    <div>由店员点击</div>
-                </c:otherwise>
-            </c:choose>
-        </div>
-        <c:choose>
-            <c:when test="${coupon.state != 2}">
-                <div id="exchangeBtn" onclick="toggleExchangeInfo()"><img src="/images/exchangeBtn.png" /></div>
-            </c:when>
-        </c:choose>
+        <c:if test="${allowExchange == null || allowExchange != 0}">
+			<div id="exchangeText">
+	            <c:choose>
+	                <c:when test="${coupon.state == 2}">
+	                    <span style="border:solid 2px white;padding: 2px;margin-top:15%;display:block;">已兑换</span>
+	                </c:when>
+	                <c:otherwise>
+	                    <div>兑换时</div>
+	                    <div>由店员点击</div>
+	                </c:otherwise>
+	            </c:choose>
+	        </div>
+	        <c:choose>
+	            <c:when test="${coupon.state != 2}">
+	                <div id="exchangeBtn" onclick="toggleExchangeInfo()"><img src="/images/exchangeBtn.png" /></div>
+	            </c:when>
+	        </c:choose>	        
+        </c:if>
         <div style="clear:both;" ></div>
     </div>
     <div id="couponInfo">
