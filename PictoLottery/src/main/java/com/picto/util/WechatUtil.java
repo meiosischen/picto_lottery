@@ -1,6 +1,9 @@
 package com.picto.util;
 
 import com.picto.constants.Constants;
+import com.picto.controller.front.LotteryController;
+
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,8 +20,11 @@ import java.util.UUID;
  * Created by wujigang on 2016/5/22.
  */
 public class WechatUtil {
-    private static final String APP_ID = "wx8f4239ff75ca1770";
-    private static final String APP_SECRET = "43980f0ded91775f6e505c97657e7789";
+	private static final Logger logger = Logger.getLogger(LotteryController.class);
+	
+    private static final String APP_ID = "wx7425c40996a4e8c3";
+	
+    private static final String APP_SECRET = "caa40fbbf42e2f432da882aa9b639c37";
 
     //access_token, 7200秒失效
     private static String accessToken;
@@ -31,6 +37,9 @@ public class WechatUtil {
         String charset = "UTF-8";
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APP_ID + "&secret="
                 + APP_SECRET + "&code=" + code + "&grant_type=authorization_code";
+        
+        logger.info("Wechat get openid url: " + url);
+        
         String message = HttpsUtil.get(url, charset);
         JSONObject accessTokenJson = new JSONObject(message);
         return getStringFromJson(accessTokenJson, "openid");
