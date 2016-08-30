@@ -17,8 +17,8 @@ public interface Constants {
      * */
     int OPERATION_LOTTERY_LIMIT = 2;
 
-    String ENV_DEV = "test";//测试环境
-    //String ENV_DEV = "prod";//测试环境
+    //String ENV_DEV = "test";//测试环境
+    String ENV_DEV = "prod";//测试环境
     
     int COUPON_STATE_EFFECTED = 1;
     int COUPON_STATE_EXCHANGED = 2;
@@ -32,4 +32,7 @@ public interface Constants {
     int LOTTERY_ALGO = 2;
 
     String CHARSET = "UTF-8";
+    
+    //String homeUrl = "http://www.mr-prize.com";		//live server
+    String homeUrl = "http://test.mr-prize.com";	//test server
 }

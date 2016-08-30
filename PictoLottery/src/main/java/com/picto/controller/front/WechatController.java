@@ -28,7 +28,7 @@ public class WechatController {
 
     @RequestMapping("welcome")
     public String welcomeToMrPrize(@RequestParam("merchantId") Integer merchantId) {
-        String redirectUrl = "http%3a%2f%2ftest.mr-prize.com%2fstartLottery.do%3fmerchantId%3d" + merchantId;
+        String redirectUrl = Constants.homeUrl + "/startLottery.do?merchantId=" + merchantId;
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="
                 + redirectUrl + "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
@@ -39,20 +39,20 @@ public class WechatController {
     @RequestMapping("toQuery")
     public String toQuery(@RequestParam(value = "merchantId", required = false) Integer merchantId,
                           @RequestParam(value = "isQuery", required = false) Integer isQuery) {
-        String redirectUrl = "http%3a%2f%2ftest.mr-prize.com%2fqueryCoupon.do";
+        String redirectUrl = Constants.homeUrl + "/queryCoupon.do";
 
         //TODO 可以直接写正常的url地址,通过URLEncoder.encode()编码
         int num = 0;
         if (null != merchantId || null != isQuery) {
-            redirectUrl += "%3f";
+            redirectUrl += "?";
         }
 
         if (null != merchantId) {
-            redirectUrl += "merchantId%3d" + merchantId;
+            redirectUrl += "merchantId=" + merchantId;
             num++;
         }
         if (null != isQuery) {
-            redirectUrl += num > 0 ? "%26isQuery%3d" + isQuery : "isQuery%3d" + isQuery;
+            redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery=" + isQuery;
         }
 
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="

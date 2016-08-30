@@ -51,7 +51,7 @@ public class WechatUtil {
 
 
         // 注意 URL 一定要动态获取，不能 hardcode
-        String url = "http://test.mr-prize.com";
+        String url = Constants.homeUrl;
         Map<String, String> ret = sign(jsapi_ticket, url);
         for (Map.Entry entry : ret.entrySet()) {
             System.out.println(entry.getKey() + ", " + entry.getValue());
