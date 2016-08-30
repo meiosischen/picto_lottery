@@ -31,6 +31,7 @@ import com.picto.dao.DiscountProductDao;
 import com.picto.dao.MerchantDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.*;
+import com.picto.enums.CouponSaveTypeEnum;
 import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.service.LotteryService;
@@ -60,6 +61,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by wujigang on 2016/5/22.
@@ -238,11 +240,20 @@ public class LotteryController {
                 //set advert query or banner (see couponInfo.jsp)
                 model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
                 
+                //set exchange allowed or not
+                model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
+                
                 return "front/couponInfo";
             } else {
                 //奖项下有多个优惠产品，提供选择页面
                 logger.info("Mutilple discount products under coupon [id=" + luckyCouponTypeId + "]");
-                model.addAttribute("disproducts", discountProducts);
+                List<Object[]> result = new ArrayList<Object[]>();
+                for(DiscountProduct product:discountProducts){
+                	Integer merchantId = product.getMerchantId();
+                	Merchant mer = couponMerchantDao.queryMerchantById(merchantId);
+                	result.add(new Object[]{product, mer});
+                }
+                model.addAttribute("disproducts", result);
                 model.addAttribute("couponTypeName", couponType.getName());
                 model.addAttribute("openid", openid);
                 model.addAttribute("couponTypeId", couponTypeId);
