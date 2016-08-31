@@ -33,6 +33,6 @@ public interface Constants {
 
     String CHARSET = "UTF-8";
     
-    //String homeUrl = "http://www.mr-prize.com";		//live server
-    String homeUrl = "http://test.mr-prize.com";	//test server
+    String homeUrl = "http://www.mr-prize.com";		//live server
+    //String homeUrl = "http://test.mr-prize.com";	//test server
 }

@@ -22,10 +22,12 @@ import java.util.UUID;
 public class WechatUtil {
 	private static final Logger logger = Logger.getLogger(LotteryController.class);
 	
-    private static final String APP_ID = "wx7425c40996a4e8c3";
+    //private static final String APP_ID = "wx7425c40996a4e8c3"; //test
+	private static final String APP_ID = "wx8f4239ff75ca1770";	//live
 	
-    private static final String APP_SECRET = "caa40fbbf42e2f432da882aa9b639c37";
-
+    //private static final String APP_SECRET = "caa40fbbf42e2f432da882aa9b639c37";	//test
+	private static final String APP_SECRET = "43980f0ded91775f6e505c97657e7789";	//live
+	
     //access_token, 7200秒失效
     private static String accessToken;
     private static long lastFetchAccessToken = 0L;
