@@ -77,6 +77,9 @@ public class StartLotteryServiceImpl implements StartLotteryService {
     	}
     	
     	OperationRecordCouponTypeRel orct = operationRecordDao.queryOrCtRelByOrId(or.getId());
+    	if(orct == null) {
+    		return null;
+    	}
     	
     	Integer coutponTypeId = orct.getCouponTypeId();
     	return couponTypeDao.queryCouponTypeById(coutponTypeId);
