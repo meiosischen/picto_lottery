@@ -92,9 +92,9 @@ public class QueryCouponController {
     }
 
     @RequestMapping("viewCoupon")
-    public String viewCoupon(@RequestParam("couponId") Integer couponId,
+    public String viewCoupon(@RequestParam(value = "couponId", required = true) Integer couponId,
                              @RequestParam(value = "isQuery", required = false) Integer isQuery, Model model) {
-        logger.info("Query Coupon [ couponId=" + couponId + ", isQuery=" + isQuery + "]");
+        logger.info("Query Coupon [couponId=" + couponId + ", isQuery=" + isQuery + "]");
         
         Coupon coupon = couponService.queryCouponById(couponId);
         model.addAttribute("coupon", coupon);      
