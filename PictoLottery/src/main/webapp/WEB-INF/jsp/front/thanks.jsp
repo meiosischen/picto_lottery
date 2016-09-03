@@ -78,8 +78,8 @@
 </head>
 <body>
     <div id="title"><img src="/images/thanks_title.png" /></div>
-    <div id="middleText1">很遗憾 没有中奖~</div>
-    <div id="middleText2">换部手机试试？</div>
+    <div id="middleText1">很遗憾 没有中奖</div>
+    <div id="middleText2">每天有两次抽奖机会哦</div>
     <div id="qrcode"><img src="${merchant.merchantQrcode}" /></div>
     <div id="bottomText1">如何查询已有优惠？</div>
     <div id="bottomText2">长按上图「识别二维码」</div>
