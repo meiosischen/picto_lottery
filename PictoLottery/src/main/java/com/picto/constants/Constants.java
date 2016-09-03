@@ -17,8 +17,8 @@ public interface Constants {
      * */
     int OPERATION_LOTTERY_LIMIT = 2;
 
-    String ENV_DEV = "test";//测试环境
-    //String ENV_DEV = "prod";//生产环境
+    //String ENV_DEV = "test";//测试环境
+    String ENV_DEV = "prod";//生产环境
     
     int COUPON_STATE_EFFECTED = 1;
     int COUPON_STATE_EXCHANGED = 2;
