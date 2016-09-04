@@ -63,8 +63,7 @@ import java.util.Map;
  */
 @Controller
 public class LotteryController {
-	private static final Logger logger = Logger
-			.getLogger(LotteryController.class);
+	private static final Logger logger = Logger.getLogger(LotteryController.class);
 
 	@Autowired
 	private LotteryService lotteryService;

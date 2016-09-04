@@ -1,15 +1,15 @@
 package com.picto.controller.front;
 
 import com.picto.constants.Constants;
+import com.picto.constants.ErrorMsg;
 import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.Merchant;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
-import com.picto.util.ListUtil;
-import com.picto.util.StringUtil;
 import com.picto.util.WechatUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.Date;
@@ -38,6 +39,13 @@ public class QueryCouponController {
     private MerchantDao merchantDao;			//当前商家
     @Autowired
     private MerchantDao couponMerchantDao;    	//优惠券商家，有外放，优惠券不一定是当前商家，该变量在view coupon中用到
+    
+	@Value("${picto.wechat.appid}")
+	private String APP_ID;
+
+	@Value("${picto.wechat.appsecret}")
+	private String APP_SECRET;    
+    
     @Value("${environment}")
     private String environment;
 
@@ -47,21 +55,50 @@ public class QueryCouponController {
                               @RequestParam(value = "isQuery", required = false) Integer isQuery,
                               Model model, HttpServletRequest request) throws IOException, JSONException {
     	
+    	WechatUtil.initialize(APP_ID, APP_SECRET);
+    	
     	String openId = "";
-        if (Constants.ENV_DEV.equalsIgnoreCase(environment)) {
-            openId = "TEST555511118888";
-        } else if (code != null) {
-            //开发环境
-        	String weChatOpenId = WechatUtil.getOpenIdByCode(code);
-            openId = weChatOpenId == null ? (String) request.getSession(false).getAttribute("openid") : weChatOpenId;
-            //防止页面返回键时获取不到openid而报错
-            if (null == openId) {
-            	String errorMsg = "请从微信公众号进入";
-                model.addAttribute("errorMsg", errorMsg);
-                return "front/startLotteryError";                	
-            }
-            logger.info("openId [" + openId + "]");
-        }
+		// check session
+		HttpSession session = request.getSession(true);
+		if (session == null) {
+			logger.info("Session is not created");
+			model.addAttribute("errorMsg",
+					ErrorMsg.SessionCreateFail.getUserText());
+			return "front/startLotteryError";
+		}
+
+		// check code
+		if (StringUtils.isEmpty(code)) {
+			model.addAttribute("errorMsg", ErrorMsg.CodeParamMiss.getUserText());
+			logger.info("Got code [null]");
+			return "front/startLotteryError";
+		}
+
+		// check openid according to ENV setting
+		if (environment.equals(Constants.ENV_DEV)) {
+			// Set test openid at development environment
+			session.setAttribute("openid", Constants.testOpenid);
+			logger.info("Dev environment and set test openid ["
+					+ Constants.testOpenid + "]");
+		} else if (environment.equals(Constants.ENV_PROD)
+				&& StringUtils.isEmpty(session.getAttribute("openid").toString())) {
+			// Get openid from wechat
+			String WechatOpenid = WechatUtil.getOpenIdByCode(code);
+			logger.info("Get Wechat openid [" + WechatOpenid + "]");
+
+			if (WechatOpenid != null) {
+				session.setAttribute("openid", WechatOpenid);
+				logger.info("Set openid [" + WechatOpenid + "] to session");
+			} else {
+				model.addAttribute("errorMsg", ErrorMsg.WechatAuthFail.getUserText());
+				return "front/startLotteryError";
+			}
+
+		} else {
+			logger.error("Environment [" + environment + "]");
+			model.addAttribute("errorMsg", ErrorMsg.UnknownError.getUserText());
+			return "front/startLotteryError";
+		}
 
         Merchant queryMerchant = null;
         List<Coupon> coupons = null;

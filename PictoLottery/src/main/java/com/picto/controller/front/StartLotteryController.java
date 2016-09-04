@@ -26,8 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class StartLotteryController {
-	private static final Logger logger = Logger
-			.getLogger(StartLotteryController.class);
+	private static final Logger logger = Logger.getLogger(StartLotteryController.class);
 
 	@Autowired
 	private MerchantDao merchantDao;
@@ -63,11 +62,9 @@ public class StartLotteryController {
 		if (environment.equals(Constants.ENV_DEV)) {
 			// Set test openid at development environment
 			session.setAttribute("openid", Constants.testOpenid);
-			logger.info("Dev environment and set test openid ["
-					+ Constants.testOpenid + "]");
+			logger.info("Dev environment and set test openid [" + Constants.testOpenid + "]");
 		} else if (environment.equals(Constants.ENV_PROD)
-				&& StringUtils.isEmpty(session.getAttribute("openid")
-						.toString())) {
+				&& StringUtils.isEmpty(session.getAttribute("openid").toString())) {
 			// Get openid from wechat
 			String WechatOpenid = WechatUtil.getOpenIdByCode(code);
 			logger.info("Get Wechat openid [" + WechatOpenid + "]");
@@ -76,14 +73,12 @@ public class StartLotteryController {
 				session.setAttribute("openid", WechatOpenid);
 				logger.info("Set openid [" + WechatOpenid + "] to session");
 			} else {
-				session.setAttribute("errorMsg",
-						ErrorMsg.WechatAuthFail.getUserText());
+				session.setAttribute("errorMsg", ErrorMsg.WechatAuthFail.getUserText());
 			}
 
 		} else {
 			logger.error("Environment [" + environment + "]");
-			session.setAttribute("errorMsg",
-					ErrorMsg.UnknownError.getUserText());
+			session.setAttribute("errorMsg", ErrorMsg.UnknownError.getUserText());
 		}
 
 		// Save merchant and code info

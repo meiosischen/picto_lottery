@@ -22,8 +22,7 @@ import java.util.Map;
  */
 @Controller
 public class WechatController {
-	private static final Logger logger = Logger
-			.getLogger(WechatController.class);
+	private static final Logger logger = Logger.getLogger(WechatController.class);
 
 	@Value("${picto.wechat.appid}")
 	private String APP_ID;
@@ -36,20 +35,20 @@ public class WechatController {
 			@RequestParam("merchantId") Integer merchantId,
 			HttpServletRequest request) {
 
-		WechatUtil.setAppId(APP_ID);
-		WechatUtil.setAppSecret(APP_SECRET);
+		WechatUtil.initialize(APP_ID, APP_SECRET);
 
 		String domainUrl = HttpsUtil.getDomain(request);
 		String redirectUrl = domainUrl + "/startLottery.do?merchantId="
 				+ merchantId;
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
-				+ APP_ID
+				+ WechatUtil.getAPP_ID()
 				+ "&redirect_uri="
 				+ redirectUrl
 				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
 		logger.info("url=" + url);
+		
 		return "redirect:" + url;
 	}
 
@@ -59,8 +58,7 @@ public class WechatController {
 			@RequestParam(value = "isQuery", required = false) Integer isQuery,
 			HttpServletRequest request) {
 
-		WechatUtil.setAppId(APP_ID);
-		WechatUtil.setAppSecret(APP_SECRET);
+		WechatUtil.initialize(APP_ID, APP_SECRET);
 
 		String domainUrl = HttpsUtil.getDomain(request);
 		String redirectUrl = domainUrl + "/queryCoupon.do";
@@ -82,7 +80,7 @@ public class WechatController {
 
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
-				+ APP_ID
+				+ WechatUtil.getAPP_ID()
 				+ "&redirect_uri="
 				+ redirectUrl
 				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
@@ -98,4 +96,5 @@ public class WechatController {
 		url = URLDecoder.decode(url, Constants.CHARSET);
 		return WechatUtil.generateSign(url);
 	}
+	
 }

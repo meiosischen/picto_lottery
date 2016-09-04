@@ -20,8 +20,7 @@ import java.util.UUID;
  * Created by wujigang on 2016/5/22.
  */
 public class WechatUtil {
-	private static final Logger logger = Logger
-			.getLogger(LotteryController.class);
+	private static final Logger logger = Logger.getLogger(LotteryController.class);
 
 	private static String APP_ID;
 
@@ -147,12 +146,17 @@ public class WechatUtil {
 		return Long.toString(System.currentTimeMillis() / 1000);
 	}
 
-	public static void setAppId(String appId) {
-		APP_ID = appId;
+	public static String getAPP_ID() {
+		return APP_ID;
 	}
 
-	public static void setAppSecret(String appSecret) {
-		APP_SECRET = appSecret;
+	public static String getAPP_SECRET() {
+		return APP_SECRET;
 	}
-
+	
+	public static void initialize(String appid, String appsecret) {
+		APP_ID = appid;
+		APP_SECRET = appsecret;
+	}
+	
 }
