@@ -1,6 +1,7 @@
 package com.picto.controller.front;
 
 import com.picto.constants.Constants;
+import com.picto.util.HttpsUtil;
 import com.picto.util.WechatUtil;
 
 import org.apache.log4j.Logger;
@@ -21,51 +22,80 @@ import java.util.Map;
  */
 @Controller
 public class WechatController {
-    private static final Logger logger = Logger.getLogger(WechatController.class);
-    
-    @Value("${picto.wechat.appid}")
-    private String APP_ID;
+	private static final Logger logger = Logger
+			.getLogger(WechatController.class);
 
-    @RequestMapping("welcome")
-    public String welcomeToMrPrize(@RequestParam("merchantId") Integer merchantId) {
-        String redirectUrl = Constants.homeUrl + "/startLottery.do?merchantId=" + merchantId;
-        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="
-                + redirectUrl + "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+	@Value("${picto.wechat.appid}")
+	private String APP_ID;
 
-        logger.info("url=" + url);
-        return "redirect:" + url;
-    }
+	@Value("${picto.wechat.appsecret}")
+	private String APP_SECRET;
 
-    @RequestMapping("toQuery")
-    public String toQuery(@RequestParam(value = "merchantId", required = false) Integer merchantId,
-                          @RequestParam(value = "isQuery", required = false) Integer isQuery) {
-        String redirectUrl = Constants.homeUrl + "/queryCoupon.do";
+	@RequestMapping("welcome")
+	public String welcomeToMrPrize(
+			@RequestParam("merchantId") Integer merchantId,
+			HttpServletRequest request) {
 
-        //TODO 可以直接写正常的url地址,通过URLEncoder.encode()编码
-        int num = 0;
-        if (null != merchantId || null != isQuery) {
-            redirectUrl += "?";
-        }
+		WechatUtil.setAppId(APP_ID);
+		WechatUtil.setAppSecret(APP_SECRET);
 
-        if (null != merchantId) {
-            redirectUrl += "merchantId=" + merchantId;
-            num++;
-        }
-        if (null != isQuery) {
-            redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery=" + isQuery;
-        }
+		String domainUrl = HttpsUtil.getDomain(request);
+		String redirectUrl = domainUrl + "/startLottery.do?merchantId="
+				+ merchantId;
+		String url = WechatUtil.getAuthUrl
+				+ "?appid="
+				+ APP_ID
+				+ "&redirect_uri="
+				+ redirectUrl
+				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
-        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APP_ID + "&redirect_uri="
-                + redirectUrl + "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
-        logger.info("Redirect to " + url);
-        return "redirect:" + url;
-    }
+		logger.info("url=" + url);
+		return "redirect:" + url;
+	}
 
-    @RequestMapping(value = "getWxConfig", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> getWxConfig(HttpServletRequest request) throws Exception {
-        String url = (String) request.getParameter("url");
-        url = URLDecoder.decode(url, Constants.CHARSET);
-        return WechatUtil.generateSign(url);
-    }
+	@RequestMapping("toQuery")
+	public String toQuery(
+			@RequestParam(value = "merchantId", required = false) Integer merchantId,
+			@RequestParam(value = "isQuery", required = false) Integer isQuery,
+			HttpServletRequest request) {
+
+		WechatUtil.setAppId(APP_ID);
+		WechatUtil.setAppSecret(APP_SECRET);
+
+		String domainUrl = HttpsUtil.getDomain(request);
+		String redirectUrl = domainUrl + "/queryCoupon.do";
+
+		// TODO 可以直接写正常的url地址,通过URLEncoder.encode()编码
+		int num = 0;
+		if (null != merchantId || null != isQuery) {
+			redirectUrl += "?";
+		}
+
+		if (null != merchantId) {
+			redirectUrl += "merchantId=" + merchantId;
+			num++;
+		}
+		if (null != isQuery) {
+			redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery="
+					+ isQuery;
+		}
+
+		String url = WechatUtil.getAuthUrl
+				+ "?appid="
+				+ APP_ID
+				+ "&redirect_uri="
+				+ redirectUrl
+				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+		logger.info("Redirect to " + url);
+		return "redirect:" + url;
+	}
+
+	@RequestMapping(value = "getWxConfig", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> getWxConfig(HttpServletRequest request)
+			throws Exception {
+		String url = (String) request.getParameter("url");
+		url = URLDecoder.decode(url, Constants.CHARSET);
+		return WechatUtil.generateSign(url);
+	}
 }
