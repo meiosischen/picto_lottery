@@ -34,8 +34,8 @@
 	
 	<div <c:if test="${vs.count eq 2}">class="list_img2" style="background-size:100%; padding-top:10px; background-image:url('/images/frame.png');"</c:if>>
 	
-	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); margin:8px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
-	<div style=" text-align:center; color:#f4f4f4; width:100%; font-weight:bold; margin-top:-10px; margin-bottom:10px;">${product[0].name}&nbsp;&nbsp;|&nbsp;&nbsp;${product[0].discount}</div>	
+	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); margin:10px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
+	<div style=" text-align:center; color:#f4f4f4; width:100%; font-weight:bold; margin-top:-5px; margin-bottom:10px;">${product[0].name}&nbsp;&nbsp;|&nbsp;&nbsp;${product[0].discount}</div>	
 	</div>
 </c:forEach>
 
@@ -49,7 +49,7 @@ function resize_list(){
 	jQuery(".coupon_img").height(jQuery(".coupon_img").width() / 6.3);
 	//jQuery(".prize").height(jQuery(".coupon_img").height() / 1).width(jQuery(".prize").height());
 	jQuery(".list_img").each(function(){ jQuery(this).height(jQuery(this).width() / 3); });
-	jQuery(".list_img2").each(function(){ jQuery(this).height(jQuery(this).width() / 2.5); });
+	jQuery(".list_img2").each(function(){ jQuery(this).height(jQuery(this).width() / 2.49); });
 }
 
 jQuery(document ).ready(function(){ resize_list(); });
