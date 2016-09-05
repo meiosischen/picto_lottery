@@ -20,7 +20,7 @@
 
 	.top_img{ background:url('/images/banner.png') no-repeat; background-size:100%; }
 	.coupon_img{ background:url('/images/coupon.jpg') no-repeat; background-size:100%; position:relative }
-	.coupon_img span{ background:#fff; display:block; width:40%; padding:5px 10px; position:absolute; top:30%; left:30%; text-align:center; color:#780001; font-size:120%; font-weight:bolder; }
+	.coupon_img span{ background:#fff; display:block; width:40%; padding:5px; position:absolute; top:30%; left:30%; text-align:center; color:#780001; font-weight:bolder; }
 	.list_img{ background-size:100%; position:relative }
 	</style>
     <script src="/js/jquery-2.2.4.min.js"></script>
@@ -34,7 +34,7 @@
 	
 	<div <c:if test="${vs.count eq 2}">class="list_img2" style="background-size:100%; padding-top:10px; background-image:url('/images/frame.png');"</c:if>>
 	
-	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); margin:12px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
+	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); margin:8px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
 	<div style=" text-align:center; color:#f4f4f4; width:100%; font-weight:bold; margin-top:-10px; margin-bottom:10px;">${product[0].name}&nbsp;&nbsp;|&nbsp;&nbsp;${product[0].discount}</div>	
 	</div>
 </c:forEach>
