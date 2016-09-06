@@ -75,8 +75,7 @@ public class StartLotteryController {
 			}
 
 		} else {
-			logger.error("Environment [" + environment + "]");
-			session.setAttribute("errorMsg", ErrorMsg.UnknownError.getUserText());
+			//session has already had openid
 		}
 
 		// Save merchant and code info
