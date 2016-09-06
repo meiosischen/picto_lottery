@@ -187,8 +187,14 @@ public class LotteryController {
 				return "front/startLottery";
 			}
 
-			Merchant merchant = (Merchant) request.getSession(false)
-					.getAttribute("merchant");
+			if(session.getAttribute("merchantId") == null) {
+				logger.info("merchantId does not exist in session");
+				model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
+				return "front/startLotteryError";
+			}
+			
+			String merchantId = session.getAttribute("merchantId").toString();
+			Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 
 			List<DiscountProduct> discountProducts = discountProductDao
 					.queryDiscountByCouponTypeId(Integer
@@ -228,9 +234,8 @@ public class LotteryController {
 				logger.info("Mutilple discount products under coupon id [" + luckyCouponTypeId + "]");
 				List<Object[]> result = new ArrayList<Object[]>();
 				for (DiscountProduct product : discountProducts) {
-					Integer merchantId = product.getMerchantId();
-					Merchant mer = couponMerchantDao.queryMerchantById(merchantId);
-					result.add(new Object[] { product, mer });
+					Merchant couponMerchant = couponMerchantDao.queryMerchantById(product.getMerchantId());
+					result.add(new Object[] { product, couponMerchant });
 				}
 				model.addAttribute("disproducts", result);
 				model.addAttribute("couponTypeName", couponType.getName());
