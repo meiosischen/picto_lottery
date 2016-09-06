@@ -237,6 +237,7 @@ public class LotteryController {
 					Merchant couponMerchant = couponMerchantDao.queryMerchantById(product.getMerchantId());
 					result.add(new Object[] { product, couponMerchant });
 				}
+				model.addAttribute("merchant", merchant);
 				model.addAttribute("disproducts", result);
 				model.addAttribute("couponTypeName", couponType.getName());
 				model.addAttribute("openid", openid);

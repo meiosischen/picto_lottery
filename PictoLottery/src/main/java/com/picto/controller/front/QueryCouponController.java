@@ -99,13 +99,12 @@ public class QueryCouponController {
 			openId = session.getAttribute("openid").toString();
 		}
 
-        Merchant queryMerchant = null;
         List<Coupon> coupons = null;
         if(merchantId == 0) {
         	//come from Mr.Prize
         	coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
         } else {
-        	queryMerchant = merchantDao.queryMerchantById(merchantId);
+        	Merchant queryMerchant = merchantDao.queryMerchantById(merchantId);
         	
         	if(queryMerchant == null) {
             	String errorMsg = "该商铺不存在";
