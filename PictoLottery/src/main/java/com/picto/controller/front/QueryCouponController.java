@@ -119,7 +119,7 @@ public class QueryCouponController {
         }
 
         model.addAttribute("coupons", coupons);
-        model.addAttribute("isQueury", null == isQuery ? 0 : isQuery);
+        model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
 
         return "front/couponList";
     }
@@ -140,10 +140,7 @@ public class QueryCouponController {
                 : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
         
         model.addAttribute("expireDateStr", expireDateStr);
-
-        if (null != isQuery) {
-            model.addAttribute("isQuery", isQuery);
-        }
+        model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
 
         return "front/couponInfo";
     }
