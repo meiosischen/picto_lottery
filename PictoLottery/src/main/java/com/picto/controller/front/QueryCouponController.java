@@ -119,9 +119,7 @@ public class QueryCouponController {
         }
 
         model.addAttribute("coupons", coupons);
-        if (null != isQuery) {
-            model.addAttribute("isQueury", isQuery);
-        }
+        model.addAttribute("isQueury", null == isQuery ? 0 : isQuery);
 
         return "front/couponList";
     }

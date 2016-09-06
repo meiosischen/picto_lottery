@@ -41,7 +41,7 @@
 
 
         function viewCoupon(couponId) {
-            window.location.href = "/viewCoupon.do?couponId=" + couponId + "&isQuery=" + '${isQueury}';
+            window.location.href = "/viewCoupon.do?couponId=" + couponId + "&isQuery=" + ${isQueury};
         }
     </script>
 </head>
