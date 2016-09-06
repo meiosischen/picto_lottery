@@ -82,7 +82,7 @@ public class QueryCouponController {
 			openId = Constants.testOpenid;
 			logger.info("Dev environment and set test openid [" + Constants.testOpenid + "]");
 		} else if (environment.equals(Constants.ENV_PROD)
-				&& StringUtils.isEmpty(session.getAttribute("openid").toString())) {
+				&& session.getAttribute("openid") == null) {
 			// Get openid from wechat
 			String WechatOpenid = WechatUtil.getOpenIdByCode(code);
 			logger.info("Get Wechat openid [" + WechatOpenid + "]");
