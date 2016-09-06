@@ -96,9 +96,7 @@ public class QueryCouponController {
 			}
 			openId = WechatOpenid;
 		} else {
-			logger.error("Environment [" + environment + "]");
-			model.addAttribute("errorMsg", ErrorMsg.UnknownError.getUserText());
-			return "front/startLotteryError";
+			openId = session.getAttribute("openid").toString();
 		}
 
         Merchant queryMerchant = null;
