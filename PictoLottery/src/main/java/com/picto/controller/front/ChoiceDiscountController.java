@@ -1,5 +1,6 @@
 package com.picto.controller.front;
 
+import com.picto.constants.ErrorMsg;
 import com.picto.dao.DiscountProductDao;
 import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by BF100271 on 2016/5/24.
@@ -30,14 +32,28 @@ public class ChoiceDiscountController {
     @Autowired
     private CouponService couponService;
     @Autowired
-    private MerchantDao couponMerchantDao;    
+    private MerchantDao merchantDao;    
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
         @RequestParam("couponTypeId") Integer couponTypeId, @RequestParam("openid") String openid, Model model, HttpServletRequest request) {
-        logger.info("Choose discount product: selectedDiscountProductId [" + selectedDiscountProductId + "] ,couponTypeId [" + couponTypeId
-                + "], openid [" + openid + "]");
-        Merchant merchant = (Merchant) request.getSession().getAttribute("merchant");
+        logger.info("Choose discount product: selectedDiscountProductId [" + selectedDiscountProductId + "] ,couponTypeId [" + couponTypeId + "], openid [" + openid + "]");
+        
+        HttpSession session = request.getSession(false);
+		if (session == null) {
+			logger.info("Session is not created");
+			model.addAttribute("errorMsg", ErrorMsg.SessionNotExist.getUserText());
+			return "front/startLotteryError";
+		}
+        
+		if(session.getAttribute("merchantId") == null) {
+			logger.info("merchantId does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
+			return "front/startLotteryError";
+		}
+		
+		String merchantId = session.getAttribute("merchantId").toString();
+		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 
         //根据选择的优惠产品生成优惠券并跳转到优惠券信息页
         DiscountProduct discountProduct = discountProductDao.queryDiscountById(selectedDiscountProductId);
@@ -45,7 +61,7 @@ public class ChoiceDiscountController {
         model.addAttribute("coupon", coupon);
 
         //获取优惠券商家信息（可能本店，也可能是外放店铺）
-        Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
+        Merchant couponMerchant = merchantDao.queryMerchantById(coupon.getMerchantId());
         model.addAttribute("couponMerchant", couponMerchant);
         
         String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")

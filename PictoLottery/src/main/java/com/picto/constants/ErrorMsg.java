@@ -36,6 +36,8 @@ public class ErrorMsg {
 	
 	public static ErrorMsg SessionCreateFail = new ErrorMsg("004", "Failed to create session", "建立会话失败");
 	
-	public static ErrorMsg MerchantNotExists = new ErrorMsg("005", "Failed to find merchant", "商户不存在");
+	public static ErrorMsg SessionNotExist = new ErrorMsg("005", "Session does not exist", "网页已过期，请重新进入");
+	
+	public static ErrorMsg MerchantNotExists = new ErrorMsg("006", "Failed to find merchant", "商户不存在");
 
 }

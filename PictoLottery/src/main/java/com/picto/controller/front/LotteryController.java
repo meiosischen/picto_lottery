@@ -99,6 +99,12 @@ public class LotteryController {
 		}
 		logger.info("Session ID [" + request.getSession(false).getId() + "]");
 
+		if(session.getAttribute("merchantId") == null) {
+			logger.info("merchantId does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
+			return "front/startLotteryError";
+		}		
+		
 		String merchantId = session.getAttribute("merchantId").toString();
 		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 

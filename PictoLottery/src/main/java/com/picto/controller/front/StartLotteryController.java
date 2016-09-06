@@ -38,22 +38,19 @@ public class StartLotteryController {
 	public String startLottery(@RequestParam("merchantId") Integer merchantId,
 			@RequestParam("code") String code, Model model,
 			HttpServletRequest request) throws JSONException, IOException {
-		logger.info("Enter into mr-prize.com with merchantId [" + merchantId
-				+ "], code [" + code + "]");
+		logger.info("Enter into mr-prize.com with merchantId [" + merchantId + "], code [" + code + "]");
 
 		// check session
 		HttpSession session = request.getSession(true);
 		if (session == null) {
 			logger.info("Session is not created");
-			model.addAttribute("errorMsg",
-					ErrorMsg.SessionCreateFail.getUserText());
+			model.addAttribute("errorMsg", ErrorMsg.SessionCreateFail.getUserText());
 			return "front/startLotteryError";
 		}
 
 		// check code
 		if (StringUtils.isEmpty(code)) {
-			session.setAttribute("errorMsg",
-					ErrorMsg.CodeParamMiss.getUserText());
+			session.setAttribute("errorMsg", ErrorMsg.CodeParamMiss.getUserText());
 			logger.info("Got code [null]");
 			return "front/startLottery";
 		}

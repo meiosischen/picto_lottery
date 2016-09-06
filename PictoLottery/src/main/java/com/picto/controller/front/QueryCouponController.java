@@ -50,20 +50,20 @@ public class QueryCouponController {
     private String environment;
 
     @RequestMapping("queryCoupon")
-    public String queryCoupon(@RequestParam(value = "code", required = false) String code,
-                              @RequestParam(value = "merchantId", required = true) Integer merchantId,
-                              @RequestParam(value = "isQuery", required = false) Integer isQuery,
-                              Model model, HttpServletRequest request) throws IOException, JSONException {
+	public String queryCoupon(
+			@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "merchantId", required = true) Integer merchantId,
+			@RequestParam(value = "isQuery", required = false) Integer isQuery,
+			Model model, HttpServletRequest request) throws IOException,
+			JSONException {
     	
     	WechatUtil.initialize(APP_ID, APP_SECRET);
     	
-    	String openId = "";
 		// check session
 		HttpSession session = request.getSession(true);
 		if (session == null) {
 			logger.info("Session is not created");
-			model.addAttribute("errorMsg",
-					ErrorMsg.SessionCreateFail.getUserText());
+			model.addAttribute("errorMsg", ErrorMsg.SessionCreateFail.getUserText());
 			return "front/startLotteryError";
 		}
 
@@ -74,12 +74,13 @@ public class QueryCouponController {
 			return "front/startLotteryError";
 		}
 
+		String openId;
 		// check openid according to ENV setting
 		if (environment.equals(Constants.ENV_DEV)) {
 			// Set test openid at development environment
 			session.setAttribute("openid", Constants.testOpenid);
-			logger.info("Dev environment and set test openid ["
-					+ Constants.testOpenid + "]");
+			openId = Constants.testOpenid;
+			logger.info("Dev environment and set test openid [" + Constants.testOpenid + "]");
 		} else if (environment.equals(Constants.ENV_PROD)
 				&& StringUtils.isEmpty(session.getAttribute("openid").toString())) {
 			// Get openid from wechat
@@ -93,7 +94,7 @@ public class QueryCouponController {
 				model.addAttribute("errorMsg", ErrorMsg.WechatAuthFail.getUserText());
 				return "front/startLotteryError";
 			}
-
+			openId = WechatOpenid;
 		} else {
 			logger.error("Environment [" + environment + "]");
 			model.addAttribute("errorMsg", ErrorMsg.UnknownError.getUserText());
