@@ -56,6 +56,7 @@ public class StartLotteryController {
 			return "front/startLottery";
 		}
 
+		logger.info("Environment is set as [" + environment + "]");
 		// check openid according to ENV setting
 		if (environment.equals(Constants.ENV_DEV)) {
 			// Set test openid at development environment
