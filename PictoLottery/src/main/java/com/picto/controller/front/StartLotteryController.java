@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.picto.constants.Constants;
 import com.picto.constants.ErrorMsg;
 import com.picto.dao.MerchantDao;
+import com.picto.entity.Merchant;
 import com.picto.util.WechatUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -80,7 +81,10 @@ public class StartLotteryController {
 
 		// Save merchant and code info
 		session.setAttribute("merchantId", merchantId);
-		model.addAttribute("merchantId", merchantId);
+		
+		// Get merchant and render to page
+		Merchant merchant = merchantDao.queryMerchantById(merchantId);
+		model.addAttribute("merchant", merchant);
 		model.addAttribute("code", code);
 
 		return "front/startLottery";
