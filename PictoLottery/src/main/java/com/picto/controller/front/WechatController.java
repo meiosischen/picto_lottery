@@ -3,7 +3,9 @@ package com.picto.controller.front;
 import com.picto.constants.Constants;
 import com.picto.util.HttpsUtil;
 import com.picto.util.WechatUtil;
+import com.sun.javafx.fxml.builder.URLBuilder;
 
+import org.apache.commons.lang.CharSet;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -56,7 +61,7 @@ public class WechatController {
 	public String toQuery(
 			@RequestParam(value = "merchantId", required = false) Integer merchantId,
 			@RequestParam(value = "isQuery", required = false) Integer isQuery,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws UnsupportedEncodingException {
 
 		WechatUtil.initialize(APP_ID, APP_SECRET);
 
@@ -69,23 +74,25 @@ public class WechatController {
 			redirectUrl += "?";
 		}
 
+		if (null != merchantId) {
+			redirectUrl += "merchantId=" + merchantId;
+			num++;
+		}
+		
 		if (null != isQuery) {
 			redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery=" + isQuery;
 		}
 
-		if (null != merchantId) {
-			redirectUrl += "merchantId=" + merchantId;
-			num++;
-		}		
-		
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
 				+ WechatUtil.getAPP_ID()
+				+ "&response_type=code&scope=snsapi_base"
 				+ "&redirect_uri="
-				+ redirectUrl
-				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+				+ redirectUrl 
+				+ "#wechat_redirect";
+		
 		logger.info("Redirect to " + url);
-		return "redirect:" + url;
+		return "redirect:" + URLEncoder.encode(url, "UTF-8");
 	}
 
 	@RequestMapping(value = "getWxConfig", method = RequestMethod.POST)
