@@ -148,13 +148,11 @@ public class LotteryController {
 			}
 
 			// 生成中奖的奖项
-			CouponType couponType = lotteryService.lotyCouponType(openid,
-					merchant.getId(), filteredCts);
+			CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId(), filteredCts);
 
 			String showIcons = null;
 			if (null != couponType
-					&& !CouponTypeEnum.THANKS.getCode().equals(
-							couponType.getType())) {
+					&& !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
 				logger.info("Got coupon: couponType id [" + couponType.getId() + "], name [" + couponType.getName() + "]");
 
 				String luckyIcon = couponType.getIcon();
@@ -180,24 +178,27 @@ public class LotteryController {
 			@RequestParam("openid") String openid, Model model,
 			HttpServletRequest request) {
 		logger.info("Lottery finished and generate result: luckyCouponTypeId [" + luckyCouponTypeId + "], openid [" + openid + "]");
+
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			logger.info("Session is not created");
+			return "front/startLottery";
+		}
+		
+		if(session.getAttribute("merchantId") == null) {
+			logger.info("merchantId does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
+			return "front/startLotteryError";
+		}		
+		
+		String merchantId = session.getAttribute("merchantId").toString();
+		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
+		
+		model.addAttribute("merchant", merchant);
+		
 		if (StringUtil.isBlank(luckyCouponTypeId)) {
 			return "front/thanks";
 		} else {
-			HttpSession session = request.getSession(false);
-			if (session == null) {
-				logger.info("Session is not created");
-				return "front/startLottery";
-			}
-
-			if(session.getAttribute("merchantId") == null) {
-				logger.info("merchantId does not exist in session");
-				model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
-				return "front/startLotteryError";
-			}
-			
-			String merchantId = session.getAttribute("merchantId").toString();
-			Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
-
 			List<DiscountProduct> discountProducts = discountProductDao
 					.queryDiscountByCouponTypeId(Integer
 							.valueOf(luckyCouponTypeId));
@@ -239,7 +240,7 @@ public class LotteryController {
 					Merchant couponMerchant = couponMerchantDao.queryMerchantById(product.getMerchantId());
 					result.add(new Object[] { product, couponMerchant });
 				}
-				model.addAttribute("merchant", merchant);
+
 				model.addAttribute("disproducts", result);
 				model.addAttribute("couponTypeName", couponType.getName());
 				model.addAttribute("openid", openid);

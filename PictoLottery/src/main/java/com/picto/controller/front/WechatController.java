@@ -35,18 +35,18 @@ public class WechatController {
 	@RequestMapping("welcome")
 	public String welcomeToMrPrize(
 			@RequestParam("merchantId") Integer merchantId,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws UnsupportedEncodingException {
 
 		WechatUtil.initialize(APP_ID, APP_SECRET);
 
 		String domainUrl = HttpsUtil.getDomain(request);
-		String redirectUrl = domainUrl + "/startLottery.do?merchantId="
-				+ merchantId;
+		String redirectUrl = domainUrl + "/startLottery.do?merchantId=" + merchantId;
+		
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
 				+ WechatUtil.getAPP_ID()
 				+ "&redirect_uri="
-				+ redirectUrl
+				+ URLEncoder.encode(redirectUrl, Constants.CHARSET)
 				+ "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 
 		logger.info("url=" + url);
