@@ -5,7 +5,6 @@ import com.picto.util.HttpsUtil;
 import com.picto.util.WechatUtil;
 import com.sun.javafx.fxml.builder.URLBuilder;
 
-import org.apache.commons.lang.CharSet;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -68,7 +66,6 @@ public class WechatController {
 		String domainUrl = HttpsUtil.getDomain(request);
 		String redirectUrl = domainUrl + "/queryCoupon.do";
 
-		// TODO 可以直接写正常的url地址,通过URLEncoder.encode()编码
 		int num = 0;
 		if (null != merchantId || null != isQuery) {
 			redirectUrl += "?";
@@ -91,7 +88,7 @@ public class WechatController {
 				+ URLEncoder.encode(redirectUrl, Constants.CHARSET)
 				+ "#wechat_redirect";
 		
-		logger.info("Redirect to " + url);
+		logger.info("Redirect to [" + url + "]");
 		return "redirect:" + url;
 	}
 
