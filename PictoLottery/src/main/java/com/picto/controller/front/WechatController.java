@@ -3,7 +3,6 @@ package com.picto.controller.front;
 import com.picto.constants.Constants;
 import com.picto.util.HttpsUtil;
 import com.picto.util.WechatUtil;
-import com.sun.javafx.fxml.builder.URLBuilder;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
