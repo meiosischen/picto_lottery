@@ -128,7 +128,9 @@ public class LotteryController {
 		if (merchant.getState() == 0) {
 			return "front/upgrade";
 		}
-
+		
+		model.addAttribute("merchant", merchant);
+		
 		// boolean hadLottery = startLotteryService.judgeHadLottery(openid, merchant.getId());
 		boolean isOverLimit = startLotteryService.isOverDailyLimit(openid, merchant.getId());
 		if (isOverLimit && merchant.getIsValidateOpenid()) {
@@ -168,7 +170,7 @@ public class LotteryController {
 			model.addAttribute("showIcons", showIcons);
 			logger.info("showIcons [" + showIcons + "]");
 		}
-
+		
 		return "front/lottery";
 	}
 
