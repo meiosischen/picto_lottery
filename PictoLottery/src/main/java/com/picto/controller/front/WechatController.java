@@ -86,13 +86,13 @@ public class WechatController {
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
 				+ WechatUtil.getAPP_ID()
-				+ "&response_type=code&scope=snsapi_base"
+				+ "&response_type=code&scope=snsapi_base&state=mrPrize"
 				+ "&redirect_uri="
-				+ redirectUrl 
+				+ URLEncoder.encode(redirectUrl, Constants.CHARSET)
 				+ "#wechat_redirect";
 		
 		logger.info("Redirect to " + url);
-		return "redirect:" + URLEncoder.encode(url, "UTF-8");
+		return "redirect:" + url;
 	}
 
 	@RequestMapping(value = "getWxConfig", method = RequestMethod.POST)
