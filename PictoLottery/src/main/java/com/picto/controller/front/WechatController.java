@@ -69,15 +69,15 @@ public class WechatController {
 			redirectUrl += "?";
 		}
 
+		if (null != isQuery) {
+			redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery=" + isQuery;
+		}
+
 		if (null != merchantId) {
 			redirectUrl += "merchantId=" + merchantId;
 			num++;
-		}
-		if (null != isQuery) {
-			redirectUrl += num > 0 ? "&isQuery=" + isQuery : "isQuery="
-					+ isQuery;
-		}
-
+		}		
+		
 		String url = WechatUtil.getAuthUrl
 				+ "?appid="
 				+ WechatUtil.getAPP_ID()
