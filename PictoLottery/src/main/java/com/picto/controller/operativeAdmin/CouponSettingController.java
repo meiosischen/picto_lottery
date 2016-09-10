@@ -146,6 +146,10 @@ public class CouponSettingController {
 
     @RequestMapping("updateCouponType")
     public String updateCouponType(CouponType cType) {
+    	if(cType.getId() == null) {
+    		return "operativeAdmin/adminHome";
+    	}
+    	
         CouponType couponType = couponTypeDao.queryCouponTypeById(cType.getId());
         couponType.setName(cType.getName());
         couponType.setTotalNum(cType.getTotalNum());
@@ -155,16 +159,16 @@ public class CouponSettingController {
         couponType.setIsImmediate(CouponUtil.getBooleanValue(cType.getIsImmediate()));
         couponType.setUpdateTime(new Date());
         
-        couponType.setResetInterval(cType.getResetInterval());
+    	//reset time is set at five oclock in the morning (see cron task)
         if(couponType.getResetInterval() != cType.getResetInterval()) {
         	logger.info("Reset last reset time");
         	
-        	//reset time is set at five oclock in the morning (see cron task)
         	Date fiveOclock = DateUtil.addHours(DateUtil.getToday(), 5);
         	Date now = DateUtil.getTodayTime();
         	Date resetTime = now.before(fiveOclock) ? fiveOclock : DateUtil.addHours(DateUtil.addDays(DateUtil.getToday(), 1), 5);
         	couponType.setLastResetTime(resetTime);
         }
+        couponType.setResetInterval(cType.getResetInterval());
         
         couponTypeDao.updateCouponType(couponType);
         return "redirect:/admin/getAllCouponTypes.do?merchantId=" + couponType.getMerchantId();

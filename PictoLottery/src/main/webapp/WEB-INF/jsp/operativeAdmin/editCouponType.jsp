@@ -130,7 +130,10 @@
                             </c:forEach>
                         </select>
                     </td>
-                    <td></td>
+                </tr>
+                <tr>
+                	<td>上次重置时间</td>
+                	<td>${couponType.lastResetTime}</td>
                 </tr>
                 <tr>
                     <td>奖项类型</td>
