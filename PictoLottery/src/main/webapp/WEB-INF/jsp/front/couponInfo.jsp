@@ -114,7 +114,7 @@
             <div id="limigMsg1">${coupon.limitMsg.split(",")[1]}</div>
             <div id="limigMsg2">${coupon.limitMsg.split(",")[2]}</div>
             <div id="msg1">长按右图「识别二维码」</div>
-            <div id="msg2">关注后 可保存/查询优惠
+            <div id="msg2">关注后 可保存/查询奖券
                 <img src="/images/finger.gif" />
             </div>
         </div>
