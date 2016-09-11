@@ -59,6 +59,7 @@
             rest_num = #{restNum},
             is_immediate = #{isImmediate},
             reset_interval = #{resetInterval},
+            last_reset_time = #{lastResetTime},
             type = #{type},
             version = version + 1,
             update_time = #{updateTime}
