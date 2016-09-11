@@ -63,7 +63,7 @@
             <img src="/images/curtain_Text.png" style="width:100%" onclick="startLottery()" />
         </div>
         <c:if test="${errorMsg == null}">
-        	<div id="bottomText1">每天2次抽奖机会~</div>
+        	<div id="bottomText1">每天2次寻宝机会~</div>
         </c:if>
         <div id="errorMsg">${errorMsg}</div>
     </div>

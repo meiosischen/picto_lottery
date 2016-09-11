@@ -15,7 +15,7 @@
     <title>
         <c:choose>
             <c:when test="${queryMerchant == null}">
-                买单先生
+            	城市宝藏
             </c:when>
             <c:otherwise>${queryMerchant.brand}</c:otherwise>
         </c:choose>
