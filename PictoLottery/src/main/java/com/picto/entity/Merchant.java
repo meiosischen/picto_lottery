@@ -26,7 +26,10 @@ public class Merchant extends BaseEntity {
     private Integer state;
     private Integer saveType;
     private Boolean isValidateOpenid;
-
+    private String treasureMap;
+    private String treasureText1;
+    private String treasureText2;
+    
     public String getMerchantName() {
         return merchantName;
     }
@@ -191,7 +194,31 @@ public class Merchant extends BaseEntity {
         isValidateOpenid = validateOpenid;
     }
 
-    @Override
+	public String getTreasureMap() {
+		return treasureMap;
+	}
+
+	public void setTreasureMap(String treasureMap) {
+		this.treasureMap = treasureMap;
+	}
+	
+	public String getTreasureText1() {
+		return treasureText1;
+	}
+
+	public void setTreasureText1(String treasureText1) {
+		this.treasureText1 = treasureText1;
+	}
+
+	public String getTreasureText2() {
+		return treasureText2;
+	}
+
+	public void setTreasureText2(String treasureText2) {
+		this.treasureText2 = treasureText2;
+	}
+
+	@Override
     public String toString() {
         return "Merchant{" +
                 "merchantName='" + merchantName + '\'' +

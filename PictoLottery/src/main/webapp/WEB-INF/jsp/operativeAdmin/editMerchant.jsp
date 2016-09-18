@@ -75,6 +75,9 @@
         .qrcode img{
             width:150px;
         }
+        .treasureMap img{
+            width:300px;
+        }
         #submitDiv{
             width: 5%;
             margin: 3% auto;
@@ -105,12 +108,10 @@
                 <tr>
                     <td>抽奖链接</td>
                     <td>${merchant.lotteryLink}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>贴纸二维码</td>
-                    <td class="qrcode"><img src="${merchant.lotteryQrcode}" /></td>
-                    <td></td>
+                    <td class="qrcode"><img src="${merchant.lotteryQrcode}" /></td>                    
                 </tr>
                 <tr>
                     <td>店铺名称</td>
@@ -138,7 +139,6 @@
                             </c:forEach>
                         </select>
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>存奖二维码</td>
@@ -148,7 +148,23 @@
                         <input id="merchantQrcodeFile" type="file" name="file"/>
                         <input type="button" value="上传" onclick="uploadImg('merchantQrcodeFile', 'merchantQrcodeImg', 'merchantQrcode')" />
                     </td>
-                    <td></td>
+                </tr>
+                <tr>
+                    <td>寻宝地图</td>
+                    <td class="treasureMap">
+                        <img id="merchantQrcodeImg" src="${merchant.treasureMap}" />
+                        <input id="treasureMap" type="hidden" name="treasureMap" value="${merchant.treasureMap}" />
+                        <input id="treasureMapFile" type="file" name="file"/>
+                        <input type="button" value="上传" onclick="uploadImg('treasureMapFile', 'treasureMap', 'treasureMap')" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>寻宝描述1</td>
+                    <td><textarea name="treasureText1">${merchant.treasureText1}</textarea></td>
+                </tr>
+                <tr>
+                    <td>寻宝描述2</td>
+                    <td><textarea name="treasureText2">${merchant.treasureText2}</textarea></td>
                 </tr>
                 <tr>
                     <td>主广告位</td>
@@ -158,7 +174,6 @@
                         <input id="mainAdvertFile" name="file" type="file" />
                         <input type="button" value="上传" onclick="uploadImg('mainAdvertFile', 'mainAdvertImg', 'mainAdvert')" />
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>banner广告位</td>
@@ -168,7 +183,6 @@
                         <input id="bannerAdvertFile" name="file" type="file" />
                         <input type="button" value="上传" onclick="uploadImg('bannerAdvertFile', 'bannerAdvertImg', 'bannerAdvert')" />
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>查询广告位</td>
@@ -178,12 +192,10 @@
                         <input id="queryAdvertFile" name="file" type="file" />
                         <input type="button" value="上传" onclick="uploadImg('queryAdvertFile', 'queryAdvertImg', 'queryAdvert')" />
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>月均人流量</td>
                     <td><input type="text" name="volumn" value="${merchant.volumn}" /></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>地址</td>
@@ -212,7 +224,6 @@
                 <tr>
                     <td>备注</td>
                     <td><textarea name="remark">${merchant.remark}</textarea></td>
-                    <td></td>
                 </tr>
             </table>
             <div id="submitDiv"><input type="submit" id="submit" value="" onclick="return validateMerchant()" /></div>

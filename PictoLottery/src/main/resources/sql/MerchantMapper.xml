@@ -24,7 +24,10 @@
         create_time AS createTime,
         update_time AS updateTime,
         save_type AS saveType,
-        is_validate_openid AS isValidateOpenid
+        is_validate_openid AS isValidateOpenid,
+        treasure_map AS treasureMap,
+        treasure_text1 AS treasureText1,
+        treasure_text2 AS treasureText2
         from merchant
     </sql>
 
@@ -34,8 +37,8 @@
     </select>
 
     <insert id="addMerchant" keyProperty="id" useGeneratedKeys="true" parameterType="com.picto.entity.Merchant">
-        insert into merchant(merchant_name, brand, industry_type, phone, mobile, address, volumn, main_business, remark, lottery_link, lottery_qrcode, query_link, banner_advert, query_advert, lottery_channel, merchant_qrcode, state, create_time, update_time, save_type)
-        values(#{merchantName}, #{brand}, #{industryType}, #{phone}, #{mobile}, #{address}, #{volumn}, #{mainBusiness}, #{remark}, #{lotteryLink}, #{lotteryQrcode}, #{queryLink}, #{bannerAdvert}, #{queryAdvert}, #{lotteryChannel}, #{merchantQrcode}, #{state}, #{createTime}, #{updateTime}, #{saveType})
+        insert into merchant(merchant_name, brand, industry_type, phone, mobile, address, volumn, main_business, remark, lottery_link, lottery_qrcode, query_link, banner_advert, query_advert, lottery_channel, merchant_qrcode, state, create_time, update_time, save_type, treasure_map, treasure_text1, treasure_text2)
+        values(#{merchantName}, #{brand}, #{industryType}, #{phone}, #{mobile}, #{address}, #{volumn}, #{mainBusiness}, #{remark}, #{lotteryLink}, #{lotteryQrcode}, #{queryLink}, #{bannerAdvert}, #{queryAdvert}, #{lotteryChannel}, #{merchantQrcode}, #{state}, #{createTime}, #{updateTime}, #{saveType}, #{treasureMap}, #{treasureText1}, #{treasureText2})
     </insert>
 
     <select id="queryAllMerchants" resultType="com.picto.entity.Merchant">
@@ -89,6 +92,15 @@
         </if>
         <if test="state != null">
             , state = #{state}
+        </if>
+        <if test="treasureMap != null">
+            , treasure_map = #{treasureMap}
+        </if>
+        <if test="treasureText1 != null">
+            , treasure_text1 = #{treasureText1}
+        </if>
+        <if test="treasureText2 != null">
+            , treasure_text2 = #{treasureText2}
         </if>        
         where id = #{id}
     </update>
