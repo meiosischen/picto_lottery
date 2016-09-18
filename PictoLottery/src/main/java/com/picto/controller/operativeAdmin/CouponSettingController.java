@@ -2,9 +2,7 @@ package com.picto.controller.operativeAdmin;
 
 import com.picto.dao.CouponTypeDao;
 import com.picto.dao.MerchantDao;
-import com.picto.entity.Coupon;
 import com.picto.entity.CouponType;
-import com.picto.entity.DiscountProduct;
 import com.picto.entity.Merchant;
 import com.picto.enums.CouponResetTimeEnum;
 import com.picto.enums.CouponTypeEnum;

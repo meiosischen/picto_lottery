@@ -1,0 +1,1 @@
+ALTER TABLE `test`.`coupon_type` MODIFY COLUMN `type` TINYINT(4) DEFAULT NULL COMMENT '奖项类型 1-普通奖项  2-谢谢惠顾  3-周边优惠 4-集字活动';

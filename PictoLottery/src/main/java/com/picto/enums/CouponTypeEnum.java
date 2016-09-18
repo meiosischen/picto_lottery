@@ -9,7 +9,8 @@ import java.util.List;
 public enum CouponTypeEnum {
     NORMAL(1, "普通奖项"),
     THANKS(2, "谢谢惠顾"),
-    NEARBY(3, "周边优惠");
+    NEARBY(3, "周边优惠"),
+    COLLECT(4, "集字活动");
 
     private Integer code;
     private String name;
