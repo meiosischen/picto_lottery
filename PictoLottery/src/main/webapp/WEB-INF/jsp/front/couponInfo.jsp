@@ -87,7 +87,16 @@
     <div id="couponInfo">
         <div id="couponLeft">
             <img id="couponIcon" src="${coupon.icon}" /> <br />
-            <span id="storeName">${coupon.storeName}</span>
+            <!-- Coupon type value 4 means character collection (集字活动) -->
+	        <c:choose>
+	            <c:when test="${couponTypeVal == 4}">
+	                <span>集字活动</span>
+	            </c:when>
+	            <c:otherwise>
+	                <span id="storeName">${coupon.storeName}</span>
+	            </c:otherwise>
+	        </c:choose>
+            
         </div>
         <div id="couponRight">
             <div id="name">${coupon.name}</div>
