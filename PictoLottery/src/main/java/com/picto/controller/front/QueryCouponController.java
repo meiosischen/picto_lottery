@@ -2,9 +2,12 @@ package com.picto.controller.front;
 
 import com.picto.constants.Constants;
 import com.picto.constants.ErrorMsg;
+import com.picto.dao.CouponTypeDao;
 import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
+import com.picto.entity.CouponType;
 import com.picto.entity.Merchant;
+import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
 import com.picto.util.WechatUtil;
@@ -39,6 +42,8 @@ public class QueryCouponController {
     private MerchantDao merchantDao;			//当前商家
     @Autowired
     private MerchantDao couponMerchantDao;    	//优惠券商家，有外放，优惠券不一定是当前商家，该变量在view coupon中用到
+	@Autowired
+	private CouponTypeDao couponTypeDao;
     
 	@Value("${picto.wechat.appid}")
 	private String APP_ID;
@@ -141,6 +146,11 @@ public class QueryCouponController {
         
         model.addAttribute("expireDateStr", expireDateStr);
         model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
+        
+        CouponType couponType = couponTypeDao.queryCouponTypeById(coupon.getCouponTypeId());
+        
+		// render coupon type
+		model.addAttribute("couponTypeVal", couponType.getType());
 
         return "front/couponInfo";
     }

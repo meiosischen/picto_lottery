@@ -199,12 +199,11 @@ public class LotteryController {
 		if (StringUtil.isBlank(luckyCouponTypeId)) {
 			return "front/thanks";
 		} else {
-			List<DiscountProduct> discountProducts = discountProductDao
-					.queryDiscountByCouponTypeId(Integer
-							.valueOf(luckyCouponTypeId));
+			List<DiscountProduct> discountProducts = 
+					discountProductDao.queryDiscountByCouponTypeId(Integer.valueOf(luckyCouponTypeId));
+			
 			Integer couponTypeId = Integer.valueOf(luckyCouponTypeId);
-			CouponType couponType = couponTypeDao
-					.queryCouponTypeById(couponTypeId);
+			CouponType couponType = couponTypeDao.queryCouponTypeById(couponTypeId);
 
 			if (ListUtil.isEmptyList(discountProducts)) {
 				logger.info("No discount product under coupon id [" + luckyCouponTypeId + "]");
@@ -217,8 +216,7 @@ public class LotteryController {
 				model.addAttribute("coupon", coupon);
 
 				// 获取优惠券商家信息（可能本店，也可能是外放店铺）
-				Merchant couponMerchant = couponMerchantDao
-						.queryMerchantById(coupon.getMerchantId());
+				Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
 				model.addAttribute("couponMerchant", couponMerchant);
 
 				String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd") : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + " - " + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
@@ -231,6 +229,9 @@ public class LotteryController {
 				// set exchange allowed or not
 				model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
 
+				// render coupon type
+				model.addAttribute("couponTypeVal", couponType.getType());
+				
 				return "front/couponInfo";
 			} else {
 				// 奖项下有多个优惠产品，提供选择页面
