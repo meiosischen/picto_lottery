@@ -25,7 +25,7 @@
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
 
-			$("#map").height($("#map").width() / 0.6);
+			$("#map").height($("#map").width() / 0.75);
 
 			$(".showMap").click(function(){$("#map").show();});
 			
@@ -62,9 +62,9 @@
 <div id="logo"><img src="/images/LOGO.png"></div>
 <div id="main">
 	<div id="map" style="height:90%; width:94%; left:3%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
-		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:20px; height:20px; margin:-5px -5px 0 0;" />
+		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:50px; height:50px; margin:-5px -5px 0 0;" />
 		<div style="height:91%; width:100%; background-size:100%; background-image:url('${couponMerchant.treasureMap}'); background-repeat:no-repeat;"></div>
-		<div style="text-align:center"><span style="font-size:16px;">${couponMerchant.treasureText1}</span><br/><span style="font-size:20px;">${couponMerchant.treasureText2}</span></div>
+		<div style="text-align:center"><span style="font-size:24px;">${couponMerchant.treasureText1}</span><br/><span style="font-size:30px;">${couponMerchant.treasureText2}</span></div>
 	</div>
     <div id="top">
         <div id="merchantInfo">
