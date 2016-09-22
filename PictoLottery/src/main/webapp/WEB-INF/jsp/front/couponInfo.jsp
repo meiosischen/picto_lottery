@@ -64,7 +64,7 @@
 	<div id="map" style="height:90%; width:94%; left:3%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
 		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -15px 0 0;" />
 		<div style="height:91%; width:100%; background-size:100%; background-image:url('${couponMerchant.treasureMap}'); background-repeat:no-repeat;"></div>
-		<div style="text-align:center; margin-top:20px;"><span style="font-size:2.2px;">${couponMerchant.treasureText1}</span><br/><span style="font-size:2.5em; margin-top:10px;">${couponMerchant.treasureText2}</span></div>
+		<div style="text-align:center; margin-top:20px;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><br/><span style="font-size:2.5em; margin-top:10px;">${couponMerchant.treasureText2}</span></div>
 	</div>
     <div id="top">
         <div id="merchantInfo">
@@ -97,7 +97,7 @@
     </div>
     <div id="couponInfo">
         <div id="couponLeft">
-            <img id="couponIcon" src="${coupon.icon}" class="showMap" /> <br />
+            <img id="couponIcon" src="${coupon.icon}" class="showMap" style="border:none;" /> <br />
             <!-- Coupon type value 4 means character collection (集字活动) -->
 	        <c:choose>
 	            <c:when test="${couponTypeVal == 4}">
