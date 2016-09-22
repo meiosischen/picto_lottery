@@ -34,13 +34,13 @@
 	
 	<div <c:if test="${vs.count eq 2}">class="list_img2" style="background-size:100%; padding-top:10px; background-image:url('/images/frame.png');"</c:if>>
 	
-	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); margin:8px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
+	<div class="list_img" style="background-image:url('${product[1].queryAdvert}'); background-repeat:no-repeat; margin:8px;" onclick="location.href='<%=request.getContextPath()%>/choiceDiscount.do?selectedDiscountProductId=${product[0].id}&couponTypeId=${couponTypeId}&openid=${openid}'"></div>
 	<div style=" text-align:center; color:#f4f4f4; width:100%; font-weight:bold; margin-top:-7px; margin-bottom:10px;">${product[0].name}&nbsp;&nbsp;|&nbsp;&nbsp;${product[0].discount}</div>	
 	</div>
 </c:forEach>
 
 <c:forEach begin="${fn:length(disproducts)}" end="2">
-	<div class="list_img" style="background-image:url('/images/list.jpg'); margin:12px 0 12px 12px;"></div>
+	<div class="list_img" style="background-image:url('/images/list.jpg'); background-repeat:no-repeat; margin:12px 0 12px 12px;"></div>
 	<div style=" text-align:center; color:#f4f4f4; width:100%; margin:0px;">&nbsp;</div>
 </c:forEach>
 <script type="text/javascript">

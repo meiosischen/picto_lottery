@@ -24,6 +24,12 @@
 
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
+
+			$("#map").height($("#map").width() / 0.75);
+
+			$(".showMap").click(function(){$("#map").show();});
+			
+			$(".closeMap").click(function(){$("#map").hide();});
         });
         function toggleExchangeInfo(){
             $("#wrapper").toggle();
@@ -55,6 +61,11 @@
 <body>
 <div id="logo"><img src="/images/LOGO.png"></div>
 <div id="main">
+	<div id="map" style="height:90%; width:94%; left:3%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
+		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -15px 0 0;" />
+		<div style="height:91%; width:100%; background-size:100%; background-image:url('${couponMerchant.treasureMap}'); background-repeat:no-repeat;"></div>
+		<div style="text-align:center; margin-top:20px;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><br/><span style="font-size:2.5em; margin-top:10px;">${couponMerchant.treasureText2}</span></div>
+	</div>
     <div id="top">
         <div id="merchantInfo">
             <div id="location">
@@ -86,11 +97,11 @@
     </div>
     <div id="couponInfo">
         <div id="couponLeft">
-            <img id="couponIcon" src="${coupon.icon}" /> <br />
+            <img id="couponIcon" src="${coupon.icon}" class="showMap" style="border:none;" /> <br />
             <!-- Coupon type value 4 means character collection (集字活动) -->
 	        <c:choose>
 	            <c:when test="${couponTypeVal == 4}">
-	                <span>集字活动</span>
+	                <span style="font-size:0.8em;">其他字符在哪？<br/><span style="border-bottom:1px solid #fff;" class="showMap">点我显示</span></span>
 	            </c:when>
 	            <c:otherwise>
 	                <span id="storeName">${coupon.storeName}</span>
