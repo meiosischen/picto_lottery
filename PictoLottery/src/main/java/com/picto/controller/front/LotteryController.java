@@ -211,7 +211,7 @@ public class LotteryController {
 			} else if (discountProducts.size() == 1) {
 				// 生成优惠券并跳转到优惠券信息页
 				DiscountProduct discountProduct = discountProducts.get(0);
-				logger.info("Coupon id [" + luckyCouponTypeId + "], has one discount product name [" + discountProduct.getName() + "]");
+				logger.info("Coupon type id [" + luckyCouponTypeId + "], has one discount product name [" + discountProduct.getName() + "]");
 				Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
 				model.addAttribute("coupon", coupon);
 

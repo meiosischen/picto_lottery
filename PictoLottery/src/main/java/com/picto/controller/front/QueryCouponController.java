@@ -7,7 +7,6 @@ import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.CouponType;
 import com.picto.entity.Merchant;
-import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
 import com.picto.util.WechatUtil;

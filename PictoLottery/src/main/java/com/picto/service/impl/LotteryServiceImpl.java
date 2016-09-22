@@ -1,7 +1,6 @@
 package com.picto.service.impl;
 
 import com.picto.constants.Constants;
-import com.picto.controller.front.LotteryController;
 import com.picto.dao.CouponTypeDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.CouponType;
@@ -101,8 +100,8 @@ public class LotteryServiceImpl implements LotteryService {
         
         CouponType luckyCouponType;
         switch(Constants.LOTTERY_ALGO) {
-        	case 1:	luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
-        	case 2: luckyCouponType = this.doLotteryWithRestNum(couponTypes);
+        	case 1:	luckyCouponType = this.doLotteryWithTotalNum(couponTypes); break;
+        	case 2: luckyCouponType = this.doLotteryWithRestNum(couponTypes); break;
         	
         	default: luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
         }
