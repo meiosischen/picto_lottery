@@ -25,8 +25,6 @@
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
 
-			//$("#map").height($("#map").width() / 0.75);
-
 			$(".showMap").click(function(){$("#map").show();});
 			
 			$(".closeMap").click(function(){$("#map").hide();});
@@ -61,7 +59,7 @@
 <body>
 <div id="logo"><img src="/images/LOGO.png"></div>
 <div id="main">
-	<div id="map" style="height:90%; width:94%; left:3%; top:10%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
+	<div id="map" style="height:97%; width:94%; left:3%; top:3%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
 		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -25px 0 0;" />
 		<div style="height:90%; width:100%"><img class="closeMap" src="${couponMerchant.treasureMap}" style="width:100%;" /></div>
 		<div style="text-align:center; margin-top:20px;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><br/><span style="font-size:2.5em; margin-top:20px;">${couponMerchant.treasureText2}</span></div>
