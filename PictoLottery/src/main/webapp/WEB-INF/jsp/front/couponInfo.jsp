@@ -109,7 +109,7 @@
         </div>
         <div id="couponRight">
             <div id="name">${coupon.name}</div>
-            <div id="discount" style="font-size:1em;">${coupon.discount}</div>
+            <div id="discount" style="font-size:0.85em;">${coupon.discount}</div>
             <div id="useMsg">(${coupon.useMsg})</div>
         </div>
         <div style="clear:both;"></div>
