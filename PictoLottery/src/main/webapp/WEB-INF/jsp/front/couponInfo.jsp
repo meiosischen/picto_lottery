@@ -59,9 +59,9 @@
 <body>
 <div id="logo"><img src="/images/LOGO.png"></div>
 <div id="main">
-	<div id="map" style="width:94%; left:3%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
+	<div id="map" style="width:92%; text-align:center; left:4%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
 		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -25px 0 0;" />
-		<div style="width:100%"><img class="closeMap" src="${couponMerchant.treasureMap}" style="width:100%;" /></div>
+		<div style="width:100%;"><img class="closeMap" src="${couponMerchant.treasureMap}" style="width:100%;" /></div>
 		<div style="text-align:center; margin-top:1.5em;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><span style="display:block;font-size:2.5em; margin:12px 0;">${couponMerchant.treasureText2}</span></div>
 	</div>
     <div id="top">
@@ -109,7 +109,7 @@
         </div>
         <div id="couponRight">
             <div id="name">${coupon.name}</div>
-            <div id="discount">${coupon.discount}</div>
+            <div id="discount" style="font-size:1em;">${coupon.discount}</div>
             <div id="useMsg">(${coupon.useMsg})</div>
         </div>
         <div style="clear:both;"></div>
