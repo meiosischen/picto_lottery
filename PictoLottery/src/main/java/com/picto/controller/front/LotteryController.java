@@ -151,8 +151,7 @@ public class LotteryController {
 			CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId(), filteredCts);
 
 			String showIcons = null;
-			if (null != couponType
-					&& !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
+			if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {
 				logger.info("Got coupon: couponType id [" + couponType.getId() + "], name [" + couponType.getName() + "]");
 
 				String luckyIcon = couponType.getIcon();

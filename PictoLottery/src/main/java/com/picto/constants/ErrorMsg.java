@@ -30,14 +30,16 @@ public class ErrorMsg {
 	
 	public static ErrorMsg WechatAuthFail = new ErrorMsg("001", "Get Wechat openid failed", "微信验证失败");
 	
-	public static ErrorMsg CodeParamMiss = new ErrorMsg("002", "Parameter code in URL is missing", "请从微信公众号进入");
+	public static ErrorMsg WechatNoAuth = new ErrorMsg("002", "Intrude webpage without Wechat auth", "请从微信公众号进入");
 	
-	public static ErrorMsg WebpageTimeout = new ErrorMsg("003", "Web page is timeout", "网页已过期，请返回刷新重试");
+	public static ErrorMsg CodeParamMiss = new ErrorMsg("003", "Parameter code in URL is missing", "请从微信公众号进入");
 	
-	public static ErrorMsg SessionCreateFail = new ErrorMsg("004", "Failed to create session", "建立会话失败");
+	public static ErrorMsg WebpageTimeout = new ErrorMsg("004", "Web page is timeout", "网页已过期，请返回刷新重试");
 	
-	public static ErrorMsg SessionNotExist = new ErrorMsg("005", "Session does not exist", "网页已过期，请重新进入");
+	public static ErrorMsg SessionCreateFail = new ErrorMsg("005", "Failed to create session", "建立会话失败");
 	
-	public static ErrorMsg MerchantNotExists = new ErrorMsg("006", "Failed to find merchant", "商户不存在");
+	public static ErrorMsg SessionNotExist = new ErrorMsg("006", "Session does not exist", "网页已过期，请重新进入");
+	
+	public static ErrorMsg MerchantNotExists = new ErrorMsg("007", "Failed to find merchant", "商户不存在");
 
 }

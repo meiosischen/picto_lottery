@@ -1,6 +1,7 @@
 package com.picto.controller.front;
 
 import com.picto.constants.ErrorMsg;
+import com.picto.dao.CouponDao;
 import com.picto.dao.DiscountProductDao;
 import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
@@ -28,16 +29,20 @@ public class ChoiceDiscountController {
     private static final Logger logger = Logger.getLogger(ChoiceDiscountController.class);
 
     @Autowired
+    private CouponDao couponDao;
+    @Autowired
     private DiscountProductDao discountProductDao;
     @Autowired
     private CouponService couponService;
     @Autowired
-    private MerchantDao merchantDao;    
+    private MerchantDao merchantDao;
+    
+    private final String REQ_VIEW = "/newCoupon.do";
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
-        @RequestParam("couponTypeId") Integer couponTypeId, @RequestParam("openid") String openid, Model model, HttpServletRequest request) {
-        logger.info("Choose discount product: selectedDiscountProductId [" + selectedDiscountProductId + "] ,couponTypeId [" + couponTypeId + "], openid [" + openid + "]");
+        @RequestParam("couponTypeId") Integer couponTypeId, Model model, HttpServletRequest request) {
+        logger.info("Choose discount product: selectedDiscountProductId [" + selectedDiscountProductId + "] ,couponTypeId [" + couponTypeId + "]");
         
         HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -52,12 +57,46 @@ public class ChoiceDiscountController {
 			return "front/startLotteryError";
 		}
 		
+		if(session.getAttribute("openid") == null) {
+			logger.info("Openid does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WechatNoAuth.getUserText());
+			return "front/startLotteryError";
+		}
+		
+		String openid = session.getAttribute("openid").toString();
 		String merchantId = session.getAttribute("merchantId").toString();
 		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 
         //根据选择的优惠产品生成优惠券并跳转到优惠券信息页
         DiscountProduct discountProduct = discountProductDao.queryDiscountById(selectedDiscountProductId);
         Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
+        
+        String redirectUrl = REQ_VIEW + "?id=" + coupon.getId();
+        
+        return "redirect: " + redirectUrl;
+    }
+    
+    @RequestMapping("/newCoupon")
+    public String choiceDiscount(@RequestParam("id") Integer couponId, Model model, HttpServletRequest request) {
+        logger.info("Visit /newCoupon: coupon id [" + couponId + "]");
+        
+        HttpSession session = request.getSession(false);
+		if (session == null) {
+			logger.info("Session is not created");
+			model.addAttribute("errorMsg", ErrorMsg.SessionNotExist.getUserText());
+			return "front/startLotteryError";
+		}
+		
+		if(session.getAttribute("openid") == null) {
+			logger.info("Openid does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WechatNoAuth.getUserText());
+			return "front/startLotteryError";
+		}
+		
+		Coupon coupon = couponDao.queryCouponById(couponId);
+		DiscountProduct discountProduct = discountProductDao.queryDiscountById(coupon.getDiscountProductId());
+		Merchant merchant = merchantDao.queryMerchantById(coupon.getMerchantId());
+		
         model.addAttribute("coupon", coupon);
 
         //获取优惠券商家信息（可能本店，也可能是外放店铺）
@@ -74,6 +113,6 @@ public class ChoiceDiscountController {
         //set exchange allowed or not
         model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
         
-        return "front/couponInfo";
+        return "front/couponInfo";    	
     }
 }
