@@ -25,8 +25,6 @@
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
 
-			$("#map").height($("#map").width() / 0.75);
-
 			$(".showMap").click(function(){$("#map").show();});
 			
 			$(".closeMap").click(function(){$("#map").hide();});
@@ -61,10 +59,10 @@
 <body>
 <div id="logo"><img src="/images/LOGO.png"></div>
 <div id="main">
-	<div id="map" style="height:90%; width:94%; left:3%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
-		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -15px 0 0;" />
-		<div style="height:91%; width:100%; background-size:100%; background-image:url('${couponMerchant.treasureMap}'); background-repeat:no-repeat;"></div>
-		<div style="text-align:center; margin-top:20px;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><br/><span style="font-size:2.5em; margin-top:10px;">${couponMerchant.treasureText2}</span></div>
+	<div id="map" style="width:92%; text-align:center; left:4%; top:5%; background-color:#000; position:absolute; display:none; z-index:9999; border:2px solid #fff;">
+		<img class="closeMap" src="/images/closeButton.png" style="position:absolute; right:0; width:70px; height:70px; margin:-15px -25px 0 0;" />
+		<div style="width:100%;"><img class="closeMap" src="${couponMerchant.treasureMap}" style="width:100%;" /></div>
+		<div style="text-align:center; margin-top:1.5em;"><span style="font-size:2.2em;">${couponMerchant.treasureText1}</span><span style="display:block;font-size:2.5em; margin:12px 0;">${couponMerchant.treasureText2}</span></div>
 	</div>
     <div id="top">
         <div id="merchantInfo">
@@ -97,7 +95,7 @@
     </div>
     <div id="couponInfo">
         <div id="couponLeft">
-            <img id="couponIcon" src="${coupon.icon}" class="showMap" style="border:none;" /> <br />
+            <img id="couponIcon" src="${coupon.icon}" class="showMap" /> <br />
             <!-- Coupon type value 4 means character collection (集字活动) -->
 	        <c:choose>
 	            <c:when test="${couponTypeVal == 4}">
@@ -111,7 +109,7 @@
         </div>
         <div id="couponRight">
             <div id="name">${coupon.name}</div>
-            <div id="discount">${coupon.discount}</div>
+            <div id="discount" style="font-size:0.85em;">${coupon.discount}</div>
             <div id="useMsg">(${coupon.useMsg})</div>
         </div>
         <div style="clear:both;"></div>
