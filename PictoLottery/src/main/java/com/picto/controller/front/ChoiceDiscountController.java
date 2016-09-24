@@ -7,9 +7,7 @@ import com.picto.dao.MerchantDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.DiscountProduct;
 import com.picto.entity.Merchant;
-import com.picto.enums.CouponSaveTypeEnum;
 import com.picto.service.CouponService;
-import com.picto.util.DateUtil;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,7 @@ public class ChoiceDiscountController {
     @Autowired
     private MerchantDao merchantDao;
     
-    private final String REQ_VIEW = "newCoupon.do";
+    private final String REQ_NEWCOUPON = "newCoupon.do";
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
@@ -64,6 +62,12 @@ public class ChoiceDiscountController {
 		}
 		
 		String openid = session.getAttribute("openid").toString();
+		if(!session.getAttribute("openid").equals(openid)) {
+			logger.info("Openid does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.IllegalCouponQuery.getUserText());
+			return "front/startLotteryError";
+		}
+		
 		String merchantId = session.getAttribute("merchantId").toString();
 		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 
@@ -71,48 +75,9 @@ public class ChoiceDiscountController {
         DiscountProduct discountProduct = discountProductDao.queryDiscountById(selectedDiscountProductId);
         Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
         
-        String redirectUrl = REQ_VIEW + "?id=" + coupon.getId();
+        String redirectUrl = REQ_NEWCOUPON + "?id=" + coupon.getId();
         
         return "redirect:" + redirectUrl;
     }
-    
-    @RequestMapping("/newCoupon")
-    public String choiceDiscount(@RequestParam("id") Integer couponId, Model model, HttpServletRequest request) {
-        logger.info("Visit /newCoupon: coupon id [" + couponId + "]");
-        
-        HttpSession session = request.getSession(false);
-		if (session == null) {
-			logger.info("Session is not created");
-			model.addAttribute("errorMsg", ErrorMsg.SessionNotExist.getUserText());
-			return "front/startLotteryError";
-		}
-		
-		if(session.getAttribute("openid") == null) {
-			logger.info("Openid does not exist in session");
-			model.addAttribute("errorMsg", ErrorMsg.WechatNoAuth.getUserText());
-			return "front/startLotteryError";
-		}
-		
-		Coupon coupon = couponDao.queryCouponById(couponId);
-		DiscountProduct discountProduct = discountProductDao.queryDiscountById(coupon.getDiscountProductId());
-		Merchant merchant = merchantDao.queryMerchantById(coupon.getMerchantId());
-		
-        model.addAttribute("coupon", coupon);
 
-        //获取优惠券商家信息（可能本店，也可能是外放店铺）
-        Merchant couponMerchant = merchantDao.queryMerchantById(coupon.getMerchantId());
-        model.addAttribute("couponMerchant", couponMerchant);
-        
-        String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
-        model.addAttribute("expireDateStr", expireDateStr);
-        
-        //set advert query or banner (see couponInfo.jsp)
-        model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
-        
-        //set exchange allowed or not
-        model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
-        
-        return "front/couponInfo";    	
-    }
 }

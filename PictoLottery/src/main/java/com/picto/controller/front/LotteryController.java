@@ -29,12 +29,10 @@ import com.picto.dao.DiscountProductDao;
 import com.picto.dao.MerchantDao;
 import com.picto.dao.OperationRecordDao;
 import com.picto.entity.*;
-import com.picto.enums.CouponSaveTypeEnum;
 import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.service.LotteryService;
 import com.picto.service.StartLotteryService;
-import com.picto.util.DateUtil;
 import com.picto.util.HttpsUtil;
 import com.picto.util.ListUtil;
 import com.picto.util.StringUtil;
@@ -81,6 +79,8 @@ public class LotteryController {
 	private OperationRecordDao operationRecordDao;
 	@Autowired
 	private StartLotteryService startLotteryService;
+	
+	private final String REQ_NEWCOUPON = "newCoupon.do";
 
 	@Value("${environment}")
 	private String environment;
@@ -139,8 +139,7 @@ public class LotteryController {
 		} else {
 			logger.info("Began lottery action: openid=" + openid);
 
-			CouponType latestCouponTypeToday = startLotteryService
-					.latestCouponTypeToday(openid, merchant.getId());
+			CouponType latestCouponTypeToday = startLotteryService.latestCouponTypeToday(openid, merchant.getId());
 
 			List<CouponType> filteredCts = new ArrayList<CouponType>();
 			if (latestCouponTypeToday != null) {
@@ -173,10 +172,9 @@ public class LotteryController {
 
 	@RequestMapping("lotteryFinish")
 	public String lotteryFinish(
-			@RequestParam("luckyCouponTypeId") String luckyCouponTypeId,
-			@RequestParam("openid") String openid, Model model,
+			@RequestParam("luckyCouponTypeId") String luckyCouponTypeId, Model model,
 			HttpServletRequest request) {
-		logger.info("Lottery finished and generate result: luckyCouponTypeId [" + luckyCouponTypeId + "], openid [" + openid + "]");
+		logger.info("Lottery finished and generate result: luckyCouponTypeId [" + luckyCouponTypeId + "]");
 
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -188,7 +186,20 @@ public class LotteryController {
 			logger.info("merchantId does not exist in session");
 			model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
 			return "front/startLotteryError";
-		}		
+		}
+		
+		if(session.getAttribute("openid") == null) {
+			logger.info("Openid does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.WechatNoAuth.getUserText());
+			return "front/startLotteryError";
+		}
+		
+		String openid = session.getAttribute("openid").toString();
+		if(!session.getAttribute("openid").equals(openid)) {
+			logger.info("Openid does not exist in session");
+			model.addAttribute("errorMsg", ErrorMsg.IllegalCouponQuery.getUserText());
+			return "front/startLotteryError";
+		}
 		
 		String merchantId = session.getAttribute("merchantId").toString();
 		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
@@ -214,24 +225,9 @@ public class LotteryController {
 				Coupon coupon = couponService.genCoupon(couponTypeId, discountProduct, openid, merchant);
 				model.addAttribute("coupon", coupon);
 
-				// 获取优惠券商家信息（可能本店，也可能是外放店铺）
-				Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
-				model.addAttribute("couponMerchant", couponMerchant);
-
-				String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd") : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + " - " + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
-				
-				model.addAttribute("expireDateStr", expireDateStr);
-
-				// set advert query or banner (see couponInfo.jsp)
-				model.addAttribute("isQuery", merchant.getId().equals(discountProduct.getMerchantId()) ? 0 : 1);
-
-				// set exchange allowed or not
-				model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
-
-				// render coupon type
-				model.addAttribute("couponTypeVal", couponType.getType());
-				
-				return "front/couponInfo";
+		        String redirectUrl = REQ_NEWCOUPON + "?id=" + coupon.getId();
+		        
+		        return "redirect:" + redirectUrl;
 			} else {
 				// 奖项下有多个优惠产品，提供选择页面
 				logger.info("Mutilple discount products under coupon id [" + luckyCouponTypeId + "]");

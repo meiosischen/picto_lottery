@@ -42,4 +42,5 @@ public class ErrorMsg {
 	
 	public static ErrorMsg MerchantNotExists = new ErrorMsg("007", "Failed to find merchant", "商户不存在");
 
+	public static ErrorMsg IllegalCouponQuery = new ErrorMsg("008", "Coupon does not exit or not belong to the user", "该奖券不存在");
 }

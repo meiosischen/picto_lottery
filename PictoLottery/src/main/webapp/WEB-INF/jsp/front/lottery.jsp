@@ -59,19 +59,24 @@
             $("#r3 img").attr("src", "/images/lotteryRoll_c.gif?time=" + timestamp);
             var showImages = '${showIcons}';
             var showIcons = showImages.split(",");
+            
+            var firstLotIconTime = 7800;
+            var lotTimeStep = 1200;
+            var afterLotWaitTime = 1500;
+            
             setTimeout(function(){
                 $("#r1 img").attr("src", showIcons[0]);
-            }, 7800);
+            }, firstLotIconTime);
             setTimeout(function(){
                 $("#r2 img").attr("src", showIcons[1]);
-            }, 9000);
+            }, firstLotIconTime + 1 * lotTimeStep);
             setTimeout(function(){
                 $("#r3 img").attr("src", showIcons[2]);
-            }, 10200);
+            }, firstLotIconTime + 2 * lotTimeStep);
 
             setTimeout(function(){
-                window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}' + "&openid=${openid}");
-            }, 13000);
+                window.location.replace("/lotteryFinish.do?luckyCouponTypeId=" + '${luckyCouponTypeId}');
+            }, firstLotIconTime + 2 * lotTimeStep + afterLotWaitTime);
 
             //隐藏公众号右上角菜单
             $.hideMenus(window.location.href);
