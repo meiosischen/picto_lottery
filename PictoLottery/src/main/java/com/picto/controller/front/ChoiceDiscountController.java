@@ -37,7 +37,7 @@ public class ChoiceDiscountController {
     @Autowired
     private MerchantDao merchantDao;
     
-    private final String REQ_VIEW = "/newCoupon.do";
+    private final String REQ_VIEW = "newCoupon.do";
 
     @RequestMapping("/choiceDiscount")
     public String choiceDiscount(@RequestParam("selectedDiscountProductId") Integer selectedDiscountProductId,
@@ -73,7 +73,7 @@ public class ChoiceDiscountController {
         
         String redirectUrl = REQ_VIEW + "?id=" + coupon.getId();
         
-        return "redirect: " + redirectUrl;
+        return "redirect:" + redirectUrl;
     }
     
     @RequestMapping("/newCoupon")
