@@ -52,6 +52,11 @@ public class LotteryServiceImpl implements LotteryService {
             start += couponTypeTotalNum;
         }
         
+        if(totalNums <= 0) {
+        	logger.warn("No postive amount for all coupons");
+        	return null;
+        }
+        
         //随机抽取一个奖项id
         Random random = new Random();
         return couponTypes.get(indexArr[random.nextInt(totalNums)]);
@@ -74,6 +79,11 @@ public class LotteryServiceImpl implements LotteryService {
             start += couponTypeTotalNum;
         }
         
+        if(totalNums <= 0) {
+        	logger.warn("No postive amount for all coupons");
+        	return null;
+        }
+        
         //随机抽取一个奖项id
         Random random = new Random();
         return couponTypes.get(indexArr[random.nextInt(totalNums)]);
@@ -82,28 +92,38 @@ public class LotteryServiceImpl implements LotteryService {
     @Transactional
     public CouponType lotyCouponType(String openid, Integer merchantId, List<CouponType> filterCouponTypes) {
         //查询所有的奖项
-    	List<CouponType> couponTypes;
-    	if(filterCouponTypes == null || filterCouponTypes.size() == 0) {
-    		couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
-    	} else {
-    		String filterIdstr = filterCouponTypes.get(0).getId().toString();
-    		for(int i = 1; i < filterCouponTypes.size(); i++) {
-    			filterIdstr += ", " + filterCouponTypes.get(i).getId().toString();
-    		}
-    		couponTypes = couponTypeDao.queryAllCouponTypesByMerchantIdWithCtFilter(merchantId, filterIdstr);
-    	}
-
-        if (ListUtil.isEmptyList(couponTypes)) {
+    	List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
+        
+    	if (ListUtil.isEmptyList(couponTypes)) {
         	logger.error("No coupon exists in merchant id[" + merchantId + "]");
             return null;
         }
-        
-        CouponType luckyCouponType;
+    	
+    	CouponType ctThanks = null;
+    	for(CouponType ct : couponTypes) {
+    		if(ct.getType().equals(CouponTypeEnum.THANKS.getCode())) {
+    			ctThanks = ct;
+    			break;
+    		}
+    	}
+    	
+    	couponTypes.removeAll(filterCouponTypes);
+
+        CouponType luckyCouponType = null;
         switch(Constants.LOTTERY_ALGO) {
         	case 1:	luckyCouponType = this.doLotteryWithTotalNum(couponTypes); break;
         	case 2: luckyCouponType = this.doLotteryWithRestNum(couponTypes); break;
         	
         	default: luckyCouponType = this.doLotteryWithTotalNum(couponTypes);
+        }
+        
+        if(luckyCouponType == null) {
+        	luckyCouponType = ctThanks;
+        }
+        
+        if(luckyCouponType == null) {
+        	logger.warn("Thanks is not configured");
+        	return null;
         }
 
         //Is it necessary to generate operation records with couponType here?
