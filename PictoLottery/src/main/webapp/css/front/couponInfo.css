@@ -198,6 +198,7 @@ div.info1 {
 div.info1 img{width:100%;}
 
 div.info2 {
+	text-align: center;
     float: left;
     clear: none;
     margin-top: 11%;
