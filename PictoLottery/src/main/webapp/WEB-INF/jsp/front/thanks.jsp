@@ -14,6 +14,30 @@
     <script src="/js/jquery-2.2.4.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="/js/wxOper.js"></script>
+    <script type="text/javascript">
+	    $(document).ready(function(){			
+			if("${lotteryTime}" == "1") {
+				var priorTime = 3000;
+				var postTime = 10000;
+	            setTimeout(function(){
+	                $("div#dialogLotAgain").parent(".wrapper").toggle();
+	            }, priorTime);
+	            
+	            setTimeout(function(){
+	            	if($("div#dialogLotAgain").parent(".wrapper").is(':visible')) {
+	            		$("div#dialogLotAgain").parent(".wrapper").toggle();
+	            	}
+	            }, postTime);
+			}
+	
+	    });
+	    function toggleDialogLotAgain(){
+	        $("div#dialogLotAgain").parent(".wrapper").toggle();
+	    }
+	    function redirectStartLottery() {
+	    	window.location.href = "/welcome.do?merchantId=" + ${merchantId};
+	    }
+    </script>
     <style type="text/css">
         body{margin:0}
         body {
@@ -68,6 +92,50 @@
             position: relative;
             top: 55%;
         }
+        
+		.wrapper{
+		    display:none;
+		    position:absolute;
+		    width:100%;
+		    height:100%;
+		    top:0;
+		    left:0;
+		}
+		div#dialogLotAgain {
+		    position: absolute;
+		    top: 51%;
+		    background: black;
+		    border: solid 2px white;
+		    border-radius: 50px;
+		    width: 50%;
+		    left: 25%;
+		    font-size: 2em;
+		    height: 10%;
+		}
+		div.info1 {
+		    float: left;
+		    clear: none;
+		    width: 16%;
+		    margin: 8% 0 0 5%;
+		}
+		div.info1 img{width:100%;}
+		
+		div.info2 {
+		    float: left;
+		    clear: none;
+		    margin-top: 11%;
+		}
+		
+		div.info3 {
+		    float: right;
+		    clear: none;
+		    width: 10%;
+		    margin: -3% -2%;
+		}
+		div.info3 img{
+			width:100%;
+		}
+		
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -83,5 +151,14 @@
     <div id="qrcode"><img src="${merchant.merchantQrcode}" /></div>
     <div id="bottomText1">如何查询已有奖券？</div>
     <div id="bottomText2">长按上图「识别二维码」</div>
+    
+	<div class="wrapper">
+	    <div id="dialogLotAgain">
+	        <div style="margin-right: 5px;" class="info1" onclick="redirectStartLottery()"><img src="/images/bell.png" /></div>
+	        <div class="info2" onclick="redirectStartLottery()">点我再抽一次~</div>
+	        <div class="info3" onclick="toggleDialogLotAgain()"><img src="/images/closeButton.png" /></div>
+	        <div style="clear:both;"></div>
+	    </div>
+	</div>
 </body>
 </html>

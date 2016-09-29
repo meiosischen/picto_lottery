@@ -13,7 +13,6 @@ import com.picto.service.StartLotteryService;
 import com.picto.util.DateUtil;
 import com.picto.util.ListUtil;
 
-import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

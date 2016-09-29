@@ -5,9 +5,11 @@ import com.picto.constants.ErrorMsg;
 import com.picto.dao.CouponDao;
 import com.picto.dao.CouponTypeDao;
 import com.picto.dao.MerchantDao;
+import com.picto.dao.OperationRecordDao;
 import com.picto.entity.Coupon;
 import com.picto.entity.CouponType;
 import com.picto.entity.Merchant;
+import com.picto.entity.OperationRecord;
 import com.picto.enums.CouponSaveTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.util.DateUtil;
@@ -35,43 +37,48 @@ import java.util.List;
  */
 @Controller
 public class QueryCouponController {
-    private static final Logger logger = Logger.getLogger(QueryCouponController.class);
+	private static final Logger logger = Logger
+			.getLogger(QueryCouponController.class);
 
-    @Autowired
-    private CouponService couponService;
-    @Autowired
-    private MerchantDao merchantDao;			//当前商家
-    @Autowired
-    private MerchantDao couponMerchantDao;    	//优惠券商家，有外放，优惠券不一定是当前商家，该变量在view coupon中用到
+	@Autowired
+	private CouponService couponService;
+	@Autowired
+	private MerchantDao merchantDao; // 当前商家
+	@Autowired
+	private MerchantDao couponMerchantDao; // 优惠券商家，有外放，优惠券不一定是当前商家，该变量在view
+											// coupon中用到
 	@Autowired
 	private CouponTypeDao couponTypeDao;
-    @Autowired
-    private CouponDao couponDao;
-    
+	@Autowired
+	private CouponDao couponDao;
+	@Autowired
+	private OperationRecordDao operationRecordDao;
+
 	@Value("${picto.wechat.appid}")
 	private String APP_ID;
 
 	@Value("${picto.wechat.appsecret}")
-	private String APP_SECRET;    
-    
-    @Value("${environment}")
-    private String environment;
+	private String APP_SECRET;
 
-    @RequestMapping("queryCoupon")
+	@Value("${environment}")
+	private String environment;
+
+	@RequestMapping("queryCoupon")
 	public String queryCoupon(
 			@RequestParam(value = "code", required = false) String code,
 			@RequestParam(value = "merchantId", required = true) Integer merchantId,
 			@RequestParam(value = "isQuery", required = false) Integer isQuery,
 			Model model, HttpServletRequest request) throws IOException,
 			JSONException {
-    	
-    	WechatUtil.initialize(APP_ID, APP_SECRET);
-    	
+
+		WechatUtil.initialize(APP_ID, APP_SECRET);
+
 		// check session
 		HttpSession session = request.getSession(true);
 		if (session == null) {
 			logger.info("Session is not created");
-			model.addAttribute("errorMsg", ErrorMsg.SessionCreateFail.getUserText());
+			model.addAttribute("errorMsg",
+					ErrorMsg.SessionCreateFail.getUserText());
 			return "front/startLotteryError";
 		}
 
@@ -88,7 +95,8 @@ public class QueryCouponController {
 			// Set test openid at development environment
 			session.setAttribute("openid", Constants.testOpenid);
 			openId = Constants.testOpenid;
-			logger.info("Dev environment and set test openid [" + Constants.testOpenid + "]");
+			logger.info("Dev environment and set test openid ["
+					+ Constants.testOpenid + "]");
 		} else if (environment.equals(Constants.ENV_PROD)
 				&& session.getAttribute("openid") == null) {
 			// Get openid from wechat
@@ -99,7 +107,8 @@ public class QueryCouponController {
 				session.setAttribute("openid", WechatOpenid);
 				logger.info("Set openid [" + WechatOpenid + "] to session");
 			} else {
-				model.addAttribute("errorMsg", ErrorMsg.WechatAuthFail.getUserText());
+				model.addAttribute("errorMsg",
+						ErrorMsg.WechatAuthFail.getUserText());
 				return "front/startLotteryError";
 			}
 			openId = WechatOpenid;
@@ -107,111 +116,135 @@ public class QueryCouponController {
 			openId = session.getAttribute("openid").toString();
 		}
 
-        List<Coupon> coupons = null;
-        if(merchantId == 0) {
-        	//come from Mr.Prize
-        	coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
-        } else {
-        	Merchant queryMerchant = merchantDao.queryMerchantById(merchantId);
-        	
-        	if(queryMerchant == null) {
-            	String errorMsg = "该商铺不存在";
-                model.addAttribute("errorMsg", errorMsg);
-                return "front/startLotteryError";  
-        	}
-        	
-        	logger.info("merchantId [" + queryMerchant.getId() + "]");
-        	model.addAttribute("queryMerchant", queryMerchant);
-        	
-            coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId, openId, new Date());
-        }
+		List<Coupon> coupons = null;
+		if (merchantId == 0) {
+			// come from Mr.Prize
+			coupons = couponService.queryAllCouponsByOpenid(openId, new Date());
+		} else {
+			Merchant queryMerchant = merchantDao.queryMerchantById(merchantId);
 
-        model.addAttribute("coupons", coupons);
-        model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
+			if (queryMerchant == null) {
+				String errorMsg = "该商铺不存在";
+				model.addAttribute("errorMsg", errorMsg);
+				return "front/startLotteryError";
+			}
 
-        return "front/couponList";
-    }
+			logger.info("merchantId [" + queryMerchant.getId() + "]");
+			model.addAttribute("queryMerchant", queryMerchant);
 
-    @RequestMapping("viewCoupon")
-    public String viewCoupon(@RequestParam(value = "couponId", required = true) Integer couponId,
-                             @RequestParam(value = "isQuery", required = false) Integer isQuery, Model model) {
-        logger.info("Query Coupon [couponId=" + couponId + ", isQuery=" + isQuery + "]");
-        
-        Coupon coupon = couponService.queryCouponById(couponId);
-        model.addAttribute("coupon", coupon);      
-        
-        //获取优惠券商家信息
-        Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon.getMerchantId());
-        model.addAttribute("couponMerchant", couponMerchant);        
-        
-        String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
-        
-        model.addAttribute("expireDateStr", expireDateStr);
-        model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
-        
-        CouponType couponType = couponTypeDao.queryCouponTypeById(coupon.getCouponTypeId());
-        
+			coupons = couponService.queryAllCouponsByOpenidAndMerId(merchantId,
+					openId, new Date());
+		}
+
+		model.addAttribute("coupons", coupons);
+		model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
+
+		return "front/couponList";
+	}
+
+	@RequestMapping("viewCoupon")
+	public String viewCoupon(
+			@RequestParam(value = "couponId", required = true) Integer couponId,
+			@RequestParam(value = "isQuery", required = false) Integer isQuery,
+			Model model) {
+		logger.info("Query Coupon [couponId=" + couponId + ", isQuery="
+				+ isQuery + "]");
+
+		Coupon coupon = couponService.queryCouponById(couponId);
+		model.addAttribute("coupon", coupon);
+
+		// 获取优惠券商家信息
+		Merchant couponMerchant = couponMerchantDao.queryMerchantById(coupon
+				.getMerchantId());
+		model.addAttribute("couponMerchant", couponMerchant);
+
+		String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(
+				coupon.getExpiredTime(), "yyyy/MM/dd") : DateUtil.formatDate(
+				DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd")
+				+ "-"
+				+ DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+
+		model.addAttribute("expireDateStr", expireDateStr);
+		model.addAttribute("isQuery", null == isQuery ? 0 : isQuery);
+
+		CouponType couponType = couponTypeDao.queryCouponTypeById(coupon
+				.getCouponTypeId());
+
 		// render coupon type
 		model.addAttribute("couponTypeVal", couponType.getType());
 
-        return "front/couponInfo";
-    }
-    
-    @RequestMapping("/newCoupon")
-    public String choiceDiscount(@RequestParam("id") Integer couponId, Model model, HttpServletRequest request) {
-        logger.info("Visit /newCoupon: coupon id [" + couponId + "]");
-        
-        HttpSession session = request.getSession(false);
+		return "front/couponInfo";
+	}
+
+	@RequestMapping("/newCoupon")
+	public String choiceDiscount(@RequestParam("id") Integer couponId,
+			Model model, HttpServletRequest request) {
+		logger.info("Visit /newCoupon: coupon id [" + couponId + "]");
+
+		HttpSession session = request.getSession(false);
 		if (session == null) {
 			logger.info("Session is not created");
-			model.addAttribute("errorMsg", ErrorMsg.SessionNotExist.getUserText());
+			model.addAttribute("errorMsg",
+					ErrorMsg.SessionNotExist.getUserText());
 			return "front/startLotteryError";
 		}
-		
-		if(session.getAttribute("merchantId") == null) {
+
+		if (session.getAttribute("merchantId") == null) {
 			logger.info("merchantId does not exist in session");
-			model.addAttribute("errorMsg", ErrorMsg.WebpageTimeout.getUserText());
+			model.addAttribute("errorMsg",
+					ErrorMsg.WebpageTimeout.getUserText());
 			return "front/startLotteryError";
 		}
-		
-		if(session.getAttribute("openid") == null) {
+
+		if (session.getAttribute("openid") == null) {
 			logger.info("Openid does not exist in session");
-			model.addAttribute("errorMsg", ErrorMsg.IllegalCouponQuery.getUserText());
+			model.addAttribute("errorMsg",
+					ErrorMsg.IllegalCouponQuery.getUserText());
 			return "front/startLotteryError";
 		}
-		
+
 		String openid = session.getAttribute("openid").toString();
-		if(!session.getAttribute("openid").equals(openid)) {
-			logger.info("Openid does not exist in session");
-			model.addAttribute("errorMsg", ErrorMsg.IllegalCouponQuery.getUserText());
-			return "front/startLotteryError";
-		}
-		
 		Coupon coupon = couponDao.queryCouponById(couponId);
-		CouponType couponType = couponTypeDao.queryCouponTypeById(coupon.getCouponTypeId());
+		CouponType couponType = couponTypeDao.queryCouponTypeById(coupon
+				.getCouponTypeId());
 		String merchantId = session.getAttribute("merchantId").toString();
 		Merchant merchant = merchantDao.queryMerchantById(Integer.parseInt(merchantId));
-		
-        model.addAttribute("coupon", coupon);
 
-        //获取优惠券商家信息（可能本店，也可能是外放店铺）
-        Merchant couponMerchant = merchantDao.queryMerchantById(coupon.getMerchantId());
-        model.addAttribute("couponMerchant", couponMerchant);
-        
-        String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(coupon.getExpiredTime(), "yyyy/MM/dd")
-                : DateUtil.formatDate(DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd") + "-" + DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
-        model.addAttribute("expireDateStr", expireDateStr);
-        
-        //set advert query or banner (see couponInfo.jsp)
-        model.addAttribute("isQuery", merchant.getId().equals(coupon.getMerchantId()) ? 0 : 1);
-        
-        //set exchange allowed or not
-        model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
-        
+		model.addAttribute("coupon", coupon);
+
+		// 获取优惠券商家信息（可能本店，也可能是外放店铺）
+		Merchant couponMerchant = merchantDao.queryMerchantById(coupon.getMerchantId());
+		model.addAttribute("couponMerchant", couponMerchant);
+
+		String expireDateStr = coupon.getIsImediate() ? DateUtil.formatDate(
+				coupon.getExpiredTime(), "yyyy/MM/dd") : DateUtil.formatDate(
+				DateUtil.addDays(coupon.getCreateTime(), 1), "MM/dd")
+				+ "-"
+				+ DateUtil.formatDate(coupon.getExpiredTime(), "MM/dd");
+		model.addAttribute("expireDateStr", expireDateStr);
+
+		// set advert query or banner (see couponInfo.jsp)
+		model.addAttribute("isQuery", merchant.getId().equals(coupon.getMerchantId()) ? 0 : 1);
+
+		// set exchange allowed or not
+		model.addAttribute("allowExchange", merchant.getSaveType().equals(CouponSaveTypeEnum.mrPrize.getCode()) ? 1 : 0);
+
 		// render coupon type
 		model.addAttribute("couponTypeVal", couponType.getType());
-        
-        return "front/couponInfo";    	
-    }
+
+		// render daily time of lottery
+		List<OperationRecord> lotteryRecords = operationRecordDao
+				.queryOperationRecordsToday(
+						Integer.parseInt(merchantId),
+						openid, 
+						Constants.OPERATION_TYPE_LOTTERY,
+						DateUtil.getToday());
+		
+		model.addAttribute("lotteryTime", lotteryRecords.size());
+		
+		// render merchant id
+		model.addAttribute("merchantId", merchantId);
+
+		return "front/couponInfo";
+	}
 }

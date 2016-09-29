@@ -2,7 +2,6 @@ package com.picto.service;
 
 import com.picto.entity.Coupon;
 import com.picto.entity.CouponType;
-import com.picto.entity.OperationRecord;
 
 /**
  * Created by wujigang on 2016/5/22.

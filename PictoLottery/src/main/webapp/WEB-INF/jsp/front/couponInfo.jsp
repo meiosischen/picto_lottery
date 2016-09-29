@@ -28,10 +28,28 @@
 			$(".showMap").click(function(){$("#map").show();});
 			
 			$(".closeMap").click(function(){$("#map").hide();});
+			
+			if("${lotteryTime}" == "1") {
+				var priorTime = 3000;
+				var postTime = 10000;
+	            setTimeout(function(){
+	                $("div#dialogLotAgain").parent(".wrapper").toggle();
+	            }, priorTime);
+	            
+	            setTimeout(function(){
+	            	if($("div#dialogLotAgain").parent(".wrapper").is(':visible')) {
+	            		$("div#dialogLotAgain").parent(".wrapper").toggle();
+	            	}
+	            }, postTime);
+			}
+
         });
         function toggleExchangeInfo(){
-            $("#wrapper").toggle();
-            $("#info2").html("点击后，本券将失效！");
+            $("div#exchangeInfo").parent(".wrapper").toggle();
+            $("div#exchangeInfo div.info2").html("点击后，本券将失效！");
+        }
+        function toggleDialogLotAgain(){
+            $("div#dialogLotAgain").parent(".wrapper").toggle();
         }
         function exchange() {
             var couponId = '${coupon.id}';
@@ -42,17 +60,20 @@
                 dataType: "json",
                 success: function(data, textStatus) {
                     if (textStatus == "success" && data.errorMsg == null) {
-                        $("#wrapper").hide();
+                        $(".wrapper").hide();
                         $("#exchangeBtn").hide();
                         $("#exchangeText").html("<span style=\"border:solid 2px white;padding: 2px;margin-top:15%;display:block;\">已兑换</span>");
                     } else {
-                        $("#info2").html(data.errorMsg);
+                        $("div#exchangeInfo div.info2").html(data.errorMsg);
                     }
                 },
                 error: function(){
                 	$("#info2").html(data.errorMsg);
                 }
             });
+        }
+        function redirectStartLottery() {
+        	window.location.href = "/welcome.do?merchantId=" + ${merchantId};
         }
     </script>
 </head>
@@ -142,14 +163,23 @@
         </div>
     </div>
 </div>
-<div id="wrapper">
+<div class="wrapper">
     <div id="exchangeInfo">
-        <div style="margin-right: 5px;" id="info1" onclick="exchange()"><img src="/images/exchangeBtn.png" /></div>
-        <div id="info2" onclick="exchange()">点击后，本券将失效！</div>
-        <div id="info3" onclick="toggleExchangeInfo()"><img src="/images/closeButton.png" /></div>
+        <div style="margin-right: 5px;" class="info1" onclick="exchange()"><img src="/images/exchangeBtn.png" /></div>
+        <div class="info2" onclick="exchange()">点击后，本券将失效！</div>
+        <div class="info3" onclick="toggleExchangeInfo()"><img src="/images/closeButton.png" /></div>
         <div style="clear:both;"></div>
     </div>
 </div>
+
+	<div class="wrapper">
+	    <div id="dialogLotAgain">
+	        <div style="margin-right: 5px;" class="info1" onclick="redirectStartLottery()"><img src="/images/bell.png" /></div>
+	        <div class="info2" onclick="redirectStartLottery()">点我再抽一次~</div>
+	        <div class="info3" onclick="toggleDialogLotAgain()"><img src="/images/closeButton.png" /></div>
+	        <div style="clear:both;"></div>
+	    </div>
+	</div>
 </body>
 
 </html>

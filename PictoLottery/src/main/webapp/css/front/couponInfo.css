@@ -156,7 +156,7 @@ div#bottom2 {
 }
 div#bottom2 img{ width: 90%; margin-top: 3%; max-height: 20%;}
 
-#wrapper{
+.wrapper{
     display:none;
     position:absolute;
     width:100%;
@@ -164,6 +164,7 @@ div#bottom2 img{ width: 90%; margin-top: 3%; max-height: 20%;}
     top:0;
     left:0;
 }
+
 div#exchangeInfo {
     position: absolute;
     top: 51%;
@@ -176,27 +177,39 @@ div#exchangeInfo {
     height: 10%;
 }
 
-div#info1 {
+div#dialogLotAgain {
+    position: absolute;
+    top: 51%;
+    background: black;
+    border: solid 2px white;
+    border-radius: 50px;
+    width: 50%;
+    left: 25%;
+    font-size: 2em;
+    height: 10%;
+}
+
+div.info1 {
     float: left;
     clear: none;
     width: 16%;
     margin: 8% 0 0 5%;
 }
-div#info1 img{width:100%;}
+div.info1 img{width:100%;}
 
-div#info2 {
+div.info2 {
     float: left;
     clear: none;
     margin-top: 11%;
 }
 
-div#info3 {
+div.info3 {
     float: right;
     clear: none;
     width: 10%;
     margin: -3% -2%;
 }
-div#info3 img{width:100%;}
+div.info3 img{width:100%;}
 #msg1,#msg2 {
     color: #eacf89;
 }

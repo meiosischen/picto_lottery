@@ -23,6 +23,7 @@
 
 package com.picto.controller.front;
 
+import com.picto.constants.Constants;
 import com.picto.constants.ErrorMsg;
 import com.picto.dao.CouponTypeDao;
 import com.picto.dao.DiscountProductDao;
@@ -33,6 +34,7 @@ import com.picto.enums.CouponTypeEnum;
 import com.picto.service.CouponService;
 import com.picto.service.LotteryService;
 import com.picto.service.StartLotteryService;
+import com.picto.util.DateUtil;
 import com.picto.util.HttpsUtil;
 import com.picto.util.ListUtil;
 import com.picto.util.StringUtil;
@@ -205,6 +207,15 @@ public class LotteryController {
 		Merchant merchant = merchantDao.queryMerchantById(Integer.valueOf(merchantId));
 		
 		model.addAttribute("merchant", merchant);
+		
+		// render daily time of lottery
+		List<OperationRecord> lotteryRecords = operationRecordDao
+				.queryOperationRecordsToday(
+						Integer.parseInt(merchantId),
+						openid, 
+						Constants.OPERATION_TYPE_LOTTERY,
+						DateUtil.getToday());
+		model.addAttribute("lotteryTime", lotteryRecords.size());
 		
 		if (StringUtil.isBlank(luckyCouponTypeId)) {
 			return "front/thanks";
