@@ -95,7 +95,7 @@
             </div>
         </div>
         <c:if test="${allowExchange == null || allowExchange != 0}">
-			<div id="exchangeText">
+			<div id="exchangeText" onclick="toggleExchangeInfo()">
 	            <c:choose>
 	                <c:when test="${coupon.state == 2}">
 	                    <span style="border:solid 2px white;padding: 2px;margin-top:15%;display:block;">已兑换</span>
