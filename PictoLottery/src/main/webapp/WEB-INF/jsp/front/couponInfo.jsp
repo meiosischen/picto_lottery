@@ -116,7 +116,7 @@
     </div>
     <div id="couponInfo">
         <div id="couponLeft">
-            <img id="couponIcon" src="${coupon.icon}" class="showMap" /> <br />
+            <img id="couponIcon" src="${coupon.icon}" class="${couponTypeVal eq 4?'showMap':''}" /> <br />
             <!-- Coupon type value 4 means character collection (集字活动) -->
 	        <c:choose>
 	            <c:when test="${couponTypeVal == 4}">
