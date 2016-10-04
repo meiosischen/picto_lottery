@@ -175,7 +175,7 @@
 	<div class="wrapper">
 	    <div id="dialogLotAgain">
 	        <div style="margin-right: 5px;" class="info1" onclick="redirectStartLottery()"><img src="/images/tryAgain.png" /></div>
-	        <div class="info2" onclick="redirectStartLottery()">&nbsp&nbsp&nbsp&nbsp点我再抽一次~</div>
+	        <div class="info2" onclick="redirectStartLottery()">没中奖？点我再抽一次~</div>
 	        <div class="info3" onclick="toggleDialogLotAgain()"><img src="/images/closeButton.png" /></div>
 	        <div style="clear:both;"></div>
 	    </div>
