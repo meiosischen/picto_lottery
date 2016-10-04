@@ -31,7 +31,7 @@
 			
 			if("${lotteryTime}" == "1") {
 				var priorTime = 3000;
-				var postTime = 10000;
+				var postTime = 15000;
 	            setTimeout(function(){
 	                $("div#dialogLotAgain").parent(".wrapper").toggle();
 	            }, priorTime);

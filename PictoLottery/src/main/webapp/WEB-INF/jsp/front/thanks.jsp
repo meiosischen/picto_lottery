@@ -18,7 +18,7 @@
 	    $(document).ready(function(){			
 			if("${lotteryTime}" == "1") {
 				var priorTime = 3000;
-				var postTime = 10000;
+				var postTime = 15000;
 	            setTimeout(function(){
 	                $("div#dialogLotAgain").parent(".wrapper").toggle();
 	            }, priorTime);
@@ -155,7 +155,7 @@
 	<div class="wrapper">
 	    <div id="dialogLotAgain">
 	        <div style="margin-right: 5px;" class="info1" onclick="redirectStartLottery()"><img src="/images/tryAgain.png" /></div>
-	        <div class="info2" onclick="redirectStartLottery()">&nbsp&nbsp&nbsp&nbsp点我再抽一次~</div>
+	        <div class="info2" onclick="redirectStartLottery()">&nbsp&nbsp&nbsp没中奖？点我再抽一次~</div>
 	        <div class="info3" onclick="toggleDialogLotAgain()"><img src="/images/closeButton.png" /></div>
 	        <div style="clear:both;"></div>
 	    </div>
