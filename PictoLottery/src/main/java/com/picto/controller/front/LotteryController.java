@@ -143,13 +143,13 @@ public class LotteryController {
 
 			CouponType latestCouponTypeToday = startLotteryService.latestCouponTypeToday(openid, merchant.getId());
 
-			List<CouponType> filteredCts = new ArrayList<CouponType>();
+			CouponType filteredCt = null;
 			if (latestCouponTypeToday != null) {
-				filteredCts.add(couponTypeDao.queryCouponTypeById(latestCouponTypeToday.getId()));
+				filteredCt = couponTypeDao.queryCouponTypeById(latestCouponTypeToday.getId());
 			}
 
 			// 生成中奖的奖项
-			CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId(), filteredCts);
+			CouponType couponType = lotteryService.lotyCouponType(openid, merchant.getId(), filteredCt);
 
 			String showIcons = null;
 			if (null != couponType && !CouponTypeEnum.THANKS.getCode().equals(couponType.getType())) {

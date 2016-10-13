@@ -90,7 +90,7 @@ public class LotteryServiceImpl implements LotteryService {
     }
     
     @Transactional
-    public CouponType lotyCouponType(String openid, Integer merchantId, List<CouponType> filterCouponTypes) {
+    public CouponType lotyCouponType(String openid, Integer merchantId, CouponType filterCouponType) {
         //查询所有的奖项
     	List<CouponType> couponTypes = couponTypeDao.queryAllCouponTypesByMerchantId(merchantId);
         
@@ -107,7 +107,14 @@ public class LotteryServiceImpl implements LotteryService {
     		}
     	}
     	
-    	couponTypes.removeAll(filterCouponTypes);
+    	if(filterCouponType != null) {
+	    	for(int i = 0; i < couponTypes.size(); i++) {
+	    		if(couponTypes.get(i).getId().equals(filterCouponType.getId())) {
+	    			couponTypes.remove(i);
+	    			break;
+	    		}
+	    	}
+    	}
 
         CouponType luckyCouponType = null;
         switch(Constants.LOTTERY_ALGO) {
